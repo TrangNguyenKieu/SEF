@@ -89,7 +89,7 @@ public class RealEstate {
 			System.out.println("size:"+ allCustomers.size());
 			//login process will need to determine from the input ID and password:
 			//-whether current user is a Employee or Customer
-			//-the index of the user in the related array.
+			//-the index of the user in the related array to be stored in currentIndex.
 			
 			currentIndex=0; //after login this variable will store the index of current user in the array
 			currentCustomer=allCustomers.get(currentIndex); //currently hard-coded in StartUp.java

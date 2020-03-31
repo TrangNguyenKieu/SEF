@@ -11,8 +11,8 @@ public class StartUp {
 		
 		re.landingPageMenu();
 		
-		System.out.println(re.getAllCustomers().size());
-		System.out.println(re.getAllCustomers().get(0));
+//		System.out.println(re.getAllCustomers().size());
+//		System.out.println(re.getAllCustomers().get(0));
 	}
 
 }
