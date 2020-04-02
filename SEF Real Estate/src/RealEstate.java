@@ -224,7 +224,7 @@ public class RealEstate {
 				choice = Integer.parseInt(scan.nextLine());
 				valid = true;
 			} catch (Exception e) {
-				System.out.println("No valid choce. Re-enter");
+				System.out.println("Not a valid choice. Re-enter");
 			}
 		}
 	}
