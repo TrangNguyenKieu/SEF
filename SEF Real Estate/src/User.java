@@ -1,4 +1,13 @@
+import java.util.ArrayList;
 
-public class User {
+public abstract class User {
+private String userID;
 
+public void setUserID(String ID) {
+	this.userID=ID;
+}
+
+public String getUserID() {
+	return userID;
+}
 }

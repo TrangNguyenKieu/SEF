@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import SystemExceptions.*;
 public class RealEstate {
 	
 	User currentUser;
@@ -8,9 +8,18 @@ public class RealEstate {
 	private int choice;
 	private Scanner scan = new Scanner(System.in);
 	private boolean quit; // quit the system
-	private boolean quitToStudentMenu;
 	private boolean logOut;
-	private int currentIndex; //need to implement this in login() to locate employee in array
+	private int currentIndex; //index of current session user in allUsers array
+	
+	private String address;
+	private String description;
+	private String surbub;
+	private int bed;
+	private int bath;
+	private int cars;
+	private String type;
+	private double weeklyRent;
+	private String duration;
 	
 	ArrayList<User> allUsers= new ArrayList<User>();
 	ArrayList<Property> allProperties=new ArrayList<Property>();
@@ -55,33 +64,38 @@ public class RealEstate {
 		while (!logOut) {
 
 			System.out.println("*******Landlord Menu******");
-			System.out.printf("1. Display my properties");
+			System.out.printf("1. Display all properties");
 			System.out.println();
-			System.out.printf("2. Add property");
+			System.out.printf("2. Display my properties");
 			System.out.println();
-			System.out.printf("3. Display applications");
+			System.out.printf("3. Add property");
 			System.out.println();
-			System.out.printf("4. Respond to application");
+			System.out.printf("4. Display applications");
 			System.out.println();
-			System.out.printf("5. Log Out");
+			System.out.printf("5. Respond to application");
+			System.out.println();
+			System.out.printf("6. Log Out");
 			System.out.println();
 
 			enterChoice();
 
 			switch (choice) {
 			case 1:
-				System.out.println("<<tobe updated>>");
+				displayAllProperties();
 				break;
 			case 2:
-				System.out.println("<<tobe updated>>");
+				displayMyProperties();
 				break;
 			case 3:
-				System.out.println("<<tobe updated>>");
+				addRentalProperty();
 				break;
 			case 4:
-				System.out.println("<<tobe updated>>");
+				displayApplications();
 				break;
 			case 5:
+				respondtoApplication();
+				break;
+			case 6:
 				logOut();
 				break;
 
@@ -158,7 +172,7 @@ public class RealEstate {
 
 			switch (choice) {
 			case 1:
-				System.out.println("<<tobe updated>>");
+				displayAllProperties();
 				break;
 			case 2:
 				System.out.println("<<tobe updated>>");
@@ -195,7 +209,7 @@ public class RealEstate {
 
 			switch (choice) {
 			case 1:
-				System.out.println("<<tobe updated>>");
+				displayAllProperties();
 				break;
 			case 2:
 				System.out.println("<<tobe updated>>");
@@ -283,7 +297,10 @@ public class RealEstate {
 	
 	//tenant methods
 	public void displayAllProperties() {
-		System.out.println("All properties listing shown here");
+		System.out.println("*******All Properties******");
+		for (int i = 0; i < allProperties.size(); i++) {
+			System.out.println(allProperties.get(i).getPropertyDetails());
+		}
 	}
 	
 	public void applyForAProperty() {
@@ -304,8 +321,140 @@ public class RealEstate {
 	}
 	
 	
+	//landlord methods
+	public void displayMyProperties() {
+		System.out.println("*******My Properties******");
+		String currentSessionID=currentUser.getUserID();
+		
+		for (int i = 0; i < allProperties.size(); i++) {
+			if(allProperties.get(i).getCreatorID().compareTo(currentSessionID)==0) {
+			System.out.println(allProperties.get(i).getPropertyDetails());
+			}
+		}
+	}
+	public void addRentalProperty() {
+		boolean validProperty=false;
+		while(!validProperty) {
+			try {
+				System.out.println("Enter details of your property below:");
+				
+				String title= "Address:";
+				address=addPropertyTextInfo(title);
+				
+				title="Description:";
+				description=addPropertyTextInfo(title);
+				
+				title="Surbub:";
+				surbub=addPropertyTextInfo(title);
+				
+				title="Number of Bedrooms: ";
+				bed=addCapacity(title);
+				
+				title="Number of Bathrooms: ";
+				bath=addCapacity( title);
+				
+				title="Number of car Spaces: ";
+				cars=addCapacity( title);
+				
+				title="Property type (house/ unit/flat/townhouse/studio):";
+				type=addPropertyTextInfo(title);
+				
+				title= "Weekly Rent:";
+				weeklyRent=addWeeklyRent( title);
+				
+				title= "Contract Duration: ";
+				duration=addPropertyTextInfo( title);
+				
+				String currentSessionID=currentUser.getUserID();
+				System.out.println(address+surbub);
+				RentalProperty rentProp= new RentalProperty(currentSessionID, address, description, surbub, bed, bath, cars, type, weeklyRent, duration);
+				
+				allProperties.add(rentProp);
+				System.out.println("Successfully add new Rental Property");
+				
+				validProperty=true;
+			} catch (Exception e) {
+				System.out.println("Cannot add new rental property");
+			}
+		}
+	}
+	
+	
+	
+	public void displayApplications() {
+		System.out.println("Displaying application");
+	}
+	public void respondtoApplication() {
+		System.out.println("Accept or reject Application");
+	}
+	
 	//accessors/mutators
 	public ArrayList<User> getAllUsers(){
 		return allUsers;
 	}
+	
+	public ArrayList<Property> getAllProperty(){
+		return allProperties;
+	}
+	
+	//general methods
+public String addPropertyTextInfo( String title) {
+	boolean infoOk = false;
+	String info=null;
+	while (!infoOk) {
+		try {
+			System.out.print(title);
+			 info= scan.nextLine();		
+					
+			if (info.trim().length()==0) {
+				throw new FormatException("The field must not be blank");
+			}
+
+			infoOk = true;
+			return info;
+			
+		}catch(FormatException fe) {
+			System.out.println(fe.getReason());
+			return null;
+		}catch (Exception e) {
+			System.out.println("Error. Re-enter "+ title); 
+			return null;}
+	}return info;
+	}
+
+
+public int addCapacity( String title) {
+	boolean infoOk = false;
+	int capa=0;
+	while (!infoOk) {
+		try {
+			System.out.print(title);
+			capa=Integer.parseInt(scan.nextLine());
+			infoOk = true;
+			return capa;
+		} catch (Exception e) {
+			System.out.println("Error. Re-enter "+ title);
+			return 0;
+		}
+	}
+	return capa;
+}
+public double addWeeklyRent( String title) {
+	boolean infoOk = false;
+	double rent=0;
+	while (!infoOk) {
+		try {
+			System.out.print(title);
+			rent=Double.parseDouble(scan.nextLine());
+			infoOk = true;
+			return rent;
+		} catch (Exception e) {
+			System.out.println("Error. Re-enter "+ title);
+			return 0;
+		}
+	}
+	return rent;
+}
+
+
 }
