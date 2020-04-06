@@ -63,6 +63,9 @@ public abstract class Property {
         this.status=PropertyStatus.Available;
  }
  
+ public void setStatusToLet() {
+	 this.status=PropertyStatus.Let;
+ }
  public void setEmployee(Employee emp) {
         this.employee=emp;
  }

@@ -27,7 +27,8 @@ public Application(String propID, Tenant tenant, double income, String occu, dou
 }
 //general methods
 public String getApplicationdetails() {
-	String details=  "\n"+ "Application ID: " + "\t" +this.applicationID +
+	String details=null;
+	details=  "\n"+ "Application ID: " + "\t" +this.applicationID +
 			 "\n"+ "Property ID: " + "\t" + "\t"+this.propertyID+
 			 "\n"+ "Tenant ID: " + "\t" + "\t"+this.tenant.getUserID()+
 			 "\n"+ "Monthly Income: " + "\t" +this.income+
@@ -36,6 +37,18 @@ public String getApplicationdetails() {
 			 "\n"+ "Contract Duration: " + "\t" + this.contractDuration+
 			 "\n"+ "Application Status " + "\t" +this.appStatus+ 
 			 "\n"+ "Submitted Date " + "\t" + "\t"+this.submittedDate;
+	if (this.appStatus==ApplicationStatus.Accepted) {
+		details=  "\n"+ "Application ID: " + "\t" +this.applicationID +
+				 "\n"+ "Property ID: " + "\t" + "\t"+this.propertyID+
+				 "\n"+ "Tenant ID: " + "\t" + "\t"+this.tenant.getUserID()+
+				 "\n"+ "Monthly Income: " + "\t" +this.income+
+				 "\n"+ "Occupation: " + "\t" + "\t"+this.occupation+
+				 "\n"+ "Weekly Rent: " + "\t" + "\t"+this.weeklyRent+
+				 "\n"+ "Contract Duration: " + "\t" + this.contractDuration+
+				 "\n"+ "Application Status " + "\t" +this.appStatus+ 
+				 "\n"+ "Submitted Date " + "\t" + "\t"+this.submittedDate+
+				 "\n"+ "Accepted Date " + "\t" + "\t"+this.acceptedDate;
+	}
 	return details;
 			 
 			 

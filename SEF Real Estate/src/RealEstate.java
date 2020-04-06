@@ -5,7 +5,7 @@ public class RealEstate {
 	
 	User currentUser;
 	Application currentApp;
-	RentalProperty currentRentProp;
+	RentalProperty 	currentRentProp;
 	
 	private int choice;
 	private Scanner scan = new Scanner(System.in);
@@ -16,10 +16,15 @@ public class RealEstate {
 	private int currentPropertyIndex; 
 	private int currentAppIndex;
 
-	
+	DateTime currentDate;
+	String appID;
 
 	ArrayList<User> allUsers= new ArrayList<User>();
 	ArrayList<Property> allProperties=new ArrayList<Property>();
+	
+	public RealEstate() {
+		currentDate=new DateTime();
+	}
 	
 	public void landingPageMenu() {
 		quit = false;
@@ -465,7 +470,7 @@ public class RealEstate {
 			quitToMainMenu=false;
 			while(!quitToMainMenu) {
 				String title="Add Application ID:";
-				String propID=addApplicationID(title);
+				appID=addApplicationID(title);
 				if(quitToMainMenu) break;
 				
 				if(currentApp.getAppStatus()==ApplicationStatus.Rejected) {
@@ -503,18 +508,24 @@ public class RealEstate {
 
 			switch (choice) {
 			case 1:
+
 				currentApp.acceptApp();
-				System.out.println("Current Application status is:"+currentApp.getAppStatus());
-				ArrayList<Application> allApp=currentRentProp.getAllApplications();
-				for (int i = 0; i < allApp.size(); i++) {
-					allApp.get(i).rejectApp();
+				ApplicationStatus currentappStatus=currentApp.getAppStatus();
+				System.out.println("Current Application status is:"+currentappStatus);
+				ArrayList<Application> allApps=currentRentProp.getAllApplications();
+				for (int i = 0; i < allApps.size(); i++) {
+					if(appID.compareTo(allApps.get(i).getApplicationID())!=0) {
+						allApps.get(i).rejectApp();
+					}
+
 				}
 				
 				quitToMainMenu=true;
 				break;
 			case 2:
 				currentApp.rejectApp();
-				System.out.println("Current Application status is:"+currentApp.getAppStatus());
+				currentappStatus=currentApp.getAppStatus();
+				System.out.println("Current Application status is:"+currentappStatus);
 				quitToMainMenu=true;
 				break;
 			
@@ -678,6 +689,9 @@ public boolean ApplicationIdExits(String ID) {
 					System.out.println(allApps.get(j).getApplicationID() +"found!");
 		
 					currentApp=allApps.get(j);
+					
+					currentAppIndex=j;
+					currentPropertyIndex=i;
 					return true;
 				}
 			}
