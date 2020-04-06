@@ -1,4 +1,3 @@
-
 public abstract class Property {
  private String propertyID;
  private String creatorID;
@@ -14,60 +13,58 @@ public abstract class Property {
  private Employee employee;
  
  public Property(String creatorID, String address, String des, String surbub, int bed, int bath, int cars, String type) {
-	 this.creatorID=creatorID;
-	 this.address=address;
-	 this.surbub=surbub;
-	 this.description=des;
-	 this.bedrooms=bed;
-	 this.bathrooms=bath;
-	 this.carSpaces=cars;
-	 this.type=type;
-	 this.status=PropertyStatus.Pending;
+        this.creatorID=creatorID;
+        this.address=address;
+        this.surbub=surbub;
+        this.description=des;
+        this.bedrooms=bed;
+        this.bathrooms=bath;
+        this.carSpaces=cars;
+        this.type=type;
+        this.status=PropertyStatus.Pending;
  }
  //override methods:
  public String getPropertyDetails() {
-	 String details= "\n"+ "Property ID:" + "\t" + this.propertyID+ 
-			 "\n" + "Creator ID:" +"\t"+ this.creatorID +
-			 "\n" + "Address:" +"\t"+ this.address +
-			 "\n" + "Surbub:" +"\t"+ this.surbub +
-			 "\n" + "Description:" +"\t"+ this.description + 
-			 "\n" + "Number of Bedrooms:" +"\t"+ this.bedrooms +
-			 "\n" + "Number of Bathrooms:" +"\t"+ this.bathrooms +
-			 "\n" + "Number of car spaces:" +"\t"+ this.carSpaces +
-			 "\n" + "Property type:" +"\t"+ this.type+
-	 		"\n" + "Property Status:" +"\t"+ this.status;
-	 
-	 return details;
+        String details= "\n"+ "Property ID:" + "\t" + this.propertyID+
+                     "\n" + "Creator ID:" +"\t"+ this.creatorID +
+                     "\n" + "Address:" +"\t"+ this.address +
+                     "\n" + "Surbub:" +"\t"+ this.surbub +
+                     "\n" + "Description:" +"\t"+ this.description +
+                     "\n" + "Number of Bedrooms:" +"\t"+ this.bedrooms +
+                     "\n" + "Number of Bathrooms:" +"\t"+ this.bathrooms +
+                     "\n" + "Number of car spaces:" +"\t"+ this.carSpaces +
+                     "\n" + "Property type:" +"\t"+ this.type+
+                    "\n" + "Property Status:" +"\t"+ this.status;
+       
+        return details;
  }
-
-
  
  
  //accessors/mutators
  public String getPropertyID() {
-	 return propertyID;
+        return propertyID;
  }
  public void setPropertyID(String ID) {
-	 this.propertyID=ID;
+        this.propertyID=ID;
  }
  public String getCreatorID() {
-	 return creatorID;
+        return creatorID;
  }
  
  public String getSurbub() {
-	 return surbub;
+        return surbub;
  }
  
  public PropertyStatus getStatus() {
-	 return status;
+        return status;
  }
  
  public void setStatusToAvailable() {
-	 this.status=PropertyStatus.Available;
+        this.status=PropertyStatus.Available;
  }
  
  public void setEmployee(Employee emp) {
-	 this.employee=emp;
+        this.employee=emp;
  }
  
  
