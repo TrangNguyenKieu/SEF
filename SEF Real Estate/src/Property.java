@@ -39,6 +39,9 @@ public abstract class Property {
 	 
 	 return details;
  }
+
+
+ 
  
  //accessors/mutators
  public String getPropertyID() {

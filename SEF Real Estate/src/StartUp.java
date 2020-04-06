@@ -12,6 +12,7 @@ public class StartUp {
 		PropertyManager proman= new PropertyManager();
 		
 		RentalProperty prop01= new RentalProperty(landlord.getUserID(), "120 Abbey road", "This house is not for sale", "Corney Island", 4, 2, 2, "house", 180, "12 months or more");
+		prop01.setStatusToAvailable();//for testing
 		
 		re.getAllUsers().add(landlord);
 		re.getAllUsers().add(tenant);
@@ -19,6 +20,7 @@ public class StartUp {
 		re.getAllUsers().add(proman);
 		
 		re.getAllProperty().add(prop01);
+//		landlord.getAllProperties().add(prop01);
 		
 		re.landingPageMenu();
 		

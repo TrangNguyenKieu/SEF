@@ -5,7 +5,7 @@ private static int rentalPropertyCount;
 private double weeklyRent;
 private String contractDuration;
 private String tenantID;
-private ArrayList<Application> application=new ArrayList<Application>();
+private ArrayList<Application> allApplications=new ArrayList<Application>();
 
 public RentalProperty(String creatorID, String address, String des, String surbub, int bed, int bath, int cars, String type,double weeklyRent, String duration) {
 	super(creatorID, address, des, surbub, bed,bath,cars, type);
@@ -30,5 +30,26 @@ public String getPropertyDetails() {
 				"\n" + "Weekly Rent:" +"\t"+ this.weeklyRent+
 				"\n" + "Contract Duratioin:" +"\t"+ this.contractDuration;
 	}
+}
+
+public boolean handleApplication(Application app) {
+
+	if (super.getStatus()==PropertyStatus.Available) {
+//		if(!allApplications.contains(app)) {
+			allApplications.add(app);
+			return true;
+//		} else {
+//			System.out.println("You have already submitted your application for this property");
+//			return false;
+//		}
+		
+	} else {
+		return false;
+	}
+}
+
+//accessor/mutators
+public ArrayList<Application> getAllApplications(){
+	return allApplications;
 }
 }

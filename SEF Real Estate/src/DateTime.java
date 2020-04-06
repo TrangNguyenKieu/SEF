@@ -31,7 +31,13 @@ public class DateTime {
 	// returns difference in days
 	public static int diffDays(DateTime d2, DateTime d1)
 	{
-	return (int) ( 1 + ( d2.getTime() - d1.getTime() )/(24L*60*60*1000));
+	return (int) (1+ ( d2.getTime() - d1.getTime() )/(24L*60*60*1000));
+	}
+	
+	// returns difference in hours
+	public static int diffHours(DateTime d2, DateTime d1)
+	{
+	return (int) ( ( d2.getTime() - d1.getTime() )/(60L*60*1000));
 	}
 
 }
