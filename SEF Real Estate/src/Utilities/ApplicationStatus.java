@@ -1,3 +1,4 @@
+package Utilities;
 
 public enum ApplicationStatus {
 Pending, 

@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import Utilities.PropertyStatus;
+
 public class RentalProperty extends Property{
 private static int rentalPropertyCount;
 private double weeklyRent;
