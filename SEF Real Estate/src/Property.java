@@ -1,3 +1,5 @@
+import Utilities.PropertyStatus;
+
 public abstract class Property {
  private String propertyID;
  private String creatorID;

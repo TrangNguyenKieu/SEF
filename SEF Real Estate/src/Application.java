@@ -1,3 +1,5 @@
+import Utilities.ApplicationStatus;
+import Utilities.DateTime;
 
 public class Application {
 	private String applicationID;
@@ -38,7 +40,7 @@ public class Application {
 				+ "Contract Duration: " + "\t" + this.contractDuration + "\n"
 				+ "Application Status " + "\t" + this.appStatus + "\n"
 				+ "Submitted Date " + "\t" + "\t" + this.submittedDate;
-		
+
 		if (this.appStatus == ApplicationStatus.Accepted) {
 			details = "\n" + "Application ID: " + "\t" + this.applicationID
 					+ "\n" + "Property ID: " + "\t" + "\t" + this.propertyID
@@ -85,5 +87,9 @@ public class Application {
 	}
 	public String getApplicationID() {
 		return this.applicationID;
+	}
+
+	public String getPropertyID() {
+		return this.propertyID;
 	}
 }

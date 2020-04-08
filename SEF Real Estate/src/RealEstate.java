@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import SystemExceptions.*;
+import Utilities.ApplicationStatus;
+import Utilities.DateTime;
+import Utilities.PropertyStatus;
 public class RealEstate {
 
 	User currentUser;
@@ -25,6 +28,54 @@ public class RealEstate {
 
 	public RealEstate() {
 		currentDate = new DateTime();
+	}
+
+	public void login() {
+		boolean infoOk = false;
+		while (!infoOk) {
+			System.out.println("*******Login Process*******");
+
+			// require user to enter username and password
+			// make sure username exists and username matches password
+			// get the user ID
+			// then search for user ID in allCustomers array and return the
+			// current index
+
+			// demo login
+			System.out.println("Enter a number from 0-3");
+			System.out.println("0: login as landlord");
+			System.out.println("1: login as tenant");
+			System.out.println("2: login as branch manager");
+			System.out.println("3: login as property manager");
+
+			int demoIndex = Integer.parseInt(scan.nextLine());
+
+			currentUserIndex = demoIndex; // after searching in allCustomer
+											// array this variable will store
+											// the index of current user in the
+											// array
+			currentUser = allUsers.get(currentUserIndex); // currently
+															// hard-coded in
+															// StartUp.java
+
+			if (currentUser instanceof Landlord) {
+				landLordMenu(); // run menu for landlord
+			} else if (currentUser instanceof Tenant) {
+				tenantMenu(); // run menu for tenant
+			} else if (currentUser instanceof BranchManager) {
+				branchManagerMenu(); // run menu for manager
+			} else if (currentUser instanceof PropertyManager) {
+				propertyManagerMenu(); // run manu for property manager
+			}
+			infoOk = true;
+		}
+
+	}
+	public void register() {
+		System.out.println("Registration process..." + "\n");
+		// require user to specify username and password and customer type
+		// assign an unique ID to each user
+		// add user to allUsers array
 	}
 
 	public void landingPageMenu() {
@@ -241,54 +292,6 @@ public class RealEstate {
 			}
 		}
 	}
-	public void login() {
-		boolean infoOk = false;
-		while (!infoOk) {
-			System.out.println("*******Login Process*******");
-
-			// require user to enter username and password
-			// make sure username exists and username matches password
-			// get the user ID
-			// then search for user ID in allCustomers array and return the
-			// current index
-
-			// demo login
-			System.out.println("Enter a number from 0-3");
-			System.out.println("0: login as landlord");
-			System.out.println("1: login as tenant");
-			System.out.println("2: login as branch manager");
-			System.out.println("3: login as property manager");
-
-			int demoIndex = Integer.parseInt(scan.nextLine());
-
-			currentUserIndex = demoIndex; // after searching in allCustomer
-											// array this variable will store
-											// the index of current user in the
-											// array
-			currentUser = allUsers.get(currentUserIndex); // currently
-															// hard-coded in
-															// StartUp.java
-
-			if (currentUser instanceof Landlord) {
-				landLordMenu(); // run menu for landlord
-			} else if (currentUser instanceof Tenant) {
-				tenantMenu(); // run menu for tenant
-			} else if (currentUser instanceof BranchManager) {
-				branchManagerMenu(); // run menu for manager
-			} else if (currentUser instanceof PropertyManager) {
-				propertyManagerMenu(); // run manu for property manager
-			}
-			infoOk = true;
-		}
-
-	}
-	public void register() {
-		System.out.println("Registration process..." + "\n");
-		// require user to specify username and password and customer type
-		// assign an unique ID to each user
-		// add user to allUsers array
-	}
-
 	public void quit() {
 		System.out.println("Program stops here.");
 		quit = true;
@@ -392,13 +395,13 @@ public class RealEstate {
 			int BSB = StartUp.scan.nextInt();
 
 			boolean innerFlag = true;
-			
+
 			while (innerFlag) {
 				System.out.printf("\nBank name: %s" + "\nAccount Number: %d"
 						+ "\nBSB: %d", bankName, accountNumber, BSB);
 				System.out.println("Are the following details correct? [y/n]");
 				String input = scan.next();
-				
+
 				switch (input) {
 					case "y" :
 						flag = false;
@@ -639,17 +642,17 @@ public class RealEstate {
 		}
 		return capa;
 	}
-	public double addMonetaryInfo(String title) {
+	public double addMonetaryInfo( String title) {
 		boolean infoOk = false;
-		double rent = 0;
+		double rent=0;
 		while (!infoOk) {
 			try {
 				System.out.print(title);
-				rent = Double.parseDouble(scan.nextLine());
+				rent=Double.parseDouble(scan.nextLine());
 				infoOk = true;
 				return rent;
 			} catch (Exception e) {
-				System.out.println("Error. Re-enter " + title);
+				System.out.println("Error. Re-enter "+ title);
 				return 0;
 			}
 		}
