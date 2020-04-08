@@ -88,4 +88,8 @@ public ApplicationStatus getAppStatus() {
 public String getApplicationID() {
 	return this.applicationID;
 }
+
+public String getPropertyID() {
+return this.propertyID;
+}
 }

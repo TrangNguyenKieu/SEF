@@ -36,7 +36,7 @@ public String getPropertyDetails() {
 
 public boolean handleApplication(Application app) {
 
-	if (super.getStatus()==PropertyStatus.Available) {
+	if (super.getPropertyID().compareTo(app.getPropertyID())==0 && super.getStatus()==PropertyStatus.Available) {
 //		if(!allApplications.contains(app)) {
 			allApplications.add(app);
 			return true;
