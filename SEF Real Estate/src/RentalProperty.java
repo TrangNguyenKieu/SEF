@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 import Utilities.PropertyStatus;
+import models.Employee;
+import models.PropertyManager;
 
 public class RentalProperty extends Property{
 private static int rentalPropertyCount;
@@ -49,7 +51,23 @@ public boolean handleApplication(Application app) {
 		return false;
 	}
 }
-
+public boolean assignEmployee(Employee emp) {
+	if (super.getStatus()==PropertyStatus.Pending) {
+		if(emp instanceof PropertyManager) {
+			
+			super.setEmployee(emp);
+			super.setStatusToAvailable();
+			System.out.println("Successfully assign employee to the property");
+					
+			return true;
+		} else {
+			System.out.println("Cannot assign someone who is not a property manager to a rental property");
+			return false;
+		}
+		
+	}else return false;
+	
+}
 //accessor/mutators
 public ArrayList<Application> getAllApplications(){
 	return allApplications;

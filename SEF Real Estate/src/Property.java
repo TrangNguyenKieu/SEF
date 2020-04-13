@@ -1,4 +1,5 @@
 import Utilities.PropertyStatus;
+import models.Employee;
 
 public abstract class Property {
  private String propertyID;
@@ -40,7 +41,8 @@ public abstract class Property {
        
         return details;
  }
- 
+ //abstract method
+ public abstract boolean assignEmployee(Employee emp);
  
  //accessors/mutators
  public String getPropertyID() {
