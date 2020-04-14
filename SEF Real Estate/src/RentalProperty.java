@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 
 import Utilities.PropertyStatus;
-import models.Employee;
-import models.PropertyManager;
+
 
 public class RentalProperty extends Property{
 private static int rentalPropertyCount;

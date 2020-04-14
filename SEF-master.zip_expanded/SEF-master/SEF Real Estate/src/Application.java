@@ -11,6 +11,7 @@ public class Application {
 	private double weeklyRent;
 	private String contractDuration;
 	private ApplicationStatus appStatus;
+	boolean bondPaid;
 
 	private DateTime submittedDate;
 	private DateTime acceptedDate;
@@ -27,6 +28,7 @@ public class Application {
 		this.contractDuration = duration;
 		appStatus = ApplicationStatus.Pending;
 		submittedDate = new DateTime();
+		bondPaid=false;
 	}
 	// general methods
 	public String getApplicationdetails() {

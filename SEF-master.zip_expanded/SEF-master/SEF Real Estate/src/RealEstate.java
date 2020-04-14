@@ -82,8 +82,11 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("2. Register");
 			System.out.println();
-			System.out.printf("3. Quit");
+			System.out.printf("3. Advance Time");
 			System.out.println();
+			System.out.printf("4. Quit");
+			System.out.println();
+
 
 			enterChoice();
 
@@ -96,6 +99,10 @@ public class RealEstate {
 				break;
 				
 			case 3:
+				advanceTime();
+				break;
+				
+			case 4:
 				quit();
 				break;
 
@@ -187,7 +194,7 @@ public class RealEstate {
 				displayMyApplications();
 				break;
 			case 4:
-				makeFirstPayment();
+				makeBondPayment();
 				break;
 			case 5:
 				makeRentalPayment();
@@ -377,8 +384,8 @@ public class RealEstate {
 		
 	}
 	
-	public void makeFirstPayment() {
-		System.out.println("Make the first payment to secure your place");
+	public void makeBondPayment() {
+		System.out.println("Make bond and 1st month rent to secure your place");
 		
 	}
 	
@@ -709,4 +716,28 @@ public boolean ApplicationIdExits(String ID) {
 }
 
 
+
+public void advanceTime() {
+	try {
+		System.out.println("Enter number of hours to advance");
+		int hours = Integer.parseInt(scan.nextLine());
+		System.out.println("Enter number of mins to advance");
+		int mins=Integer.parseInt(scan.nextLine());
+		System.out.println("Enter number of seconds to advance");
+		int sec=Integer.parseInt(scan.nextLine());
+		
+		DateTime previousDate=currentDate;
+		System.out.println("Previous date:" + previousDate);
+		DateTime.setAdvance(0, hours,mins,sec);
+		currentDate= new DateTime();
+		System.out.println("Current date:"+ currentDate);
+		int diff= DateTime.diffMins(currentDate, previousDate);
+		System.out.println(diff + " minutes "+ "has passed since the previous date.");
+		System.out.println(DateTime.diffSecond(currentDate, previousDate) + " seconds "+ "has passed");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println("Error with input. Try again");
+	}
+	
+}
 }
