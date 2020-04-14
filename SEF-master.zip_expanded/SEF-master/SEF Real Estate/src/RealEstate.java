@@ -718,6 +718,7 @@ public boolean ApplicationIdExits(String ID) {
 
 
 public void advanceTime() {
+	long time;
 	try {
 		System.out.println("Enter number of hours to advance");
 		int hours = Integer.parseInt(scan.nextLine());
@@ -727,17 +728,48 @@ public void advanceTime() {
 		int sec=Integer.parseInt(scan.nextLine());
 		
 		DateTime previousDate=currentDate;
+		time=currentDate.getTime();
 		System.out.println("Previous date:" + previousDate);
-		DateTime.setAdvance(0, hours,mins,sec);
-		currentDate= new DateTime();
+		currentDate.setAdvance(0, hours,mins,sec);
+		
+		currentDate=new DateTime(time);
+		
 		System.out.println("Current date:"+ currentDate);
 		int diff= DateTime.diffMins(currentDate, previousDate);
 		System.out.println(diff + " minutes "+ "has passed since the previous date.");
 		System.out.println(DateTime.diffSecond(currentDate, previousDate) + " seconds "+ "has passed");
+		
+		
+		checkApplicationStatus();
+		
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		System.out.println("Error with input. Try again");
 	}
 	
+	
 }
+
+	public void checkApplicationStatus() {
+	for (Property prop: allProperties) {
+		if (prop instanceof RentalProperty) {
+			for (Application app: ((RentalProperty) prop).getAllApplications()) {
+				
+				//application must be responded within 3 days after submitted date
+				if (app.getAppStatus()==ApplicationStatus.Pending) {
+					if (DateTime.diffHours(currentDate, app.getSummittedDate())>72) {
+						app.rejectApp();
+						System.out.println("Application: "+ app.getApplicationID() + " has been rejected due to non-response from landlord for more than 3 days");
+					}
+				//bond payment must be made within 24 hours after accepted date
+				} else if (app.getAppStatus()==ApplicationStatus.Accepted) {
+					if (DateTime.diffHours(currentDate, app.getAcceptedDate())>24 && app.getBondPaymentStatus()==false) {
+						app.rejectApp();
+						System.out.println("Application: "+ app.getApplicationID() + " has been rejected due to failing to pay bond within 24 hours");
+					}
+				}
+			}
+		}
+	}
+	}
 }

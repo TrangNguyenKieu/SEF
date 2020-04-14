@@ -94,4 +94,8 @@ public class Application {
 	public String getPropertyID() {
 		return this.propertyID;
 	}
+	
+	public boolean getBondPaymentStatus() {
+		return bondPaid;
+	}
 }

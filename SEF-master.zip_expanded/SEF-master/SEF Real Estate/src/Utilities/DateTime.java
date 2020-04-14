@@ -10,7 +10,7 @@ public class DateTime {
 	}
 
 	public DateTime(long a) {
-		time=a;
+		time=a+advance;
 	}
 	public long getTime() {
 		return time;
