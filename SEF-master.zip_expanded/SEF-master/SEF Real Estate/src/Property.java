@@ -70,6 +70,10 @@ public abstract class Property {
  public void setStatusToLet() {
 	 this.status=PropertyStatus.Let;
  }
+ 
+ public void setStatusToInprocess() {
+	 this.status=PropertyStatus.InProcess;
+ }
  public void setEmployee(Employee emp) {
         this.employee=emp;
  }

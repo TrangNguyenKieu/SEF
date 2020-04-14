@@ -520,11 +520,22 @@ public class RealEstate {
 
 			switch (choice) {
 			case 1:
-
+				//accept application
 				currentApp.acceptApp();
 				ApplicationStatus currentappStatus=currentApp.getAppStatus();
 				System.out.println("Current Application status is:"+currentappStatus);
 				ArrayList<Application> allApps=currentRentProp.getAllApplications();
+				
+				//set property status to in process
+				for (Property prop: allProperties) {
+					if (prop instanceof RentalProperty) {
+						if (((RentalProperty) prop).getAllApplications().contains(currentApp)) {
+							prop.setStatusToInprocess();
+						}
+					}
+				}
+				
+				//reject all other applications of the same property
 				for (int i = 0; i < allApps.size(); i++) {
 					if(appID.compareTo(allApps.get(i).getApplicationID())!=0) {
 						allApps.get(i).rejectApp();
@@ -730,7 +741,7 @@ public void advanceTime() {
 		DateTime previousDate=currentDate;
 		time=currentDate.getTime();
 		System.out.println("Previous date:" + previousDate);
-		currentDate.setAdvance(0, hours,mins,sec);
+		DateTime.setAdvance(0, hours,mins,sec);
 		
 		currentDate=new DateTime(time);
 		
@@ -766,6 +777,11 @@ public void advanceTime() {
 					if (DateTime.diffHours(currentDate, app.getAcceptedDate())>24 && app.getBondPaymentStatus()==false) {
 						app.rejectApp();
 						System.out.println("Application: "+ app.getApplicationID() + " has been rejected due to failing to pay bond within 24 hours");
+						
+						//set property status back to available
+						prop.setStatusToAvailable();
+						
+						
 					}
 				}
 			}
