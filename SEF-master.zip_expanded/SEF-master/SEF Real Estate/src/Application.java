@@ -27,7 +27,7 @@ public class Application {
 		this.weeklyRent = rent;
 		this.contractDuration = duration;
 		appStatus = ApplicationStatus.Pending;
-		submittedDate = new DateTime();
+		submittedDate = new DateTime(RealEstate.time);
 		bondPaid=false;
 	}
 	// general methods
@@ -82,7 +82,7 @@ public class Application {
 
 	public void acceptApp() {
 		this.appStatus = ApplicationStatus.Accepted;
-		this.acceptedDate = new DateTime();
+		this.acceptedDate = new DateTime(RealEstate.time);
 	}
 	public ApplicationStatus getAppStatus() {
 		return this.appStatus;

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import SystemExceptions.*;
 import Utilities.ApplicationStatus;
@@ -9,6 +10,8 @@ public class RealEstate {
 	User currentUser;
 	Application currentApp;
 	RentalProperty 	currentRentProp;
+	
+	static long time;
 	
 	private int choice;
 	private Scanner scan = new Scanner(System.in);
@@ -26,7 +29,8 @@ public class RealEstate {
 	ArrayList<Property> allProperties=new ArrayList<Property>();
 	
 	public RealEstate() {
-		currentDate=new DateTime();
+		time= System.currentTimeMillis();
+		currentDate=new DateTime(time);
 	}
 	
 	public void login() {
@@ -120,6 +124,8 @@ public class RealEstate {
 		while (!logOut) {
 
 			System.out.println("*******Landlord Menu******");
+			System.out.printf("0. Search property");
+			System.out.println();
 			System.out.printf("1. Display all properties");
 			System.out.println();
 			System.out.printf("2. Display my properties");
@@ -136,6 +142,9 @@ public class RealEstate {
 			enterChoice();
 
 			switch (choice) {
+			case 0:
+				searchProperty();
+				break;
 			case 1:
 				displayAllProperties();
 				break;
@@ -168,6 +177,8 @@ public class RealEstate {
 		while (!logOut) {
 
 			System.out.println("*******Tenant Menu******");
+			System.out.printf("0. Search property");
+			System.out.println();
 			System.out.printf("1. Display all properties");
 			System.out.println();
 			System.out.printf("2. Apply for a property");
@@ -184,6 +195,9 @@ public class RealEstate {
 			enterChoice();
 
 			switch (choice) {
+			case 0:
+				searchProperty();
+				break;
 			case 1:
 				displayAllProperties();
 				break;
@@ -310,6 +324,15 @@ public class RealEstate {
 	}
 	
 	//tenant methods
+	public void searchProperty() {
+		System.out.println("*******Search Properties******");
+		String title= "Enter a surbub";
+		String surb= addTextInfo(title);
+		if (!searchSurbub(surb)) {
+			System.out.println("No property found");
+		}
+	}
+	
 	public void displayAllProperties() {
 		System.out.println("*******All Properties******");
 		for (int i = 0; i < allProperties.size(); i++) {
@@ -478,11 +501,15 @@ public class RealEstate {
 	
 	public void respondtoApplication() {
 		try {
-			System.out.println("Accept or reject Application");
+			System.out.println("Accept or reject Application or  press Q to quit");
 			quitToMainMenu=false;
 			while(!quitToMainMenu) {
 				String title="Add Application ID:";
 				appID=addApplicationID(title);
+				if (appID.compareTo("q")==0 || appID.compareTo("q")==0) {
+					quitToMainMenu=true;
+					break;
+				}
 				if(quitToMainMenu) break;
 				
 				if(currentApp.getAppStatus()==ApplicationStatus.Rejected) {
@@ -575,6 +602,23 @@ public class RealEstate {
 	}
 	
 	//general methods
+public boolean searchSurbub(String id) {
+	try {
+		for(Property prop: allProperties) {
+			
+			if (prop.getSurbub().compareTo(id)==0) {
+				System.out.println(prop.getPropertyDetails());
+				return true;
+			} 
+		}
+		return false;
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println("Cannot search surbub");
+		return false;
+	}
+}
+	
 public String addTextInfo( String title) {
 	boolean infoOk = false;
 	String info=null;
@@ -729,7 +773,7 @@ public boolean ApplicationIdExits(String ID) {
 
 
 public void advanceTime() {
-	long time;
+
 	try {
 		System.out.println("Enter number of hours to advance");
 		int hours = Integer.parseInt(scan.nextLine());
@@ -768,13 +812,13 @@ public void advanceTime() {
 				
 				//application must be responded within 3 days after submitted date
 				if (app.getAppStatus()==ApplicationStatus.Pending) {
-					if (DateTime.diffHours(currentDate, app.getSummittedDate())>72) {
+					if (DateTime.diffHours(currentDate, app.getSummittedDate())>71) {
 						app.rejectApp();
 						System.out.println("Application: "+ app.getApplicationID() + " has been rejected due to non-response from landlord for more than 3 days");
 					}
 				//bond payment must be made within 24 hours after accepted date
 				} else if (app.getAppStatus()==ApplicationStatus.Accepted) {
-					if (DateTime.diffHours(currentDate, app.getAcceptedDate())>24 && app.getBondPaymentStatus()==false) {
+					if (DateTime.diffHours(currentDate, app.getAcceptedDate())>23 && app.getBondPaymentStatus()==false) {
 						app.rejectApp();
 						System.out.println("Application: "+ app.getApplicationID() + " has been rejected due to failing to pay bond within 24 hours");
 						
