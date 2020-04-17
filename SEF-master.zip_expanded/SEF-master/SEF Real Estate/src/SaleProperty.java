@@ -9,7 +9,7 @@ public abstract class SaleProperty extends Property {
 	
 	public boolean assignEmployee(Employee emp) {
 		if (super.getStatus()==PropertyStatus.Pending) {
-			if(emp instanceof PropertyManager) {
+			if(emp instanceof SaleConsultant) {
 				
 				super.setEmployee(emp);
 				super.setStatusToAvailable();
@@ -17,7 +17,7 @@ public abstract class SaleProperty extends Property {
 						
 				return true;
 			} else {
-				System.out.println("Cannot assign someone who is not a property manager to a rental property");
+				System.out.println("Cannot assign someone who is not a sale consultant to a sale property");
 				return false;
 			}
 			
