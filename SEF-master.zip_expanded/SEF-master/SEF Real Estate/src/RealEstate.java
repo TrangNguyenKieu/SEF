@@ -5,8 +5,8 @@ import SystemExceptions.*;
 import Utilities.ApplicationStatus;
 import Utilities.DateTime;
 import Utilities.PropertyStatus;
+import java.util.*;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat; 
 
 public class RealEstate {
@@ -476,7 +476,7 @@ public class RealEstate {
 	public void createAuction() {
 		quitToMainMenu=false;
 		while(!quitToMainMenu) {
-			String title="Add Property ID:";
+			String title="Add Property ID or Q to quit:";
 			String propID=addPropertyID(title);
 			if(quitToMainMenu) break;
 			Property currentProp= allProperties.get(currentPropertyIndex);
@@ -487,16 +487,18 @@ public class RealEstate {
 					title="Add minimum reserve:";
 					double reserve= addMonetaryInfo(title);
 					
-					Auction auction = new Auction(currentProp.getPropertyID(), aucDate, reserve);
+					Auction auction = new Auction(propID, aucDate, reserve);
 					if(((SalebyAuction) currentProp).handleAuction(auction)) {
 						System.out.println("Succesfully added new auction to property:" + currentProp.getPropertyID());
+						quitToMainMenu=true;
+						break;
 					} else System.out.println("Cannot add new auction to property");
 				} else {
 					System.out.println("Cannot create new auction as there's currently opening/wating auctions");
 				}
 				
 				
-			}
+			} else System.out.println("This is not a sale by auction property");
 	}
 	}
 	
