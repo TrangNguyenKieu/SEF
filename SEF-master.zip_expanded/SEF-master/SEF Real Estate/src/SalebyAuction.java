@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import Utilities.AuctionStatus;
+
 public class SalebyAuction extends SaleProperty {
 	private static int count;
 	private ArrayList<Auction> allAuctions;
@@ -11,5 +13,27 @@ public class SalebyAuction extends SaleProperty {
 		allAuctions= new ArrayList<Auction>();
 	}
 	
+public ArrayList<Auction> getAllAuctions(){
+	return allAuctions;
+}
 
+//can only create new auction if there's no currently opening or waiting auction
+public boolean auctionHistoryValid() {
+	if(allAuctions.size()>0) {
+		for(Auction auc: allAuctions) {
+			if (auc.getAuctionStatus()==AuctionStatus.OPENING
+					|| auc.getAuctionStatus()==AuctionStatus.WAITING) return false;
+		}
+		return true;
+	} else return true;
+}
+
+public boolean handleAuction(Auction auc) {
+	if(super.getPropertyID().compareTo(auc.getPropID())==0) {
+		allAuctions.add(auc);
+		return true;
+	} else return false;
+}
+
+	
 }

@@ -5,6 +5,10 @@ import SystemExceptions.*;
 import Utilities.ApplicationStatus;
 import Utilities.DateTime;
 import Utilities.PropertyStatus;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat; 
+
 public class RealEstate {
 	
 	User currentUser;
@@ -115,7 +119,7 @@ public class RealEstate {
 			}else if (currentUser instanceof Vendor) {
 				vendorMenu();
 			}else if (currentUser instanceof Buyer) {
-				System.out.println("Run menu for Buyer");
+				buyerMenu();
 			}else if (currentUser instanceof BranchAdmin) {
 				System.out.println("Run menu for Branch Admin");
 			}else System.out.println("No such user");
@@ -351,7 +355,7 @@ public class RealEstate {
 				addSaleProperty();
 				break;
 			case 4:
-				System.out.println("<<tobe updated>>");
+				createAuction();
 				break;
 			case 5:
 				System.out.println("<<tobe updated>>");
@@ -376,6 +380,65 @@ public class RealEstate {
 		}
 	
 	}
+
+	public void buyerMenu() {
+		logOut = false;
+		while (!logOut) {
+
+			System.out.println("\n*******Buyer Menu******");
+			System.out.printf("1.Display all properties");
+			System.out.println();
+			System.out.printf("2.Display my offers");
+			System.out.println();
+			System.out.printf("3.Display my bids");
+			System.out.println();
+			System.out.printf("4.Make new offer");
+			System.out.println();
+			System.out.printf("5.Make new bid");
+			System.out.println();
+			System.out.printf("6.Make deposit");
+			System.out.println();
+			System.out.printf("7.Make final payment");
+			System.out.println();
+			System.out.printf("8.Log Out");
+			System.out.println();
+
+			enterChoice();
+
+			switch (choice) {
+			case 1:
+				displayAllProperties();
+				break;
+			case 2:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 3:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 4:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 5:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 6:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 7:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 8:
+				logOut();
+				break;
+	
+			default:
+				System.out.println("No such operation");
+				break;
+			}
+		}
+	}
+	
+	
 	
 	public void enterChoice() {
 		boolean valid = false;
@@ -410,6 +473,92 @@ public class RealEstate {
 	
 	
 	//vendor methods
+	public void createAuction() {
+		quitToMainMenu=false;
+		while(!quitToMainMenu) {
+			String title="Add Property ID:";
+			String propID=addPropertyID(title);
+			if(quitToMainMenu) break;
+			Property currentProp= allProperties.get(currentPropertyIndex);
+			if (currentProp instanceof SalebyAuction) {
+				
+				if(((SalebyAuction) currentProp).auctionHistoryValid()) {
+					DateTime aucDate=addDate();
+					title="Add minimum reserve:";
+					double reserve= addMonetaryInfo(title);
+					
+					Auction auction = new Auction(currentProp.getPropertyID(), aucDate, reserve);
+					if(((SalebyAuction) currentProp).handleAuction(auction)) {
+						System.out.println("Succesfully added new auction to property:" + currentProp.getPropertyID());
+					} else System.out.println("Cannot add new auction to property");
+				} else {
+					System.out.println("Cannot create new auction as there's currently opening/wating auctions");
+				}
+				
+				
+			}
+	}
+	}
+	
+	public DateTime addDate() {
+		boolean infoOk = false;
+		DateTime aucDate=new DateTime();
+		while (!infoOk) {
+			try {
+				System.out.print("Date (dd/mm/yyyy):");
+				String date = scan.nextLine();
+				
+				if(date.length()==0) {
+					throw new FormatException("You must enter a text value");
+				}
+				
+				if (date.trim().length()==0) {
+					throw new FormatException("The field must not be blank");
+				}
+				
+				if(!checkDateFormat(date))  {
+					throw new FormatException("Date must be in correct format: dd/mm/yyyy");
+				}
+				
+				SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy"); 
+				Date d= (Date) formatter1.parse(date);
+				long time = d.getTime();
+				long c_time=System.currentTimeMillis();
+				
+				if(time<=c_time) {
+					throw new DateException("Auction date cannot be prior to current date");
+				} else {
+					aucDate= new DateTime(time,0);
+					infoOk = true;
+					return aucDate;
+				}
+	
+				
+			} catch (FormatException fe) {
+				System.out.println(fe.getReason());
+			}catch(DateException e) {
+				System.out.println(e.getReason());
+			}
+			catch (Exception e) {
+				System.out.println("Error. Re-enter date");
+				e.printStackTrace();
+			}
+		}
+		return aucDate;
+	}
+	
+	public static boolean checkDateFormat(String str) {
+		if (str.matches("\\d{2}+/\\d{2}+/\\d{4}")) {
+//			System.out.println("true");
+			return true;
+			
+		}
+		else {
+//			System.out.println("false");
+			return false;
+		}
+	}
+	
 	public void addSaleProperty() {
 		quitToMainMenu = false;
 		while (!quitToMainMenu) {
@@ -546,6 +695,7 @@ public class RealEstate {
 
 		String currentUserID=currentUser.getUserID();
 		for (int i = 0; i < allProperties.size(); i++) {
+			if (allProperties.get(i) instanceof RentalProperty) {
 			ArrayList<Application> allApps=((RentalProperty)allProperties.get(i)).getAllApplications();
 			
 			for (int j = 0; j < allApps.size(); j++) {
@@ -553,6 +703,7 @@ public class RealEstate {
 				if(currentUserID.compareTo(tenantID)==0) {
 					System.out.println(allApps.get(j).getApplicationdetails());
 				}
+			}
 			}
 		}
 		
@@ -641,6 +792,7 @@ public class RealEstate {
 		
 		for (int i = 0; i < allProperties.size(); i++) {
 			if(allProperties.get(i).getCreatorID().compareTo(currentSessionID)==0) {
+				
 				ArrayList<Application> allApps= ((RentalProperty)allProperties.get(i)).getAllApplications();
 				for (int j = 0; j < allApps.size(); j++) {
 					System.out.println(allApps.get(j).getApplicationdetails());
