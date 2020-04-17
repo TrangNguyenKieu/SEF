@@ -77,6 +77,9 @@ public abstract class Property {
  public void setEmployee(Employee emp) {
         this.employee=emp;
  }
+public Employee getEmployee() {
+	return employee;
+}
  
  
 }
