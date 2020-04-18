@@ -21,7 +21,7 @@ public class StartUp {
 		BranchAdmin bradmin= new BranchAdmin("Branch Admin",true);
 		
 		RentalProperty prop01= new RentalProperty(landlord.getUserID(), "120 Abbey road", "This house is not for sale", "Corney Island", 4, 2, 2, "house", 180, "12 months or more");
-		prop01.setStatusToAvailable();//for testing
+//		prop01.setStatusToAvailable();//for testing
 		SalebyAuction prop02= new SalebyAuction(vendor.getUserID(), "130 Rennie", "House for sale", "Melbourne", 3, 2, 1, "house");
 		prop02.setStatusToAvailable();
 

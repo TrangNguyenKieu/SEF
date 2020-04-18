@@ -204,7 +204,7 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("3. Display my applications");
 			System.out.println();
-			System.out.printf("4. Make first payment");
+			System.out.printf("4. Make bond payment");
 			System.out.println();
 			System.out.printf("5. Make rental payment");
 			System.out.println();
