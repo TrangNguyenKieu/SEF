@@ -245,6 +245,8 @@ public class RealEstate {
 	
 	public void branchManagerMenu() {
 		logOut = false;
+		BranchManager caller = (BranchManager) currentUser;
+		Property property=null;
 		while (!logOut) {
 
 			System.out.println("\n*******Branch Manager Menu******");
@@ -264,15 +266,31 @@ public class RealEstate {
 				displayAllProperties();
 				break;
 			case 2:
-				System.out.println("<<tobe updated>>");
+				try {
+					System.out.println("Enter the PropertyId");
+					String id = scan.nextLine();
+					
+					property=caller.inspect(id, allProperties);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case 3:
-				System.out.println("<<tobe updated>>");
+				try {
+					
+					System.out.println("Enter the employeeId");
+					String employeeId=scan.nextLine();
+					caller.assign(employeeId,allUsers,property);
+					
+				}catch(Exception e)
+				{
+					System.out.println(e.getMessage());
+				}
 				break;
 			case 4:
 				logOut();
 				break;
-	
+
 			default:
 				System.out.println("No such operation");
 				break;
