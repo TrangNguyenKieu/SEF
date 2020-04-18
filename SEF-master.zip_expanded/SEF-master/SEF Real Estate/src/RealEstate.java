@@ -5,6 +5,10 @@ import SystemExceptions.*;
 import Utilities.ApplicationStatus;
 import Utilities.DateTime;
 import Utilities.PropertyStatus;
+import java.util.*;
+
+import java.text.SimpleDateFormat; 
+
 public class RealEstate {
 	
 	User currentUser;
@@ -32,56 +36,14 @@ public class RealEstate {
 		time= System.currentTimeMillis();
 		currentDate=new DateTime(time);
 	}
-	
-	public void login() {
-		boolean infoOk=false;
-		while(!infoOk) {
-			System.out.println("*******Login Process*******");
 
-			//require user to enter username and password
-			//make sure username exists and username matches password
-			//get the user ID
-			//then search for user ID in allCustomers array and return the current index
-	
-
-			//demo login
-			System.out.println("Enter a number from 0-3");
-			System.out.println("0: login as landlord");
-			System.out.println("1: login as tenant");
-			System.out.println("2: login as branch manager");
-			System.out.println("3: login as property manager");
-			
-			int demoIndex=Integer.parseInt(scan.nextLine()); 
-			
-			currentUserIndex=demoIndex; //after searching in allCustomer array this variable will store the index of current user in the array
-			currentUser=allUsers.get(currentUserIndex); //currently hard-coded in StartUp.java
-			
-			if(currentUser instanceof Landlord) {
-				landLordMenu(); //run menu for landlord
-			} else if (currentUser instanceof Tenant) {
-				tenantMenu(); //run menu for tenant
-			} else if (currentUser instanceof BranchManager) {
-				branchManagerMenu(); //run menu for manager
-			} else if (currentUser instanceof PropertyManager) {
-				propertyManagerMenu(); //run manu for property manager
-			}
-			infoOk=true;
-		}
-		
-	}
-	public void register() {
-		System.out.println("Registration process..."+ "\n");
-		//require user to specify username and password and customer type
-		//assign an unique ID to each user
-		//add user to allUsers array
-	}
 	
 	
 	public void landingPageMenu() {
 		quit = false;
 		while (!quit) {
 
-			System.out.println("*******Real Estate System******");
+			System.out.println("\n*******Real Estate System******");
 			System.out.printf("1. Log in");
 			System.out.println();
 			System.out.printf("2. Register");
@@ -117,20 +79,77 @@ public class RealEstate {
 		}
 	}
 	
+		
 	
+	
+	public void login() {
+		boolean infoOk=false;
+		while(!infoOk) {
+			System.out.println("*******Login Process*******");
+
+			//require user to enter username and password
+			//make sure username exists and username matches password
+			//get the user ID
+			//then search for user ID in allCustomers array and return the current index
+	
+
+			//demo login
+			System.out.println("Enter a number from 0-3");
+			System.out.println("0: login as landlord");
+			System.out.println("1: login as tenant");
+			System.out.println("2: login as branch manager");
+			System.out.println("3: login as property manager");
+			System.out.println("4: login as vendor");
+			System.out.println("5: login as buyer");
+			System.out.println("6: login as branch admin");
+			
+			int demoIndex=Integer.parseInt(scan.nextLine()); 
+			
+			currentUserIndex=demoIndex; //after searching in allCustomer array this variable will store the index of current user in the array
+			currentUser=allUsers.get(currentUserIndex); //currently hard-coded in StartUp.java
+			
+			if(currentUser instanceof Landlord) {
+				landLordMenu(); //run menu for landlord
+			} else if (currentUser instanceof Tenant) {
+				tenantMenu(); //run menu for tenant
+			} else if (currentUser instanceof BranchManager) {
+				branchManagerMenu(); //run menu for manager
+			} else if (currentUser instanceof PropertyManager) {
+				propertyManagerMenu(); //run manu for property manager
+			}else if (currentUser instanceof Vendor) {
+				vendorMenu();
+			}else if (currentUser instanceof Buyer) {
+				buyerMenu();
+			}else if (currentUser instanceof BranchAdmin) {
+				System.out.println("Run menu for Branch Admin");
+			}else System.out.println("No such user");
+			infoOk=true;
+		}
+			
+	}
+	
+	
+	public void register() {
+		System.out.println("Registration process..."+ "\n");
+		//require user to specify username and password and customer type
+		//assign an unique ID to each user
+		//add user to allUsers array
+	}
+	
+
 	
 	public void landLordMenu() {
 		logOut = false;
 		while (!logOut) {
 
-			System.out.println("*******Landlord Menu******");
+			System.out.println("\n*******Landlord Menu******");
 			System.out.printf("0. Search property");
 			System.out.println();
 			System.out.printf("1. Display all properties");
 			System.out.println();
 			System.out.printf("2. Display my properties");
 			System.out.println();
-			System.out.printf("3. Add property");
+			System.out.printf("3. Add Rental property");
 			System.out.println();
 			System.out.printf("4. Display applications");
 			System.out.println();
@@ -176,7 +195,7 @@ public class RealEstate {
 		logOut = false;
 		while (!logOut) {
 
-			System.out.println("*******Tenant Menu******");
+			System.out.println("\n*******Tenant Menu******");
 			System.out.printf("0. Search property");
 			System.out.println();
 			System.out.printf("1. Display all properties");
@@ -229,7 +248,8 @@ public class RealEstate {
 		BranchManager caller = (BranchManager) currentUser;
 		Property property=null;
 		while (!logOut) {
-			System.out.println("*******Branch Manager Menu******");
+
+			System.out.println("\n*******Branch Manager Menu******");
 			System.out.printf("1. Display all properties");
 			System.out.println();
 			System.out.printf("2.Inspect property document");
@@ -282,7 +302,7 @@ public class RealEstate {
 		logOut = false;
 		while (!logOut) {
 
-			System.out.println("*******Property Manager Menu******");
+			System.out.println("\n*******Property Manager Menu******");
 			System.out.printf("1. Display all properties");
 			System.out.println();
 			System.out.printf("2.Schedule inspection");
@@ -305,6 +325,127 @@ public class RealEstate {
 				System.out.println("<<tobe updated>>");
 				break;
 			case 4:
+				logOut();
+				break;
+	
+			default:
+				System.out.println("No such operation");
+				break;
+			}
+		}
+	}
+	
+	public void vendorMenu() {
+		logOut = false;
+		while (!logOut) {
+
+			System.out.println("\n*******Vendor Menu******");
+			System.out.printf("1. Display all properties");
+			System.out.println();
+			System.out.printf("2.Display my properties");
+			System.out.println();
+			System.out.printf("3.Add sale property");
+			System.out.println();
+			System.out.printf("4.Create auction");
+			System.out.println();
+			
+			System.out.printf("5.Display all offers");
+			System.out.println();
+			System.out.printf("6.Respond to offer");
+			System.out.println();
+			System.out.printf("7.Display all auctions");
+			System.out.println();
+			System.out.printf("8.Display all bids");
+			System.out.println();
+			System.out.printf("9. Log Out");
+			System.out.println();
+
+			enterChoice();
+
+			switch (choice) {
+			case 1:
+				displayAllProperties();
+				break;
+			case 2:
+				displayMyProperties();
+				break;
+			case 3:
+				addSaleProperty();
+				break;
+			case 4:
+				createAuction();
+				break;
+			case 5:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 6:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 7:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 8:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 9:
+				logOut();
+				break;
+	
+			default:
+				System.out.println("No such operation");
+				break;
+			}
+		}
+	
+	}
+
+	public void buyerMenu() {
+		logOut = false;
+		while (!logOut) {
+
+			System.out.println("\n*******Buyer Menu******");
+			System.out.printf("1.Display all properties");
+			System.out.println();
+			System.out.printf("2.Display my offers");
+			System.out.println();
+			System.out.printf("3.Display my bids");
+			System.out.println();
+			System.out.printf("4.Make new offer");
+			System.out.println();
+			System.out.printf("5.Make new bid");
+			System.out.println();
+			System.out.printf("6.Make deposit");
+			System.out.println();
+			System.out.printf("7.Make final payment");
+			System.out.println();
+			System.out.printf("8.Log Out");
+			System.out.println();
+
+			enterChoice();
+
+			switch (choice) {
+			case 1:
+				displayAllProperties();
+				break;
+			case 2:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 3:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 4:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 5:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 6:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 7:
+				System.out.println("<<tobe updated>>");
+				break;
+			case 8:
 				logOut();
 				break;
 	
@@ -340,22 +481,184 @@ public class RealEstate {
 		logOut=true;
 	}
 	
-	//tenant methods
-	public void searchProperty() {
-		System.out.println("*******Search Properties******");
-		String title= "Enter a surbub";
-		String surb= addTextInfo(title);
-		if (!searchSurbub(surb)) {
-			System.out.println("No property found");
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//vendor methods
+	public void createAuction() {
+		quitToMainMenu=false;
+		while(!quitToMainMenu) {
+			String title="Add Property ID or Q to quit:";
+			String propID=addPropertyID(title);
+			if(quitToMainMenu) break;
+			Property currentProp= allProperties.get(currentPropertyIndex);
+			if (currentProp instanceof SalebyAuction) {
+				
+				if(((SalebyAuction) currentProp).auctionHistoryValid()) {
+					DateTime aucDate=addDate();
+					title="Add minimum reserve:";
+					double reserve= addMonetaryInfo(title);
+					
+					Auction auction = new Auction(propID, aucDate, reserve);
+					if(((SalebyAuction) currentProp).handleAuction(auction)) {
+						System.out.println("Succesfully added new auction to property:" + currentProp.getPropertyID());
+						quitToMainMenu=true;
+						break;
+					} else System.out.println("Cannot add new auction to property");
+				} else {
+					System.out.println("Cannot create new auction as there's currently opening/wating auctions");
+				}
+				
+				
+			} else System.out.println("This is not a sale by auction property");
+	}
+	}
+	
+	public DateTime addDate() {
+		boolean infoOk = false;
+		DateTime aucDate=new DateTime();
+		while (!infoOk) {
+			try {
+				System.out.print("Date (dd/mm/yyyy):");
+				String date = scan.nextLine();
+				
+				if(date.length()==0) {
+					throw new FormatException("You must enter a text value");
+				}
+				
+				if (date.trim().length()==0) {
+					throw new FormatException("The field must not be blank");
+				}
+				
+				if(!checkDateFormat(date))  {
+					throw new FormatException("Date must be in correct format: dd/mm/yyyy");
+				}
+				
+				SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy"); 
+				Date d= (Date) formatter1.parse(date);
+				long time = d.getTime();
+				long c_time=System.currentTimeMillis();
+				
+				if(time<=c_time) {
+					throw new DateException("Auction date cannot be prior to current date");
+				} else {
+					aucDate= new DateTime(time,0);
+					infoOk = true;
+					return aucDate;
+				}
+	
+				
+			} catch (FormatException fe) {
+				System.out.println(fe.getReason());
+			}catch(DateException e) {
+				System.out.println(e.getReason());
+			}
+			catch (Exception e) {
+				System.out.println("Error. Re-enter date");
+				e.printStackTrace();
+			}
+		}
+		return aucDate;
+	}
+	
+	public static boolean checkDateFormat(String str) {
+		if (str.matches("\\d{2}+/\\d{2}+/\\d{4}")) {
+//			System.out.println("true");
+			return true;
+			
+		}
+		else {
+//			System.out.println("false");
+			return false;
 		}
 	}
 	
-	public void displayAllProperties() {
-		System.out.println("*******All Properties******");
-		for (int i = 0; i < allProperties.size(); i++) {
-			System.out.println(allProperties.get(i).getPropertyDetails());
+	public void addSaleProperty() {
+		quitToMainMenu = false;
+		while (!quitToMainMenu) {
+
+			System.out.println("Select 1 option [1-3]");
+			System.out.printf("1. Add Property for Sale by Negotiation");
+			System.out.println();
+			System.out.printf("2. Add Property for Sale by Auction");
+			System.out.println();
+			System.out.printf("3. Back to Main Menu");
+			System.out.println();
+
+			enterChoice();
+
+			switch (choice) {
+			case 1:
+				addSalebyNego();
+				break;
+			case 2:
+				addSalebyAuct();
+				break;
+			case 3:
+				quitToMainMenu=true;
+				break;
+			default:
+			System.out.println("No such operation");
+				break;
+			}
 		}
 	}
+	
+	public void addSalebyNego() {
+		System.out.println("adding property for sale by negotiation");
+	}
+	
+	public void addSalebyAuct() {
+		boolean validProperty=false;
+		while(!validProperty) {
+			try {
+				System.out.println("Enter details of your property below:");
+				
+				String title= "Address:";
+				String address=addTextInfo(title);
+				
+				title="Description:";
+				String description=addTextInfo(title);
+				
+				title="Surbub:";
+				String surbub=addTextInfo(title);
+				
+				title="Number of Bedrooms: ";
+				int bed=addCapacity(title);
+				
+				title="Number of Bathrooms: ";
+				int bath=addCapacity( title);
+				
+				title="Number of car Spaces: ";
+				int cars=addCapacity( title);
+				
+				title="Property type (house/ unit/flat/townhouse/studio):";
+				String type=addTextInfo(title);
+				
+				
+				String currentSessionID=currentUser.getUserID();
+
+				SalebyAuction aucProp= new SalebyAuction(currentSessionID, address, description, surbub, bed, bath, cars, type);
+				
+				allProperties.add(aucProp);
+				
+				System.out.println("Successfully add new Property for sale by auction");
+				
+				validProperty=true;
+			} catch (Exception e) {
+				System.out.println("Cannot add new auction property");
+			}
+		}
+	}
+	
+	//tenant methods
+	
 	
 	public void applyForAProperty() {
 		try {
@@ -408,10 +711,11 @@ public class RealEstate {
 	}
 	
 	public void displayMyApplications() {
-		System.out.println("*******My Application******");
+		System.out.println("\n*******My Application******");
 
 		String currentUserID=currentUser.getUserID();
 		for (int i = 0; i < allProperties.size(); i++) {
+			if (allProperties.get(i) instanceof RentalProperty) {
 			ArrayList<Application> allApps=((RentalProperty)allProperties.get(i)).getAllApplications();
 			
 			for (int j = 0; j < allApps.size(); j++) {
@@ -419,6 +723,7 @@ public class RealEstate {
 				if(currentUserID.compareTo(tenantID)==0) {
 					System.out.println(allApps.get(j).getApplicationdetails());
 				}
+			}
 			}
 		}
 		
@@ -436,7 +741,7 @@ public class RealEstate {
 	
 	//landlord methods
 	public void displayMyProperties() {
-		System.out.println("*******My Properties******");
+		System.out.println("n*******My Properties******");
 		String currentSessionID=currentUser.getUserID();
 		
 		for (int i = 0; i < allProperties.size(); i++) {
@@ -498,7 +803,7 @@ public class RealEstate {
 	
 	
 	public void displayApplications() {
-		System.out.println("*******All Applications******");
+		System.out.println("\n*******All Applications******");
 		//loops through All properties array of the current Landlord then
 		//loops through All applications array in each property
 		//then print each application details
@@ -507,6 +812,7 @@ public class RealEstate {
 		
 		for (int i = 0; i < allProperties.size(); i++) {
 			if(allProperties.get(i).getCreatorID().compareTo(currentSessionID)==0) {
+				
 				ArrayList<Application> allApps= ((RentalProperty)allProperties.get(i)).getAllApplications();
 				for (int j = 0; j < allApps.size(); j++) {
 					System.out.println(allApps.get(j).getApplicationdetails());
@@ -619,6 +925,25 @@ public class RealEstate {
 	}
 	
 	//general methods
+	
+	
+	public void searchProperty() {
+		System.out.println("\n*******Search Properties******");
+		String title= "Enter a surbub";
+		String surb= addTextInfo(title);
+		if (!searchSurbub(surb)) {
+			System.out.println("No property found");
+		}
+	}
+	
+	public void displayAllProperties() {
+		System.out.println("\n*******All Properties******");
+		for (int i = 0; i < allProperties.size(); i++) {
+			System.out.println(allProperties.get(i).getPropertyDetails());
+		}
+	}
+	
+	
 public boolean searchSurbub(String id) {
 	try {
 		for(Property prop: allProperties) {

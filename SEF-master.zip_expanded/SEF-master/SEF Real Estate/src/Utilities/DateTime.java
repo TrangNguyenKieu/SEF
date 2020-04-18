@@ -11,6 +11,11 @@ public class DateTime {
 
 	public DateTime(long a) {
 		time=a+advance;
+//		advance=0;
+	}
+	
+	public DateTime(long a,int b) {
+		time=a;
 	}
 	public long getTime() {
 		return time;
