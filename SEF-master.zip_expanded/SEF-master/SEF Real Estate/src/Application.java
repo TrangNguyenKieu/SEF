@@ -60,6 +60,31 @@ public class Application {
 
 	}
 
+	
+	public void checkAppStatus(Property prop) {
+		// application must be responded within 3 days after submitted date
+		if (this.getAppStatus() == ApplicationStatus.Pending) {
+			if (DateTime.diffHours(RealEstate.currentDate, this.getSummittedDate()) > 71) {
+				this.rejectApp();
+				System.out.println("Application: " + this.getApplicationID()
+						+ " has been rejected due to non-response from landlord for more than 3 days");
+			}
+			// bond payment must be made within 24 hours after accepted date
+		} else if (this.getAppStatus() == ApplicationStatus.Accepted) {
+			if (DateTime.diffHours(RealEstate.currentDate, this.getAcceptedDate()) > 23
+					&& this.getBondPaymentStatus() == false) {
+				this.rejectApp();
+				System.out.println("Application: " + this.getApplicationID()
+						+ " has been rejected due to failing to pay bond within 24 hours");
+
+				// set property status back to available
+				prop.setStatusToAvailable();
+
+			}
+		}
+		
+		
+	}
 	// accessor/mutator
 	public Tenant getTenant() {
 		return this.tenant;

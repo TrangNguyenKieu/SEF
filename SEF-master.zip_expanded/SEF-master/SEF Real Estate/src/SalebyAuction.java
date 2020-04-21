@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import Utilities.AuctionStatus;
+import Utilities.DateTime;
 
 public class SalebyAuction extends SaleProperty {
 	private static int count;
@@ -34,6 +35,31 @@ public boolean handleAuction(Auction auc) {
 		return true;
 	} else return false;
 }
+
+
+public boolean createAuction() {
+	
+	boolean auctionOk=false;
+	if(auctionHistoryValid()) {
+		DateTime aucDate = RealEstate.addDate();
+		String title = "Add minimum reserve:";
+		double reserve = RealEstate.addMonetaryInfo(title);
+
+		Auction auction = new Auction(this.getPropertyID(), aucDate, reserve);
+		if(handleAuction(auction)) {
+			System.out.println("Succesfully added new auction to property:" + this.getPropertyID());
+			auctionOk=true;
+			return auctionOk;
+		} else
+			System.out.println("Cannot add new auction to property");
+			return auctionOk;
+		} else {
+			System.out.println("there's currently opening/wating auctions");
+			return auctionOk;
+		}
+		
+	}
+
 
 	
 }

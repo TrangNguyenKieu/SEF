@@ -7,38 +7,36 @@ import Utilities.DateTime;
 import Utilities.PropertyStatus;
 import java.util.*;
 
-import java.text.SimpleDateFormat; 
+import java.text.SimpleDateFormat;
 
 public class RealEstate {
-	
-	User currentUser;
-	Application currentApp;
-	RentalProperty 	currentRentProp;
-	
-	static long time;
-	
+
+	private static User currentUser;
+	private static Application currentApp;
+	private static RentalProperty currentRentProp;
+	private static ArrayList<User> allUsers;
+	private static ArrayList<Property> allProperties;
+
 	private int choice;
-	private Scanner scan = new Scanner(System.in);
+	private static Scanner scan = new Scanner(System.in);
 	private boolean quit; // quit the system
 	private boolean quitToMainMenu;
 	private boolean logOut;
-	private int currentUserIndex; //index of current session user in allUsers array
-	private int currentPropertyIndex; 
-	private int currentAppIndex;
+	private int currentUserIndex; // index of current session user in allUsers array
+	private int currentPropertyIndex;
 
-	DateTime currentDate;
-	String appID;
+	 static long time;
+	static DateTime currentDate;
+	private String appID;
 
-	ArrayList<User> allUsers= new ArrayList<User>();
-	ArrayList<Property> allProperties=new ArrayList<Property>();
-	
 	public RealEstate() {
-		time= System.currentTimeMillis();
-		currentDate=new DateTime(time);
+		time = System.currentTimeMillis();
+		currentDate = new DateTime(time);
+		allUsers = new ArrayList<User>();
+		allProperties = new ArrayList<Property>();
+
 	}
 
-	
-	
 	public void landingPageMenu() {
 		quit = false;
 		while (!quit) {
@@ -53,7 +51,6 @@ public class RealEstate {
 			System.out.printf("4. Quit");
 			System.out.println();
 
-
 			enterChoice();
 
 			switch (choice) {
@@ -63,11 +60,11 @@ public class RealEstate {
 			case 2:
 				register();
 				break;
-				
+
 			case 3:
 				advanceTime();
 				break;
-				
+
 			case 4:
 				quit();
 				break;
@@ -78,22 +75,18 @@ public class RealEstate {
 			}
 		}
 	}
-	
-		
-	
-	
+
 	public void login() {
-		boolean infoOk=false;
-		while(!infoOk) {
+		boolean infoOk = false;
+		while (!infoOk) {
 			System.out.println("*******Login Process*******");
 
-			//require user to enter username and password
-			//make sure username exists and username matches password
-			//get the user ID
-			//then search for user ID in allCustomers array and return the current index
-	
+			// require user to enter username and password
+			// make sure username exists and username matches password
+			// get the user ID
+			// then search for user ID in allCustomers array and return the current index
 
-			//demo login
+			// demo login
 			System.out.println("Enter a number from 0-3");
 			System.out.println("0: login as landlord");
 			System.out.println("1: login as tenant");
@@ -102,42 +95,41 @@ public class RealEstate {
 			System.out.println("4: login as vendor");
 			System.out.println("5: login as buyer");
 			System.out.println("6: login as branch admin");
-			
-			int demoIndex=Integer.parseInt(scan.nextLine()); 
-			
-			currentUserIndex=demoIndex; //after searching in allCustomer array this variable will store the index of current user in the array
-			currentUser=allUsers.get(currentUserIndex); //currently hard-coded in StartUp.java
-			
-			if(currentUser instanceof Landlord) {
-				landLordMenu(); //run menu for landlord
-			} else if (currentUser instanceof Tenant) {
-				tenantMenu(); //run menu for tenant
-			} else if (currentUser instanceof BranchManager) {
-				branchManagerMenu(); //run menu for manager
-			} else if (currentUser instanceof PropertyManager) {
-				propertyManagerMenu(); //run manu for property manager
-			}else if (currentUser instanceof Vendor) {
-				vendorMenu();
-			}else if (currentUser instanceof Buyer) {
-				buyerMenu();
-			}else if (currentUser instanceof BranchAdmin) {
-				System.out.println("Run menu for Branch Admin");
-			}else System.out.println("No such user");
-			infoOk=true;
-		}
-			
-	}
-	
-	
-	public void register() {
-		System.out.println("Registration process..."+ "\n");
-		//require user to specify username and password and customer type
-		//assign an unique ID to each user
-		//add user to allUsers array
-	}
-	
 
-	
+			int demoIndex = Integer.parseInt(scan.nextLine());
+
+			currentUserIndex = demoIndex; // after searching in allCustomer array this variable will store the index of
+											// current user in the array
+			currentUser = allUsers.get(currentUserIndex); // currently hard-coded in StartUp.java
+
+			if (currentUser instanceof Landlord) {
+				landLordMenu(); // run menu for landlord
+			} else if (currentUser instanceof Tenant) {
+				tenantMenu(); // run menu for tenant
+			} else if (currentUser instanceof BranchManager) {
+				branchManagerMenu(); // run menu for manager
+			} else if (currentUser instanceof PropertyManager) {
+				propertyManagerMenu(); // run manu for property manager
+			} else if (currentUser instanceof Vendor) {
+				vendorMenu();
+			} else if (currentUser instanceof Buyer) {
+				buyerMenu();
+			} else if (currentUser instanceof BranchAdmin) {
+				System.out.println("Run menu for Branch Admin");
+			} else
+				System.out.println("No such user");
+			infoOk = true;
+		}
+
+	}
+
+	public void register() {
+		System.out.println("Registration process..." + "\n");
+		// require user to specify username and password and customer type
+		// assign an unique ID to each user
+		// add user to allUsers array
+	}
+
 	public void landLordMenu() {
 		logOut = false;
 		while (!logOut) {
@@ -188,9 +180,9 @@ public class RealEstate {
 				break;
 			}
 		}
-		
+
 	}
-	
+
 	public void tenantMenu() {
 		logOut = false;
 		while (!logOut) {
@@ -240,13 +232,13 @@ public class RealEstate {
 				break;
 			}
 		}
-		
+
 	}
-	
+
 	public void branchManagerMenu() {
 		logOut = false;
 		BranchManager caller = (BranchManager) currentUser;
-		Property property=null;
+		Property property = null;
 		while (!logOut) {
 
 			System.out.println("\n*******Branch Manager Menu******");
@@ -269,21 +261,20 @@ public class RealEstate {
 				try {
 					System.out.println("Enter the PropertyId");
 					String id = scan.nextLine();
-					
-					property=caller.inspect(id, allProperties);
+
+					property = caller.inspect(id, allProperties);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 				break;
 			case 3:
 				try {
-					
+
 					System.out.println("Enter the employeeId");
-					String employeeId=scan.nextLine();
-					caller.assign(employeeId,allUsers,property);
-					
-				}catch(Exception e)
-				{
+					String employeeId = scan.nextLine();
+					caller.assign(employeeId, allUsers, property);
+
+				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -297,7 +288,7 @@ public class RealEstate {
 			}
 		}
 	}
-	
+
 	public void propertyManagerMenu() {
 		logOut = false;
 		while (!logOut) {
@@ -327,14 +318,14 @@ public class RealEstate {
 			case 4:
 				logOut();
 				break;
-	
+
 			default:
 				System.out.println("No such operation");
 				break;
 			}
 		}
 	}
-	
+
 	public void vendorMenu() {
 		logOut = false;
 		while (!logOut) {
@@ -348,7 +339,7 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("4.Create auction");
 			System.out.println();
-			
+
 			System.out.printf("5.Display all offers");
 			System.out.println();
 			System.out.printf("6.Respond to offer");
@@ -390,13 +381,13 @@ public class RealEstate {
 			case 9:
 				logOut();
 				break;
-	
+
 			default:
 				System.out.println("No such operation");
 				break;
 			}
 		}
-	
+
 	}
 
 	public void buyerMenu() {
@@ -448,16 +439,14 @@ public class RealEstate {
 			case 8:
 				logOut();
 				break;
-	
+
 			default:
 				System.out.println("No such operation");
 				break;
 			}
 		}
 	}
-	
-	
-	
+
 	public void enterChoice() {
 		boolean valid = false;
 		while (!valid) {
@@ -475,110 +464,90 @@ public class RealEstate {
 		System.out.println("Program stops here.");
 		quit = true;
 	}
-	
+
 	public void logOut() {
 		System.out.println("Logging you out");
-		logOut=true;
+		logOut = true;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//vendor methods
+
+	// vendor methods
 	public void createAuction() {
-		quitToMainMenu=false;
-		while(!quitToMainMenu) {
-			String title="Add Property ID or Q to quit:";
-			String propID=addPropertyID(title);
-			if(quitToMainMenu) break;
-			Property currentProp= allProperties.get(currentPropertyIndex);
+		quitToMainMenu = false;
+		while (!quitToMainMenu) {
+			String title = "Add Property ID or Q to quit:";
+			addPropertyID(title);
+			if (quitToMainMenu)
+				break;
+			Property currentProp = allProperties.get(currentPropertyIndex);
 			if (currentProp instanceof SalebyAuction) {
-				
-				if(((SalebyAuction) currentProp).auctionHistoryValid()) {
-					DateTime aucDate=addDate();
-					title="Add minimum reserve:";
-					double reserve= addMonetaryInfo(title);
-					
-					Auction auction = new Auction(propID, aucDate, reserve);
-					if(((SalebyAuction) currentProp).handleAuction(auction)) {
-						System.out.println("Succesfully added new auction to property:" + currentProp.getPropertyID());
-						quitToMainMenu=true;
-						break;
-					} else System.out.println("Cannot add new auction to property");
-				} else {
-					System.out.println("Cannot create new auction as there's currently opening/wating auctions");
-				}
-				
-				
-			} else System.out.println("This is not a sale by auction property");
+
+				if(((SalebyAuction) currentProp).createAuction()) {
+					quitToMainMenu=true;
+					break;
+				} else System.out.println("Cannot add new auction to property");
+
+
+			} else
+				System.out.println("This is not a sale by auction property");
+		}
 	}
-	}
-	
-	public DateTime addDate() {
+
+	public static DateTime addDate() {
 		boolean infoOk = false;
-		DateTime aucDate=new DateTime();
+		DateTime aucDate = new DateTime();
 		while (!infoOk) {
 			try {
 				System.out.print("Date (dd/mm/yyyy):");
 				String date = scan.nextLine();
-				
-				if(date.length()==0) {
+
+				if (date.length() == 0) {
 					throw new FormatException("You must enter a text value");
 				}
-				
-				if (date.trim().length()==0) {
+
+				if (date.trim().length() == 0) {
 					throw new FormatException("The field must not be blank");
 				}
-				
-				if(!checkDateFormat(date))  {
+
+				if (!checkDateFormat(date)) {
 					throw new FormatException("Date must be in correct format: dd/mm/yyyy");
 				}
-				
-				SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy"); 
-				Date d= (Date) formatter1.parse(date);
+
+				SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+				Date d = (Date) formatter1.parse(date);
 				long time = d.getTime();
-				long c_time=System.currentTimeMillis();
-				
-				if(time<=c_time) {
+				long c_time = System.currentTimeMillis();
+
+				if (time <= c_time) {
 					throw new DateException("Auction date cannot be prior to current date");
 				} else {
-					aucDate= new DateTime(time,0);
+					aucDate = new DateTime(time, 0);
 					infoOk = true;
 					return aucDate;
 				}
-	
-				
+
 			} catch (FormatException fe) {
 				System.out.println(fe.getReason());
-			}catch(DateException e) {
+			} catch (DateException e) {
 				System.out.println(e.getReason());
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				System.out.println("Error. Re-enter date");
 				e.printStackTrace();
 			}
 		}
 		return aucDate;
 	}
-	
+
 	public static boolean checkDateFormat(String str) {
 		if (str.matches("\\d{2}+/\\d{2}+/\\d{4}")) {
 //			System.out.println("true");
 			return true;
-			
-		}
-		else {
+
+		} else {
 //			System.out.println("false");
 			return false;
 		}
 	}
-	
+
 	public void addSaleProperty() {
 		quitToMainMenu = false;
 		while (!quitToMainMenu) {
@@ -601,249 +570,245 @@ public class RealEstate {
 				addSalebyAuct();
 				break;
 			case 3:
-				quitToMainMenu=true;
+				quitToMainMenu = true;
 				break;
 			default:
-			System.out.println("No such operation");
+				System.out.println("No such operation");
 				break;
 			}
 		}
 	}
-	
+
 	public void addSalebyNego() {
 		System.out.println("adding property for sale by negotiation");
 	}
-	
+
 	public void addSalebyAuct() {
-		boolean validProperty=false;
-		while(!validProperty) {
+		boolean validProperty = false;
+		while (!validProperty) {
 			try {
 				System.out.println("Enter details of your property below:");
-				
-				String title= "Address:";
-				String address=addTextInfo(title);
-				
-				title="Description:";
-				String description=addTextInfo(title);
-				
-				title="Surbub:";
-				String surbub=addTextInfo(title);
-				
-				title="Number of Bedrooms: ";
-				int bed=addCapacity(title);
-				
-				title="Number of Bathrooms: ";
-				int bath=addCapacity( title);
-				
-				title="Number of car Spaces: ";
-				int cars=addCapacity( title);
-				
-				title="Property type (house/ unit/flat/townhouse/studio):";
-				String type=addTextInfo(title);
-				
-				
-				String currentSessionID=currentUser.getUserID();
 
-				SalebyAuction aucProp= new SalebyAuction(currentSessionID, address, description, surbub, bed, bath, cars, type);
-				
+				String title = "Address:";
+				String address = addTextInfo(title);
+
+				title = "Description:";
+				String description = addTextInfo(title);
+
+				title = "Surbub:";
+				String surbub = addTextInfo(title);
+
+				title = "Number of Bedrooms: ";
+				int bed = addCapacity(title);
+
+				title = "Number of Bathrooms: ";
+				int bath = addCapacity(title);
+
+				title = "Number of car Spaces: ";
+				int cars = addCapacity(title);
+
+				title = "Property type (house/ unit/flat/townhouse/studio):";
+				String type = addTextInfo(title);
+
+				String currentSessionID = currentUser.getUserID();
+
+				SalebyAuction aucProp = new SalebyAuction(currentSessionID, address, description, surbub, bed, bath,
+						cars, type);
+
 				allProperties.add(aucProp);
-				
+
 				System.out.println("Successfully add new Property for sale by auction");
-				
-				validProperty=true;
+
+				validProperty = true;
 			} catch (Exception e) {
 				System.out.println("Cannot add new auction property");
 			}
 		}
 	}
-	
-	//tenant methods
-	
-	
+
+	// tenant methods
+
 	public void applyForAProperty() {
 		try {
-			quitToMainMenu=false;
-			while(!quitToMainMenu) {
-				String title="Add Property ID:";
-				String propID=addPropertyID(title);
-				if(quitToMainMenu) break;
-				Property currentProp= allProperties.get(currentPropertyIndex);
-				if( currentProp instanceof RentalProperty) {
-					
-					if (currentProp.getStatus()!=PropertyStatus.Available) {
+			quitToMainMenu = false;
+			while (!quitToMainMenu) {
+				String title = "Add Property ID:";
+				String propID = addPropertyID(title);
+				if (quitToMainMenu)
+					break;
+				Property currentProp = allProperties.get(currentPropertyIndex);
+				if (currentProp instanceof RentalProperty) {
+
+					if (currentProp.getStatus() != PropertyStatus.Available) {
 						throw new StatusException("This property is not available");
 					} else {
-						title="Monthly income:";
-						double income=addMonetaryInfo(title);
-					
-						title="Occupation: ";
-						String occu=addTextInfo(title);
-						
-						title="Proposed Weekly Rent: ";
-						double rent= addMonetaryInfo(title);
-						
-						title="Contract Duration: ";
-						String duration= addTextInfo(title);
-				
-						Application newApp= new Application(propID,(Tenant) currentUser, income, occu, rent, duration);
-						if (( (RentalProperty) currentProp).handleApplication(newApp)) {
-						
+						title = "Monthly income:";
+						double income = addMonetaryInfo(title);
+
+						title = "Occupation: ";
+						String occu = addTextInfo(title);
+
+						title = "Proposed Weekly Rent: ";
+						double rent = addMonetaryInfo(title);
+
+						title = "Contract Duration: ";
+						String duration = addTextInfo(title);
+
+						Application newApp = new Application(propID, (Tenant) currentUser, income, occu, rent,
+								duration);
+						if (((RentalProperty) currentProp).handleApplication(newApp)) {
+
 							System.out.println("Successfully apply for the property:" + currentProp.getPropertyID());
-							quitToMainMenu=true;
-					}
-					
+							quitToMainMenu = true;
+						}
+
 					}
 				} else {
 					throw new TypeException("This is property is not for rent");
 				}
-				
-				
+
 			}
 		} catch (TypeException e) {
 			System.out.println(e.getReason());
 		} catch (StatusException stt) {
 			System.out.println(stt.getReason());
-		}
-		catch( Exception e) {
+		} catch (Exception e) {
 			System.out.println("Cannot apply for this property");
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void displayMyApplications() {
 		System.out.println("\n*******My Application******");
 
-		String currentUserID=currentUser.getUserID();
+		String currentUserID = currentUser.getUserID();
 		for (int i = 0; i < allProperties.size(); i++) {
 			if (allProperties.get(i) instanceof RentalProperty) {
-			ArrayList<Application> allApps=((RentalProperty)allProperties.get(i)).getAllApplications();
-			
-			for (int j = 0; j < allApps.size(); j++) {
-				String tenantID=allApps.get(j).getTenant().getUserID();
-				if(currentUserID.compareTo(tenantID)==0) {
-					System.out.println(allApps.get(j).getApplicationdetails());
+				ArrayList<Application> allApps = ((RentalProperty) allProperties.get(i)).getAllApplications();
+
+				for (int j = 0; j < allApps.size(); j++) {
+					String tenantID = allApps.get(j).getTenant().getUserID();
+					if (currentUserID.compareTo(tenantID) == 0) {
+						System.out.println(allApps.get(j).getApplicationdetails());
+					}
 				}
 			}
-			}
 		}
-		
+
 	}
-	
+
 	public void makeBondPayment() {
 		System.out.println("Make bond and 1st month rent to secure your place");
-		
+
 	}
-	
+
 	public void makeRentalPayment() {
 		System.out.println("Paying rental fee each month");
 	}
-	
-	
-	//landlord methods
+
+	// landlord methods
 	public void displayMyProperties() {
 		System.out.println("n*******My Properties******");
-		String currentSessionID=currentUser.getUserID();
-		
+		String currentSessionID = currentUser.getUserID();
+
 		for (int i = 0; i < allProperties.size(); i++) {
-			if(allProperties.get(i).getCreatorID().compareTo(currentSessionID)==0) {
-			System.out.println(allProperties.get(i).getPropertyDetails());
+			if (allProperties.get(i).getCreatorID().compareTo(currentSessionID) == 0) {
+				System.out.println(allProperties.get(i).getPropertyDetails());
 			}
 		}
 	}
-	
-	
+
 	public void addRentalProperty() {
-		boolean validProperty=false;
-		while(!validProperty) {
+		boolean validProperty = false;
+		while (!validProperty) {
 			try {
 				System.out.println("Enter details of your property below:");
-				
-				String title= "Address:";
-				String address=addTextInfo(title);
-				
-				title="Description:";
-				String description=addTextInfo(title);
-				
-				title="Surbub:";
-				String surbub=addTextInfo(title);
-				
-				title="Number of Bedrooms: ";
-				int bed=addCapacity(title);
-				
-				title="Number of Bathrooms: ";
-				int bath=addCapacity( title);
-				
-				title="Number of car Spaces: ";
-				int cars=addCapacity( title);
-				
-				title="Property type (house/ unit/flat/townhouse/studio):";
-				String type=addTextInfo(title);
-				
-				title= "Weekly Rent:";
-				double weeklyRent=addMonetaryInfo( title);
-				
-				title= "Contract Duration: ";
-				String duration=addTextInfo( title);
-				
-				String currentSessionID=currentUser.getUserID();
-				System.out.println(address+surbub);
-				RentalProperty rentProp= new RentalProperty(currentSessionID, address, description, surbub, bed, bath, cars, type, weeklyRent, duration);
-				
+
+				String title = "Address:";
+				String address = addTextInfo(title);
+
+				title = "Description:";
+				String description = addTextInfo(title);
+
+				title = "Surbub:";
+				String surbub = addTextInfo(title);
+
+				title = "Number of Bedrooms: ";
+				int bed = addCapacity(title);
+
+				title = "Number of Bathrooms: ";
+				int bath = addCapacity(title);
+
+				title = "Number of car Spaces: ";
+				int cars = addCapacity(title);
+
+				title = "Property type (house/ unit/flat/townhouse/studio):";
+				String type = addTextInfo(title);
+
+				title = "Weekly Rent:";
+				double weeklyRent = addMonetaryInfo(title);
+
+				title = "Contract Duration: ";
+				String duration = addTextInfo(title);
+
+				String currentSessionID = currentUser.getUserID();
+				System.out.println(address + surbub);
+				RentalProperty rentProp = new RentalProperty(currentSessionID, address, description, surbub, bed, bath,
+						cars, type, weeklyRent, duration);
+
 				allProperties.add(rentProp);
-				
+
 				System.out.println("Successfully add new Rental Property");
-				
-				validProperty=true;
+
+				validProperty = true;
 			} catch (Exception e) {
 				System.out.println("Cannot add new rental property");
 			}
 		}
 	}
-	
-	
-	
+
 	public void displayApplications() {
 		System.out.println("\n*******All Applications******");
-		//loops through All properties array of the current Landlord then
-		//loops through All applications array in each property
-		//then print each application details
+		// loops through All properties array of the current Landlord then
+		// loops through All applications array in each property
+		// then print each application details
 
-		String currentSessionID=currentUser.getUserID();
-		
+		String currentSessionID = currentUser.getUserID();
+
 		for (int i = 0; i < allProperties.size(); i++) {
-			if(allProperties.get(i).getCreatorID().compareTo(currentSessionID)==0) {
-				
-				ArrayList<Application> allApps= ((RentalProperty)allProperties.get(i)).getAllApplications();
+			if (allProperties.get(i).getCreatorID().compareTo(currentSessionID) == 0) {
+
+				ArrayList<Application> allApps = ((RentalProperty) allProperties.get(i)).getAllApplications();
 				for (int j = 0; j < allApps.size(); j++) {
 					System.out.println(allApps.get(j).getApplicationdetails());
 				}
 			}
 		}
 	}
-	
-	
+
 	public void respondtoApplication() {
 		try {
 			System.out.println("Accept or reject Application or  press Q to quit");
-			quitToMainMenu=false;
-			while(!quitToMainMenu) {
-				String title="Add Application ID:";
-				appID=addApplicationID(title);
-				if (appID.compareTo("q")==0 || appID.compareTo("q")==0) {
-					quitToMainMenu=true;
+			quitToMainMenu = false;
+			while (!quitToMainMenu) {
+				String title = "Add Application ID:";
+				appID = addApplicationID(title);
+				if (appID.compareTo("q") == 0 || appID.compareTo("q") == 0) {
+					quitToMainMenu = true;
 					break;
 				}
-				if(quitToMainMenu) break;
-				
-				if(currentApp.getAppStatus()==ApplicationStatus.Rejected) {
+				if (quitToMainMenu)
+					break;
+
+				if (currentApp.getAppStatus() == ApplicationStatus.Rejected) {
 					throw new StatusException("This application status is currently Rejected. No further work needed.");
-					
-				} else if (currentApp.getAppStatus()==ApplicationStatus.Accepted) {
+
+				} else if (currentApp.getAppStatus() == ApplicationStatus.Accepted) {
 					throw new StatusException("This application status is currently Accepted. No further work needed.");
-					
-				}else {
+
+				} else {
 					AcceptOrRejectApp();
-					quitToMainMenu=true;
+					quitToMainMenu = true;
 				}
 			}
 		} catch (StatusException e) {
@@ -851,9 +816,9 @@ public class RealEstate {
 		} catch (Exception e) {
 			System.out.println("Cannot respond to application. Try again.");
 		}
-		
+
 	}
-	
+
 	public void AcceptOrRejectApp() {
 		quitToMainMenu = false;
 		while (!quitToMainMenu) {
@@ -870,308 +835,285 @@ public class RealEstate {
 
 			switch (choice) {
 			case 1:
-				//accept application
+				// accept application
 				currentApp.acceptApp();
-				ApplicationStatus currentappStatus=currentApp.getAppStatus();
-				System.out.println("Current Application status is:"+currentappStatus);
-				ArrayList<Application> allApps=currentRentProp.getAllApplications();
-				
-				//set property status to in process
-				for (Property prop: allProperties) {
+				ApplicationStatus currentappStatus = currentApp.getAppStatus();
+				System.out.println("Current Application status is:" + currentappStatus);
+				ArrayList<Application> allApps = currentRentProp.getAllApplications();
+
+				// set property status to in process
+				for (Property prop : allProperties) {
 					if (prop instanceof RentalProperty) {
 						if (((RentalProperty) prop).getAllApplications().contains(currentApp)) {
 							prop.setStatusToInprocess();
 						}
 					}
 				}
-				
-				//reject all other applications of the same property
+
+				// reject all other applications of the same property
 				for (int i = 0; i < allApps.size(); i++) {
-					if(appID.compareTo(allApps.get(i).getApplicationID())!=0) {
+					if (appID.compareTo(allApps.get(i).getApplicationID()) != 0) {
 						allApps.get(i).rejectApp();
 					}
 
 				}
-				
-				quitToMainMenu=true;
+
+				quitToMainMenu = true;
 				break;
 			case 2:
 				currentApp.rejectApp();
-				currentappStatus=currentApp.getAppStatus();
-				System.out.println("Current Application status is:"+currentappStatus);
-				quitToMainMenu=true;
+				currentappStatus = currentApp.getAppStatus();
+				System.out.println("Current Application status is:" + currentappStatus);
+				quitToMainMenu = true;
 				break;
-			
+
 			case 3:
-				quitToMainMenu=true;
+				quitToMainMenu = true;
 				break;
-	
+
 			default:
 				System.out.println("No such operation");
 				break;
 			}
 		}
 	}
-	
-	
-	
-	//accessors/mutators
-	public ArrayList<User> getAllUsers(){
+
+	// accessors/mutators
+	public ArrayList<User> getAllUsers() {
 		return allUsers;
 	}
-	
-	public ArrayList<Property> getAllProperty(){
+
+	public ArrayList<Property> getAllProperty() {
 		return allProperties;
 	}
-	
-	//general methods
-	
-	
-	public void searchProperty() {
+
+	// general methods
+
+	public static void searchProperty() {
 		System.out.println("\n*******Search Properties******");
-		String title= "Enter a surbub";
-		String surb= addTextInfo(title);
+		String title = "Enter a surbub";
+		String surb = addTextInfo(title);
 		if (!searchSurbub(surb)) {
 			System.out.println("No property found");
 		}
 	}
-	
+
 	public void displayAllProperties() {
 		System.out.println("\n*******All Properties******");
 		for (int i = 0; i < allProperties.size(); i++) {
 			System.out.println(allProperties.get(i).getPropertyDetails());
 		}
 	}
-	
-	
-public boolean searchSurbub(String id) {
-	try {
-		for(Property prop: allProperties) {
-			
-			if (prop.getSurbub().compareTo(id)==0) {
-				System.out.println(prop.getPropertyDetails());
-				return true;
-			} 
-		}
-		return false;
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		System.out.println("Cannot search surbub");
-		return false;
-	}
-}
-	
-public String addTextInfo( String title) {
-	boolean infoOk = false;
-	String info=null;
-	while (!infoOk) {
+
+	public static boolean searchSurbub(String id) {
 		try {
-			System.out.print(title);
-			 info= scan.nextLine();		
-					
-			if (info.trim().length()==0) {
-				throw new FormatException("The field must not be blank");
-			
-			}
+			for (Property prop : allProperties) {
 
-			infoOk = true;
-			return info;
-			
-		}catch(FormatException fe) {
-			System.out.println(fe.getReason());
-	
-		}catch (Exception e) {
-			System.out.println("Error. Re-enter "+ title); 
-			}
-	}return info;
-	}
-
-
-public int addCapacity( String title) {
-	boolean infoOk = false;
-	int capa=0;
-	while (!infoOk) {
-		try {
-			System.out.print(title);
-			capa=Integer.parseInt(scan.nextLine());
-			infoOk = true;
-			return capa;
-		} catch (Exception e) {
-			System.out.println("Error. Re-enter "+ title);
-		
-		}
-	}
-	return capa;
-}
-public double addMonetaryInfo( String title) {
-	boolean infoOk = false;
-	double rent=0;
-	while (!infoOk) {
-		try {
-			System.out.print(title);
-			rent=Double.parseDouble(scan.nextLine());
-			infoOk = true;
-			return rent;
-		} catch (Exception e) {
-			System.out.println("Error. Re-enter "+ title);
-			
-		}
-	}
-	return rent;
-}
-public String addPropertyID(String title) {
-	boolean infoOk=false;
-	String iD=null;
-	while(!infoOk) {
-		try {
-			System.out.println(title);
-			iD=scan.nextLine();
-			if (iD.charAt(0) == 'Q' || iD.charAt(0) == 'q') {
-				infoOk = true;
-				quitToMainMenu = true;
-				break;
-			
-			}
-			if(!PropertyIdExists(iD)) {
-				throw new IdNotFound("Property not found");
-			}
-			infoOk=true;
-			return iD;
-		} catch(IdNotFound ex) {
-			System.out.println(ex.getReason());
-		
-		}catch (Exception e) {
-			System.out.println("Invalid. Re-enter ID");
-		
-		}
-	}
-	return iD;
-}
-
-public boolean PropertyIdExists(String ID) {
-	for (int i = 0; i < allProperties.size(); i++) {
-
-		if (allProperties.get(i).getPropertyID().compareTo(ID) == 0) {
-			System.out.println(allProperties.get(i).getPropertyID()+ " found!");
-			currentPropertyIndex= i; // record index of current post in allPost
-			return true;
-		}
-	}
-	;
-	return false;
-}
-
-public String addApplicationID(String title) {
-	boolean infoOk=false;
-	String iD=null;
-	while(!infoOk) {
-		try {
-			System.out.println(title);
-			iD=scan.nextLine();
-			if (iD.charAt(0) == 'Q' || iD.charAt(0) == 'q') {
-				infoOk = true;
-				quitToMainMenu = true;
-				break;
-			
-			}
-			if(!ApplicationIdExits(iD)) {
-				throw new IdNotFound("Application not found");
-			}
-			infoOk=true;
-			return iD;
-		} catch(IdNotFound ex) {
-			System.out.println(ex.getReason());
-
-		}catch (Exception e) {
-			System.out.println("Invalid. Re-enter ID");
-
-		}
-	}
-	return iD;
-}
-
-public boolean ApplicationIdExits(String ID) {
-	
-	for (int i = 0; i < allProperties.size(); i++) {
-			ArrayList<Application> allApps= ((RentalProperty)allProperties.get(i)).getAllApplications();
-			currentRentProp=((RentalProperty)allProperties.get(i));
-			
-			for (int j = 0; j < allApps.size(); j++) {
-				if(allApps.get(j).getApplicationID().compareTo(ID)==0) {
-					System.out.println(allApps.get(j).getApplicationID() +"found!");
-		
-					currentApp=allApps.get(j);
-					
-					currentAppIndex=j;
-					currentPropertyIndex=i;
+				if (prop.getSurbub().compareTo(id) == 0) {
+					System.out.println(prop.getPropertyDetails());
 					return true;
 				}
 			}
-		
+			return false;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Cannot search surbub");
+			return false;
+		}
 	}
-	return false;
-}
 
+	public static String addTextInfo(String title) {
+		boolean infoOk = false;
+		String info = null;
+		while (!infoOk) {
+			try {
+				System.out.print(title);
+				info = scan.nextLine();
 
+				if (info.trim().length() == 0) {
+					throw new FormatException("The field must not be blank");
 
-public void advanceTime() {
+				}
 
-	try {
-		System.out.println("Enter number of hours to advance");
-		int hours = Integer.parseInt(scan.nextLine());
-		System.out.println("Enter number of mins to advance");
-		int mins=Integer.parseInt(scan.nextLine());
-		System.out.println("Enter number of seconds to advance");
-		int sec=Integer.parseInt(scan.nextLine());
-		
-		DateTime previousDate=currentDate;
-		time=currentDate.getTime();
-		System.out.println("Previous date:" + previousDate);
-		DateTime.setAdvance(0, hours,mins,sec);
-		
-		currentDate=new DateTime(time);
-		
-		System.out.println("Current date:"+ currentDate);
-		int diff= DateTime.diffMins(currentDate, previousDate);
-		System.out.println(diff + " minutes "+ "has passed since the previous date.");
-		System.out.println(DateTime.diffSecond(currentDate, previousDate) + " seconds "+ "has passed");
-		
-		
-		checkApplicationStatus();
-		
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		System.out.println("Error with input. Try again");
+				infoOk = true;
+				return info;
+
+			} catch (FormatException fe) {
+				System.out.println(fe.getReason());
+
+			} catch (Exception e) {
+				System.out.println("Error. Re-enter " + title);
+			}
+		}
+		return info;
 	}
-	
-	
-}
+
+	public int addCapacity(String title) {
+		boolean infoOk = false;
+		int capa = 0;
+		while (!infoOk) {
+			try {
+				System.out.print(title);
+				capa = Integer.parseInt(scan.nextLine());
+				infoOk = true;
+				return capa;
+			} catch (Exception e) {
+				System.out.println("Error. Re-enter " + title);
+
+			}
+		}
+		return capa;
+	}
+
+	public static double addMonetaryInfo(String title) {
+		boolean infoOk = false;
+		double rent = 0;
+		while (!infoOk) {
+			try {
+				System.out.print(title);
+				rent = Double.parseDouble(scan.nextLine());
+				infoOk = true;
+				return rent;
+			} catch (Exception e) {
+				System.out.println("Error. Re-enter " + title);
+
+			}
+		}
+		return rent;
+	}
+
+	public String addPropertyID(String title) {
+		boolean infoOk = false;
+		String iD = null;
+		while (!infoOk) {
+			try {
+				System.out.println(title);
+				iD = scan.nextLine();
+				if (iD.charAt(0) == 'Q' || iD.charAt(0) == 'q') {
+					infoOk = true;
+					quitToMainMenu = true;
+					break;
+
+				}
+				if (!PropertyIdExists(iD)) {
+					throw new IdNotFound("Property not found");
+				}
+				infoOk = true;
+				return iD;
+			} catch (IdNotFound ex) {
+				System.out.println(ex.getReason());
+
+			} catch (Exception e) {
+				System.out.println("Invalid. Re-enter ID");
+
+			}
+		}
+		return iD;
+	}
+
+	public boolean PropertyIdExists(String ID) {
+		for (int i = 0; i < allProperties.size(); i++) {
+
+			if (allProperties.get(i).getPropertyID().compareTo(ID) == 0) {
+				System.out.println(allProperties.get(i).getPropertyID() + " found!");
+				currentPropertyIndex = i; // record index of current post in allPost
+				return true;
+			}
+		}
+		;
+		return false;
+	}
+
+	public String addApplicationID(String title) {
+		boolean infoOk = false;
+		String iD = null;
+		while (!infoOk) {
+			try {
+				System.out.println(title);
+				iD = scan.nextLine();
+				if (iD.charAt(0) == 'Q' || iD.charAt(0) == 'q') {
+					infoOk = true;
+					quitToMainMenu = true;
+					break;
+
+				}
+				if (!ApplicationIdExits(iD)) {
+					throw new IdNotFound("Application not found");
+				}
+				infoOk = true;
+				return iD;
+			} catch (IdNotFound ex) {
+				System.out.println(ex.getReason());
+
+			} catch (Exception e) {
+				System.out.println("Invalid. Re-enter ID");
+
+			}
+		}
+		return iD;
+	}
+
+	public boolean ApplicationIdExits(String ID) {
+
+		for (int i = 0; i < allProperties.size(); i++) {
+			ArrayList<Application> allApps = ((RentalProperty) allProperties.get(i)).getAllApplications();
+			currentRentProp = ((RentalProperty) allProperties.get(i));
+
+			for (int j = 0; j < allApps.size(); j++) {
+				if (allApps.get(j).getApplicationID().compareTo(ID) == 0) {
+					System.out.println(allApps.get(j).getApplicationID() + "found!");
+
+					currentApp = allApps.get(j);
+
+					currentPropertyIndex = i;
+					return true;
+				}
+			}
+
+		}
+		return false;
+	}
+
+	public void advanceTime() {
+
+		try {
+			System.out.println("Enter number of hours to advance");
+			int hours = Integer.parseInt(scan.nextLine());
+			System.out.println("Enter number of mins to advance");
+			int mins = Integer.parseInt(scan.nextLine());
+			System.out.println("Enter number of seconds to advance");
+			int sec = Integer.parseInt(scan.nextLine());
+
+			DateTime previousDate = currentDate;
+			time = currentDate.getTime();
+			System.out.println("Previous date:" + previousDate);
+			DateTime.setAdvance(0, hours, mins, sec);
+
+			currentDate = new DateTime(time);
+
+			System.out.println("Current date:" + currentDate);
+//			int diff = DateTime.diffMins(currentDate, previousDate);
+//			System.out.println(diff + " minutes " + "has passed since the previous date.");
+			System.out.println(DateTime.diffSecond(currentDate, previousDate) + " seconds " + "has passed");
+
+			checkApplicationStatus();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error with input. Try again");
+		}
+
+	}
 
 	public void checkApplicationStatus() {
-	for (Property prop: allProperties) {
-		if (prop instanceof RentalProperty) {
-			for (Application app: ((RentalProperty) prop).getAllApplications()) {
-				
-				//application must be responded within 3 days after submitted date
-				if (app.getAppStatus()==ApplicationStatus.Pending) {
-					if (DateTime.diffHours(currentDate, app.getSummittedDate())>71) {
-						app.rejectApp();
-						System.out.println("Application: "+ app.getApplicationID() + " has been rejected due to non-response from landlord for more than 3 days");
-					}
-				//bond payment must be made within 24 hours after accepted date
-				} else if (app.getAppStatus()==ApplicationStatus.Accepted) {
-					if (DateTime.diffHours(currentDate, app.getAcceptedDate())>23 && app.getBondPaymentStatus()==false) {
-						app.rejectApp();
-						System.out.println("Application: "+ app.getApplicationID() + " has been rejected due to failing to pay bond within 24 hours");
-						
-						//set property status back to available
-						prop.setStatusToAvailable();
-						
-						
-					}
+		for (Property prop : allProperties) {
+			if (prop instanceof RentalProperty) {
+				for (Application app : ((RentalProperty) prop).getAllApplications()) {
+						app.checkAppStatus(prop);
+								
+					
 				}
 			}
 		}
-	}
 	}
 }
