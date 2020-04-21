@@ -1,4 +1,7 @@
+package properties;
 import Utilities.PropertyStatus;
+import users.Employee;
+import users.SaleConsultant;
 
 public abstract class SaleProperty extends Property {
 

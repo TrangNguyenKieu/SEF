@@ -1,6 +1,8 @@
+package users;
 import java.util.ArrayList;
 
 import Utilities.EmployeeType;
+import properties.Property;
 
 public class BranchManager extends Employee {
 

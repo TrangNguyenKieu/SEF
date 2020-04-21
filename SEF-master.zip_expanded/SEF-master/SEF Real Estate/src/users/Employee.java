@@ -1,3 +1,4 @@
+package users;
 public class Employee extends User{
 	private static int employeeCount;
 	private boolean isFulltime;

@@ -1,4 +1,6 @@
+package properties;
 import Utilities.PropertyStatus;
+import users.Employee;
 
 
 public abstract class Property {

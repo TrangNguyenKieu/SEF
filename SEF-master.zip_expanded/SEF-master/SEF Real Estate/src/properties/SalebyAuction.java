@@ -1,7 +1,9 @@
+package properties;
 import java.util.ArrayList;
 
 import Utilities.AuctionStatus;
 import Utilities.DateTime;
+import Utilities.ValidateFunction;
 
 public class SalebyAuction extends SaleProperty {
 	private static int count;
@@ -41,9 +43,9 @@ public boolean createAuction() {
 	
 	boolean auctionOk=false;
 	if(auctionHistoryValid()) {
-		DateTime aucDate = RealEstate.addDate();
+		DateTime aucDate = ValidateFunction.addDate();
 		String title = "Add minimum reserve:";
-		double reserve = RealEstate.addMonetaryInfo(title);
+		double reserve = ValidateFunction.addMonetaryInfo(title);
 
 		Auction auction = new Auction(this.getPropertyID(), aucDate, reserve);
 		if(handleAuction(auction)) {

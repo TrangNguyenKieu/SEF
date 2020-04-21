@@ -1,3 +1,4 @@
+package users;
 public class Tenant extends Customer {
 	private static int tenantCount;
 	private String bankName;

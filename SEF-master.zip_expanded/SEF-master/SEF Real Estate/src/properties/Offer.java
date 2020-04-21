@@ -1,4 +1,6 @@
+package properties;
 import Utilities.ApplicationStatus;
+import users.Buyer;
 
 public class Offer {
 	private String offerID;

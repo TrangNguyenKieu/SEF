@@ -1,6 +1,9 @@
+package properties;
 import java.util.ArrayList;
 
 import Utilities.PropertyStatus;
+import users.Employee;
+import users.PropertyManager;
 
 
 public class RentalProperty extends Property{

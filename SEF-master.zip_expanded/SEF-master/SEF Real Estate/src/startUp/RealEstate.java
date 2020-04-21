@@ -1,10 +1,26 @@
+package startUp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
+
 import SystemExceptions.*;
 import Utilities.ApplicationStatus;
 import Utilities.DateTime;
 import Utilities.PropertyStatus;
+import Utilities.ValidateFunction;
+import properties.Application;
+import properties.Property;
+import properties.RentalProperty;
+import properties.SalebyAuction;
+import users.BranchAdmin;
+import users.BranchManager;
+import users.Buyer;
+import users.Landlord;
+import users.PropertyManager;
+import users.Tenant;
+import users.User;
+import users.Vendor;
+
 import java.util.*;
 
 import java.text.SimpleDateFormat;
@@ -25,8 +41,8 @@ public class RealEstate {
 	private int currentUserIndex; // index of current session user in allUsers array
 	private int currentPropertyIndex;
 
-	 static long time;
-	static DateTime currentDate;
+	public static long time;
+	public static DateTime currentDate;
 	private String appID;
 
 	public RealEstate() {
@@ -492,61 +508,6 @@ public class RealEstate {
 		}
 	}
 
-	public static DateTime addDate() {
-		boolean infoOk = false;
-		DateTime aucDate = new DateTime();
-		while (!infoOk) {
-			try {
-				System.out.print("Date (dd/mm/yyyy):");
-				String date = scan.nextLine();
-
-				if (date.length() == 0) {
-					throw new FormatException("You must enter a text value");
-				}
-
-				if (date.trim().length() == 0) {
-					throw new FormatException("The field must not be blank");
-				}
-
-				if (!checkDateFormat(date)) {
-					throw new FormatException("Date must be in correct format: dd/mm/yyyy");
-				}
-
-				SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
-				Date d = (Date) formatter1.parse(date);
-				long time = d.getTime();
-				long c_time = System.currentTimeMillis();
-
-				if (time <= c_time) {
-					throw new DateException("Auction date cannot be prior to current date");
-				} else {
-					aucDate = new DateTime(time, 0);
-					infoOk = true;
-					return aucDate;
-				}
-
-			} catch (FormatException fe) {
-				System.out.println(fe.getReason());
-			} catch (DateException e) {
-				System.out.println(e.getReason());
-			} catch (Exception e) {
-				System.out.println("Error. Re-enter date");
-				e.printStackTrace();
-			}
-		}
-		return aucDate;
-	}
-
-	public static boolean checkDateFormat(String str) {
-		if (str.matches("\\d{2}+/\\d{2}+/\\d{4}")) {
-//			System.out.println("true");
-			return true;
-
-		} else {
-//			System.out.println("false");
-			return false;
-		}
-	}
 
 	public void addSaleProperty() {
 		quitToMainMenu = false;
@@ -590,25 +551,25 @@ public class RealEstate {
 				System.out.println("Enter details of your property below:");
 
 				String title = "Address:";
-				String address = addTextInfo(title);
+				String address = ValidateFunction.addTextInfo(title);
 
 				title = "Description:";
-				String description = addTextInfo(title);
+				String description = ValidateFunction.addTextInfo(title);
 
 				title = "Surbub:";
-				String surbub = addTextInfo(title);
+				String surbub =ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
-				int bed = addCapacity(title);
+				int bed = ValidateFunction.addCapacity(title);
 
 				title = "Number of Bathrooms: ";
-				int bath = addCapacity(title);
+				int bath = ValidateFunction.addCapacity(title);
 
 				title = "Number of car Spaces: ";
-				int cars = addCapacity(title);
+				int cars = ValidateFunction.addCapacity(title);
 
 				title = "Property type (house/ unit/flat/townhouse/studio):";
-				String type = addTextInfo(title);
+				String type = ValidateFunction.addTextInfo(title);
 
 				String currentSessionID = currentUser.getUserID();
 
@@ -643,16 +604,16 @@ public class RealEstate {
 						throw new StatusException("This property is not available");
 					} else {
 						title = "Monthly income:";
-						double income = addMonetaryInfo(title);
+						double income = ValidateFunction.addMonetaryInfo(title);
 
 						title = "Occupation: ";
-						String occu = addTextInfo(title);
+						String occu = ValidateFunction.addTextInfo(title);
 
 						title = "Proposed Weekly Rent: ";
-						double rent = addMonetaryInfo(title);
+						double rent = ValidateFunction.addMonetaryInfo(title);
 
 						title = "Contract Duration: ";
-						String duration = addTextInfo(title);
+						String duration = ValidateFunction.addTextInfo(title);
 
 						Application newApp = new Application(propID, (Tenant) currentUser, income, occu, rent,
 								duration);
@@ -725,31 +686,31 @@ public class RealEstate {
 				System.out.println("Enter details of your property below:");
 
 				String title = "Address:";
-				String address = addTextInfo(title);
+				String address = ValidateFunction.addTextInfo(title);
 
 				title = "Description:";
-				String description = addTextInfo(title);
+				String description = ValidateFunction.addTextInfo(title);
 
 				title = "Surbub:";
-				String surbub = addTextInfo(title);
+				String surbub = ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
-				int bed = addCapacity(title);
+				int bed = ValidateFunction.addCapacity(title);
 
 				title = "Number of Bathrooms: ";
-				int bath = addCapacity(title);
+				int bath = ValidateFunction.addCapacity(title);
 
 				title = "Number of car Spaces: ";
-				int cars = addCapacity(title);
+				int cars = ValidateFunction.addCapacity(title);
 
 				title = "Property type (house/ unit/flat/townhouse/studio):";
-				String type = addTextInfo(title);
+				String type = ValidateFunction.addTextInfo(title);
 
 				title = "Weekly Rent:";
-				double weeklyRent = addMonetaryInfo(title);
+				double weeklyRent = ValidateFunction.addMonetaryInfo(title);
 
 				title = "Contract Duration: ";
-				String duration = addTextInfo(title);
+				String duration = ValidateFunction.addTextInfo(title);
 
 				String currentSessionID = currentUser.getUserID();
 				System.out.println(address + surbub);
@@ -892,7 +853,7 @@ public class RealEstate {
 	public static void searchProperty() {
 		System.out.println("\n*******Search Properties******");
 		String title = "Enter a surbub";
-		String surb = addTextInfo(title);
+		String surb = ValidateFunction.addTextInfo(title);
 		if (!searchSurbub(surb)) {
 			System.out.println("No property found");
 		}
@@ -922,65 +883,6 @@ public class RealEstate {
 		}
 	}
 
-	public static String addTextInfo(String title) {
-		boolean infoOk = false;
-		String info = null;
-		while (!infoOk) {
-			try {
-				System.out.print(title);
-				info = scan.nextLine();
-
-				if (info.trim().length() == 0) {
-					throw new FormatException("The field must not be blank");
-
-				}
-
-				infoOk = true;
-				return info;
-
-			} catch (FormatException fe) {
-				System.out.println(fe.getReason());
-
-			} catch (Exception e) {
-				System.out.println("Error. Re-enter " + title);
-			}
-		}
-		return info;
-	}
-
-	public int addCapacity(String title) {
-		boolean infoOk = false;
-		int capa = 0;
-		while (!infoOk) {
-			try {
-				System.out.print(title);
-				capa = Integer.parseInt(scan.nextLine());
-				infoOk = true;
-				return capa;
-			} catch (Exception e) {
-				System.out.println("Error. Re-enter " + title);
-
-			}
-		}
-		return capa;
-	}
-
-	public static double addMonetaryInfo(String title) {
-		boolean infoOk = false;
-		double rent = 0;
-		while (!infoOk) {
-			try {
-				System.out.print(title);
-				rent = Double.parseDouble(scan.nextLine());
-				infoOk = true;
-				return rent;
-			} catch (Exception e) {
-				System.out.println("Error. Re-enter " + title);
-
-			}
-		}
-		return rent;
-	}
 
 	public String addPropertyID(String title) {
 		boolean infoOk = false;

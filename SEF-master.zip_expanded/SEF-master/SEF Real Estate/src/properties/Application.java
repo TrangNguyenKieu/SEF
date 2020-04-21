@@ -1,5 +1,8 @@
+package properties;
 import Utilities.ApplicationStatus;
 import Utilities.DateTime;
+import startUp.RealEstate;
+import users.Tenant;
 
 public class Application {
 	private String applicationID;

@@ -1,3 +1,4 @@
+package users;
 
 public class Buyer extends Customer {
 private static int count;

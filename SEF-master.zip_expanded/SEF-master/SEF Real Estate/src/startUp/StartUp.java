@@ -1,6 +1,16 @@
+package startUp;
 import java.util.Scanner;
 
 import Utilities.EmployeeType;
+import properties.RentalProperty;
+import properties.SalebyAuction;
+import users.BranchAdmin;
+import users.BranchManager;
+import users.Buyer;
+import users.Landlord;
+import users.PropertyManager;
+import users.Tenant;
+import users.Vendor;
 
 public class StartUp {
 

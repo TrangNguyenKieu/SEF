@@ -1,3 +1,4 @@
+package users;
 
 public class SaleConsultant extends Employee {
 private static int count;
