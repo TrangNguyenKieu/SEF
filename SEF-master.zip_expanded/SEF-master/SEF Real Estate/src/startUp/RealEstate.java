@@ -759,15 +759,14 @@ public class RealEstate {
 					break;
 				}
 				if (quitToMainMenu)
-					break;
-
+				{	break;}
 				if (currentApp.getAppStatus() == ApplicationStatus.Rejected) {
-					throw new StatusException("This application status is currently Rejected. No further work needed.");
+					throw new StatusException("This application has been previously rejected. This cannot be undone");
 
 				} else if (currentApp.getAppStatus() == ApplicationStatus.Accepted) {
-					throw new StatusException("This application status is currently Accepted. No further work needed.");
-
-				} else {
+					throw new StatusException("This application has been previously accepted. This cannot be undone");
+				}
+				 else {
 					AcceptOrRejectApp();
 					quitToMainMenu = true;
 				}
@@ -794,35 +793,56 @@ public class RealEstate {
 
 			enterChoice();
 
-			switch (choice) {
-			case 1:
-				// accept application
-				
-				acceptApplication();
+			try {
+				switch (choice) {
+				case 1:
+					// accept application
+					
+					acceptApplication();
 
-				quitToMainMenu = true;
-				break;
-			case 2:
-				currentApp.rejectApp();
-				ApplicationStatus currentappStatus = currentApp.getAppStatus();
-				System.out.println("Current Application status is:" + currentappStatus);
-				quitToMainMenu = true;
-				break;
+					quitToMainMenu = true;
+					break;
+				case 2:
+					rejectApplication();
+					quitToMainMenu = true;
+					break;
 
-			case 3:
-				quitToMainMenu = true;
-				break;
+				case 3:
+					quitToMainMenu = true;
+					break;
 
-			default:
-				System.out.println("No such operation");
-				break;
+				default:
+					System.out.println("No such operation");
+					break;
+				}
+			} catch (StatusException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getReason());
 			}
 		}
 	}
 
+	public void rejectApplication() throws StatusException{
+		if (currentApp.getAppStatus() == ApplicationStatus.Rejected) {
+			throw new StatusException("This application has been previously rejected. This cannot be undo");
+
+		} else if (currentApp.getAppStatus() == ApplicationStatus.Accepted) {
+			throw new StatusException("This application has been previously accepted. This cannot be undo");
+		}else {
+		currentApp.rejectApp();
+		ApplicationStatus currentappStatus = currentApp.getAppStatus();
+		System.out.println("Current Application status is:" + currentappStatus);
+	}
+	}
 	
-	public void acceptApplication() {
+	public void acceptApplication() throws StatusException{
 		// accept application
+		if (currentApp.getAppStatus() == ApplicationStatus.Rejected) {
+			throw new StatusException("This application status is currently Rejected. No further work needed.");
+
+		} else if (currentApp.getAppStatus() == ApplicationStatus.Accepted) {
+			throw new StatusException("This application status is currently Accepted. No further work needed.");
+		} else {
 		currentApp.acceptApp();
 		ApplicationStatus currentappStatus = currentApp.getAppStatus();
 		System.out.println("Current Application status is:" + currentappStatus);
@@ -835,6 +855,7 @@ public class RealEstate {
 					prop.setStatusToInprocess();
 				}
 			}
+		
 		}
 
 		// reject all other applications of the same property
@@ -844,6 +865,7 @@ public class RealEstate {
 			}
 
 		}
+	}
 	}
 	
 	// accessors/mutators

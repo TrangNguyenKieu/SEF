@@ -31,7 +31,7 @@ class ApplicationTest {
 	
 	//positive 
 	@Test 
-	void testAcceptedApplicationStatus() {
+	void testAcceptedApplicationStatus() throws StatusException {
 		
 		//after accepted method application status will be Accepted
 		rp.getAllApplications().add(app);
@@ -46,7 +46,7 @@ class ApplicationTest {
 	}
 	
 	@Test 
-	void testOtherApplicationStatus() {
+	void testOtherApplicationStatus() throws StatusException{
 		//after accepted 1 app, the other apps status will be Rejected
 		rp.getAllApplications().add(app);
 		rp.getAllApplications().add(app2);
@@ -67,7 +67,7 @@ class ApplicationTest {
 		app.rejectApp();
 		re.setCurrentApp(app);
 		  assertThrows(StatusException.class, () -> {
-		      re.respondtoApplication();
+		      re.acceptApplication();;
 		    });
 	}
 	
@@ -77,7 +77,7 @@ class ApplicationTest {
 		app.acceptApp();
 		re.setCurrentApp(app);
 		  assertThrows(StatusException.class, () -> {
-		      re.respondtoApplication();
+		      re.acceptApplication();;
 		    });
 	}
 }
