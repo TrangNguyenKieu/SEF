@@ -1,4 +1,5 @@
 package startUp;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -497,17 +498,16 @@ public class RealEstate {
 			Property currentProp = allProperties.get(currentPropertyIndex);
 			if (currentProp instanceof SalebyAuction) {
 
-				if(((SalebyAuction) currentProp).createAuction()) {
-					quitToMainMenu=true;
+				if (((SalebyAuction) currentProp).createAuction()) {
+					quitToMainMenu = true;
 					break;
-				} else System.out.println("Cannot add new auction to property");
-
+				} else
+					System.out.println("Cannot add new auction to property");
 
 			} else
 				System.out.println("This is not a sale by auction property");
 		}
 	}
-
 
 	public void addSaleProperty() {
 		quitToMainMenu = false;
@@ -557,7 +557,7 @@ public class RealEstate {
 				String description = ValidateFunction.addTextInfo(title);
 
 				title = "Surbub:";
-				String surbub =ValidateFunction.addTextInfo(title);
+				String surbub = ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
 				int bed = ValidateFunction.addCapacity(title);
@@ -797,33 +797,14 @@ public class RealEstate {
 			switch (choice) {
 			case 1:
 				// accept application
-				currentApp.acceptApp();
-				ApplicationStatus currentappStatus = currentApp.getAppStatus();
-				System.out.println("Current Application status is:" + currentappStatus);
-				ArrayList<Application> allApps = currentRentProp.getAllApplications();
-
-				// set property status to in process
-				for (Property prop : allProperties) {
-					if (prop instanceof RentalProperty) {
-						if (((RentalProperty) prop).getAllApplications().contains(currentApp)) {
-							prop.setStatusToInprocess();
-						}
-					}
-				}
-
-				// reject all other applications of the same property
-				for (int i = 0; i < allApps.size(); i++) {
-					if (appID.compareTo(allApps.get(i).getApplicationID()) != 0) {
-						allApps.get(i).rejectApp();
-					}
-
-				}
+				
+				acceptApplication();
 
 				quitToMainMenu = true;
 				break;
 			case 2:
 				currentApp.rejectApp();
-				currentappStatus = currentApp.getAppStatus();
+				ApplicationStatus currentappStatus = currentApp.getAppStatus();
 				System.out.println("Current Application status is:" + currentappStatus);
 				quitToMainMenu = true;
 				break;
@@ -839,6 +820,32 @@ public class RealEstate {
 		}
 	}
 
+	
+	public void acceptApplication() {
+		// accept application
+		currentApp.acceptApp();
+		ApplicationStatus currentappStatus = currentApp.getAppStatus();
+		System.out.println("Current Application status is:" + currentappStatus);
+		ArrayList<Application> allApps = currentRentProp.getAllApplications();
+
+		// set property status to in process
+		for (Property prop : allProperties) {
+			if (prop instanceof RentalProperty) {
+				if (((RentalProperty) prop).getAllApplications().contains(currentApp)) {
+					prop.setStatusToInprocess();
+				}
+			}
+		}
+
+		// reject all other applications of the same property
+		for (int i = 0; i < allApps.size(); i++) {
+			if (appID.compareTo(allApps.get(i).getApplicationID()) != 0) {
+				allApps.get(i).rejectApp();
+			}
+
+		}
+	}
+	
 	// accessors/mutators
 	public ArrayList<User> getAllUsers() {
 		return allUsers;
@@ -847,7 +854,21 @@ public class RealEstate {
 	public ArrayList<Property> getAllProperty() {
 		return allProperties;
 	}
+	
+	public void setCurrentApp(Application app) {
+		//for JUnit Application Testing only
+		currentApp=app;
+	}
 
+	public void setCurrenProp(RentalProperty rp) {
+		//for JUnit Application Testing only
+		currentRentProp=rp;
+	}
+	
+	public void setAppID(String ID) {
+		//for JUntApplication Testing only
+		this.appID=ID;
+	}
 	// general methods
 
 	public static void searchProperty() {
@@ -882,7 +903,6 @@ public class RealEstate {
 			return false;
 		}
 	}
-
 
 	public String addPropertyID(String title) {
 		boolean infoOk = false;
@@ -1011,9 +1031,8 @@ public class RealEstate {
 		for (Property prop : allProperties) {
 			if (prop instanceof RentalProperty) {
 				for (Application app : ((RentalProperty) prop).getAllApplications()) {
-						app.checkAppStatus(prop);
-								
-					
+					app.checkAppStatus(prop);
+
 				}
 			}
 		}
