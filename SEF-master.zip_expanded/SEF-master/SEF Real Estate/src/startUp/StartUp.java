@@ -22,7 +22,7 @@ public class StartUp {
 		
 		//hard-coded data
 		Landlord landlord= new Landlord();
-		Tenant tenant=new Tenant();
+		Tenant tenant=new Tenant(); 
 
 		BranchManager branman= new BranchManager("Kriti",true);
 		PropertyManager proman= new PropertyManager("PropertyMan",true);
@@ -34,7 +34,7 @@ public class StartUp {
 //		prop01.setStatusToAvailable();//for testing
 		SalebyAuction prop02= new SalebyAuction(vendor.getUserID(), "130 Rennie", "House for sale", "Melbourne", 3, 2, 1, "house");
 		prop02.setStatusToAvailable();
-
+		
 		
 		re.getAllUsers().add(landlord);
 		re.getAllUsers().add(tenant);

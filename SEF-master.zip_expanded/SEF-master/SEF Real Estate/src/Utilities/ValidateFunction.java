@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.*;
 import SystemExceptions.DateException;
 import SystemExceptions.FormatException;
+import startUp.RealEstate;
 
 public class ValidateFunction {
 	//to keep all input validation functions and supporting functions 
@@ -96,7 +97,7 @@ public class ValidateFunction {
 				SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
 				Date d = (Date) formatter1.parse(date);
 				long time = d.getTime();
-				long c_time = System.currentTimeMillis();
+				long c_time = RealEstate.currentDate.getTime();
 
 				if (time <= c_time) {
 					throw new DateException("Auction date cannot be prior to current date");

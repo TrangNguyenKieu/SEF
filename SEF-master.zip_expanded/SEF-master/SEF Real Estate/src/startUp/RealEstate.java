@@ -6,10 +6,12 @@ import java.util.Scanner;
 
 import SystemExceptions.*;
 import Utilities.ApplicationStatus;
+import Utilities.AuctionStatus;
 import Utilities.DateTime;
 import Utilities.PropertyStatus;
 import Utilities.ValidateFunction;
 import properties.Application;
+import properties.Auction;
 import properties.Property;
 import properties.RentalProperty;
 import properties.SalebyAuction;
@@ -31,6 +33,7 @@ public class RealEstate {
 	private static User currentUser;
 	private static Application currentApp;
 	private static RentalProperty currentRentProp;
+	private static Auction currentAuc;
 	private static ArrayList<User> allUsers;
 	private static ArrayList<Property> allProperties;
 
@@ -95,47 +98,53 @@ public class RealEstate {
 
 	public void login() {
 		boolean infoOk = false;
-		while (!infoOk) {
-			System.out.println("*******Login Process*******");
+		
+		try {
+			while (!infoOk) {
+				System.out.println("*******Login Process*******");
 
-			// require user to enter username and password
-			// make sure username exists and username matches password
-			// get the user ID
-			// then search for user ID in allCustomers array and return the current index
+				// require user to enter username and password
+				// make sure username exists and username matches password
+				// get the user ID
+				// then search for user ID in allCustomers array and return the current index
 
-			// demo login
-			System.out.println("Enter a number from 0-3");
-			System.out.println("0: login as landlord");
-			System.out.println("1: login as tenant");
-			System.out.println("2: login as branch manager");
-			System.out.println("3: login as property manager");
-			System.out.println("4: login as vendor");
-			System.out.println("5: login as buyer");
-			System.out.println("6: login as branch admin");
+				// demo login
+				System.out.println("Enter a number from 0-3");
+				System.out.println("0: login as landlord");
+				System.out.println("1: login as tenant");
+				System.out.println("2: login as branch manager");
+				System.out.println("3: login as property manager");
+				System.out.println("4: login as vendor");
+				System.out.println("5: login as buyer");
+				System.out.println("6: login as branch admin");
 
-			int demoIndex = Integer.parseInt(scan.nextLine());
+				int demoIndex = Integer.parseInt(scan.nextLine());
 
-			currentUserIndex = demoIndex; // after searching in allCustomer array this variable will store the index of
-											// current user in the array
-			currentUser = allUsers.get(currentUserIndex); // currently hard-coded in StartUp.java
+				currentUserIndex = demoIndex; // after searching in allCustomer array this variable will store the index of
+												// current user in the array
+				currentUser = allUsers.get(currentUserIndex); // currently hard-coded in StartUp.java
 
-			if (currentUser instanceof Landlord) {
-				landLordMenu(); // run menu for landlord
-			} else if (currentUser instanceof Tenant) {
-				tenantMenu(); // run menu for tenant
-			} else if (currentUser instanceof BranchManager) {
-				branchManagerMenu(); // run menu for manager
-			} else if (currentUser instanceof PropertyManager) {
-				propertyManagerMenu(); // run manu for property manager
-			} else if (currentUser instanceof Vendor) {
-				vendorMenu();
-			} else if (currentUser instanceof Buyer) {
-				buyerMenu();
-			} else if (currentUser instanceof BranchAdmin) {
-				System.out.println("Run menu for Branch Admin");
-			} else
-				System.out.println("No such user");
-			infoOk = true;
+				if (currentUser instanceof Landlord) {
+					landLordMenu(); // run menu for landlord
+				} else if (currentUser instanceof Tenant) {
+					tenantMenu(); // run menu for tenant
+				} else if (currentUser instanceof BranchManager) {
+					branchManagerMenu(); // run menu for manager
+				} else if (currentUser instanceof PropertyManager) {
+					propertyManagerMenu(); // run manu for property manager
+				} else if (currentUser instanceof Vendor) {
+					vendorMenu();
+				} else if (currentUser instanceof Buyer) {
+					buyerMenu();
+				} else if (currentUser instanceof BranchAdmin) {
+					System.out.println("Run menu for Branch Admin");
+				} else
+					System.out.println("No such user");
+				infoOk = true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Please log in again");
 		}
 
 	}
@@ -390,7 +399,7 @@ public class RealEstate {
 				System.out.println("<<tobe updated>>");
 				break;
 			case 7:
-				System.out.println("<<tobe updated>>");
+				viewAllAuctions();
 				break;
 			case 8:
 				System.out.println("<<tobe updated>>");
@@ -445,7 +454,7 @@ public class RealEstate {
 				System.out.println("<<tobe updated>>");
 				break;
 			case 5:
-				System.out.println("<<tobe updated>>");
+				makeBid();
 				break;
 			case 6:
 				System.out.println("<<tobe updated>>");
@@ -487,7 +496,54 @@ public class RealEstate {
 		logOut = true;
 	}
 
+	//buyer methods
+	
+	public void makeBid() {
+		String userId= currentUser.getUserID();
+		quitToMainMenu = false;
+		while (!quitToMainMenu) {
+			String title = "Add Auction ID or Q to quit:";
+			addAuctionID(title);
+			if (quitToMainMenu)
+				break;
+			
+			if(currentAuc.getAuctionStatus()!= AuctionStatus.OPENING) {
+				System.out.println("This Auction is currently not opened");
+			}
+			else {
+					currentAuc.makeBid(userId,currentDate);
+					quitToMainMenu=true;
+
+			}
+			
+								
+		}
+	}
+	
+	
+	
 	// vendor methods
+	
+	public void viewAllAuctions() {
+		String userID= currentUser.getUserID();
+		
+		for (Property prop : allProperties) {
+			if(prop instanceof SalebyAuction) {
+				
+				if(prop.getCreatorID().compareTo(userID)==0) {
+					
+					ArrayList<Auction> allAucs= ((SalebyAuction) prop).getAllAuctions();
+					
+					for (Auction auc : allAucs) {
+						System.out.println(auc.getAuctionDetails());
+						
+					}
+				}
+				
+			}
+		}
+	}
+	
 	public void createAuction() {
 		quitToMainMenu = false;
 		while (!quitToMainMenu) {
@@ -1018,6 +1074,58 @@ public class RealEstate {
 		return false;
 	}
 
+	public String addAuctionID(String title) {
+		boolean infoOk = false;
+		String iD = null;
+		while (!infoOk) {
+			try {
+				System.out.println(title);
+				iD = scan.nextLine();
+				if (iD.charAt(0) == 'Q' || iD.charAt(0) == 'q') {
+					infoOk = true;
+					quitToMainMenu = true;
+					break;
+
+				}
+				if (!auctionIdExist(iD)) {
+					throw new IdNotFound("Auction not found");
+				}
+				infoOk = true;
+				return iD;
+			} catch (IdNotFound ex) {
+				System.out.println(ex.getReason());
+
+			} catch (Exception e) {
+				System.out.println("Invalid. Re-enter ID");
+
+			}
+		}
+		return iD;
+	}
+	public boolean auctionIdExist(String iD) {
+		
+		for (Property property : allProperties) {
+			if (property instanceof SalebyAuction) {
+				
+				ArrayList<Auction> allAucs= ((SalebyAuction) property).getAllAuctions();
+				
+				for (Auction auction : allAucs) {
+					if(auction.getAuctionID().compareTo(iD)==0) {
+						System.out.println(auction.getAuctionID()+" found!");
+						currentAuc=auction;
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+		
+	}
+	
+	
+	
+	
+	
 	public void advanceTime() {
 
 		try {
