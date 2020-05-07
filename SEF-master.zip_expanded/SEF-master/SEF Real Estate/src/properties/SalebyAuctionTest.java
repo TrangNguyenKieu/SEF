@@ -17,14 +17,15 @@ import payment.*;
 
 class SalebyAuctionTest {
 	RealEstate re;
-	SalebyAuction sale;
+	SaleProperty sale;
 	Auction auc1;
 	Auction auc2;
 	
 	@BeforeEach
 	public void setup() {
 		re= new RealEstate();
-		sale= new SalebyAuction("BUYER1", "Coburg", "house for sale", "Coburg", 2, 2, 2,"flat");
+		sale= new SaleProperty("BUYER1", "Coburg", "house for sale", "Coburg", 2, 2, 2,"flat");
+		sale.setSaleByAuction();
 		auc1= new Auction(sale.getPropertyID(), RealEstate.currentDate, 3000);
 		auc2= new Auction(sale.getPropertyID(), RealEstate.currentDate, 4000);
 	}

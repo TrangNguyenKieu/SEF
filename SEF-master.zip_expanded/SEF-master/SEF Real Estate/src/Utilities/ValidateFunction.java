@@ -10,7 +10,7 @@ import startUp.RealEstate;
 public class ValidateFunction {
 	//to keep all input validation functions and supporting functions 
 	
-	static Scanner scan=new Scanner(System.in);
+//	static Scanner scan=new Scanner(System.in);
 	
 
 	public static double addMonetaryInfo(String title) {
@@ -19,7 +19,7 @@ public class ValidateFunction {
 		while (!infoOk) {
 			try {
 				System.out.print(title);
-				rent = Double.parseDouble(scan.nextLine());
+				rent = Double.parseDouble(RealEstate.scan.nextLine());
 				infoOk = true;
 				return rent;
 			} catch (Exception e) {
@@ -37,7 +37,7 @@ public class ValidateFunction {
 		while (!infoOk) {
 			try {
 				System.out.print(title);
-				capa = Integer.parseInt(scan.nextLine());
+				capa = Integer.parseInt(RealEstate.scan.nextLine());
 				infoOk = true;
 				return capa;
 			} catch (Exception e) {
@@ -53,7 +53,7 @@ public class ValidateFunction {
 		while (!infoOk) {
 			try {
 				System.out.print(title);
-				info = scan.nextLine();
+				info = RealEstate.scan.nextLine();
 
 				if (info.trim().length() == 0) {
 					throw new FormatException("The field must not be blank");
@@ -80,7 +80,7 @@ public class ValidateFunction {
 		while (!infoOk) {
 			try {
 				System.out.print("Date (dd/mm/yyyy):");
-				String date = scan.nextLine();
+				String date = RealEstate.scan.nextLine();
 
 				if (date.length() == 0) {
 					throw new FormatException("You must enter a text value");

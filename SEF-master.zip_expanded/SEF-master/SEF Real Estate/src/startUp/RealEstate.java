@@ -9,12 +9,14 @@ import Utilities.ApplicationStatus;
 import Utilities.AuctionStatus;
 import Utilities.DateTime;
 import Utilities.PropertyStatus;
+import Utilities.SaleType;
 import Utilities.ValidateFunction;
 import properties.Application;
 import properties.Auction;
 import properties.Property;
 import properties.RentalProperty;
-import properties.SalebyAuction;
+import properties.SaleProperty;
+//import properties.SalebyAuction;
 import users.BranchAdmin;
 import users.BranchManager;
 import users.Buyer;
@@ -38,7 +40,7 @@ public class RealEstate {
 	private static ArrayList<Property> allProperties;
 
 	private int choice;
-	private static Scanner scan = new Scanner(System.in);
+	public static Scanner scan = new Scanner(System.in);
 	private boolean quit; // quit the system
 	private boolean quitToMainMenu;
 	private boolean logOut;
@@ -528,11 +530,11 @@ public class RealEstate {
 		String userID= currentUser.getUserID();
 		
 		for (Property prop : allProperties) {
-			if(prop instanceof SalebyAuction) {
+			if(prop instanceof SaleProperty&&((SaleProperty) prop).getSaleType()==SaleType.AUCTION) {
 				
 				if(prop.getCreatorID().compareTo(userID)==0) {
 					
-					ArrayList<Auction> allAucs= ((SalebyAuction) prop).getAllAuctions();
+					ArrayList<Auction> allAucs= ((SaleProperty)prop).getAllAuctions();
 					
 					for (Auction auc : allAucs) {
 						System.out.println(auc.getAuctionDetails());
@@ -552,9 +554,9 @@ public class RealEstate {
 			if (quitToMainMenu)
 				break;
 			Property currentProp = allProperties.get(currentPropertyIndex);
-			if (currentProp instanceof SalebyAuction) {
+			if (currentProp instanceof SaleProperty&&((SaleProperty) currentProp).getSaleType()==SaleType.AUCTION) {
 
-				if (((SalebyAuction) currentProp).createAuction()) {
+				if (((SaleProperty) currentProp).createAuction()) {
 					quitToMainMenu = true;
 					break;
 				} else
@@ -629,9 +631,10 @@ public class RealEstate {
 
 				String currentSessionID = currentUser.getUserID();
 
-				SalebyAuction aucProp = new SalebyAuction(currentSessionID, address, description, surbub, bed, bath,
+				SaleProperty aucProp = new SaleProperty(currentSessionID, address, description, surbub, bed, bath,
 						cars, type);
-
+				aucProp.setSaleByAuction();
+				
 				allProperties.add(aucProp);
 
 				System.out.println("Successfully add new Property for sale by auction");
@@ -1105,9 +1108,9 @@ public class RealEstate {
 	public boolean auctionIdExist(String iD) {
 		
 		for (Property property : allProperties) {
-			if (property instanceof SalebyAuction) {
+			if (property instanceof SaleProperty &&((SaleProperty) property).getSaleType()==SaleType.AUCTION) {
 				
-				ArrayList<Auction> allAucs= ((SalebyAuction) property).getAllAuctions();
+				ArrayList<Auction> allAucs= ((SaleProperty) property).getAllAuctions();
 				
 				for (Auction auction : allAucs) {
 					if(auction.getAuctionID().compareTo(iD)==0) {

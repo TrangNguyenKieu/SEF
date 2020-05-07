@@ -3,7 +3,8 @@ import java.util.Scanner;
 
 import Utilities.EmployeeType;
 import properties.RentalProperty;
-import properties.SalebyAuction;
+import properties.SaleProperty;
+//import properties.SalebyAuction;
 import users.BranchAdmin;
 import users.BranchManager;
 import users.Buyer;
@@ -32,9 +33,9 @@ public class StartUp {
 		
 		RentalProperty prop01= new RentalProperty(landlord.getUserID(), "120 Abbey road", "This house is not for sale", "Corney Island", 4, 2, 2, "house", 180, "12 months or more");
 //		prop01.setStatusToAvailable();//for testing
-		SalebyAuction prop02= new SalebyAuction(vendor.getUserID(), "130 Rennie", "House for sale", "Melbourne", 3, 2, 1, "house");
+		SaleProperty prop02= new SaleProperty(vendor.getUserID(), "130 Rennie", "House for sale", "Melbourne", 3, 2, 1, "house");
 		prop02.setStatusToAvailable();
-		
+		prop02.setSaleByAuction();
 		
 		re.getAllUsers().add(landlord);
 		re.getAllUsers().add(tenant);
