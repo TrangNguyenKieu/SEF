@@ -109,7 +109,7 @@ public class RealEstate {
 				// then search for user ID in allCustomers array and return the current index
 
 				// demo login
-				System.out.println("Enter a number from 0-3");
+				System.out.println("Enter a number from 0-6");
 				System.out.println("0: login as landlord");
 				System.out.println("1: login as tenant");
 				System.out.println("2: login as branch manager");

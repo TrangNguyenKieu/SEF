@@ -7,6 +7,8 @@ import payment.*;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.omg.CORBA.portable.InputStream;
+import java.io.ByteArrayInputStream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,8 @@ class ApplicationTest {
 	}
 	
 	//positive 
+
+	
 	@Test 
 	void testAcceptedApplicationStatus() throws StatusException {
 		
@@ -61,6 +65,10 @@ class ApplicationTest {
 	
 	
 	//negative
+	
+	
+	
+	
 	@Test 
 	void testResponseToRejectedAppException() {
 		//respond to a rejected app will through StatusException

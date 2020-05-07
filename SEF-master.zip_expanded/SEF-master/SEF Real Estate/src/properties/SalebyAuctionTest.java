@@ -46,4 +46,6 @@ class SalebyAuctionTest {
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		assertEquals(false, sale.createAuction());
 	}
+	
+
 }
