@@ -12,7 +12,7 @@ public class Employee extends User{
 		this.name=name;
 		this.isFulltime=isFulltime;
 		employeeCount++;
-		super.setUserID("EMP" + String.format("%0" + 3 + "d", employeeCount));
+		//super.setUserID("EMP" + String.format("%0" + 3 + "d", employeeCount));
 	}
 
 	public double getSalary() {

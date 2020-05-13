@@ -5,7 +5,7 @@ private static int count;
 
 public Buyer() {
 	count++;
-	super.setUserID("BUY" + String.format("%0" + 3 + "d", count));
+	//super.setUserID("BUY" + String.format("%0" + 3 + "d", count));
 }
 
 }

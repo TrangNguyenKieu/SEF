@@ -37,13 +37,13 @@ public class StartUp {
 		prop02.setStatusToAvailable();
 		prop02.setSaleByAuction();
 		
-		re.getAllUsers().add(landlord);
-		re.getAllUsers().add(tenant);
-		re.getAllUsers().add(branman);
-		re.getAllUsers().add(proman);
-		re.getAllUsers().add(vendor);
-		re.getAllUsers().add(buyer);
-		re.getAllUsers().add(bradmin);
+		// re.getAllUsers().add(landlord);
+		// re.getAllUsers().add(tenant);
+		// re.getAllUsers().add(branman);
+		// re.getAllUsers().add(proman);
+		// re.getAllUsers().add(vendor);
+		// re.getAllUsers().add(buyer);
+		// re.getAllUsers().add(bradmin);
 		
 		re.getAllProperty().add(prop01);
 		re.getAllProperty().add(prop02);
