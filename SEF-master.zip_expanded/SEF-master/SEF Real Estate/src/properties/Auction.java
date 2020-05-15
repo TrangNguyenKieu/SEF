@@ -83,36 +83,81 @@ public void makeBid(String creatorID, DateTime date)  {
 
 public void checkAuctionStatus() {
 	if(status==AuctionStatus.WAITING) {
+		
+		// if auction date has passed
 		if(DateTime.diffHours( this.auctionDate ,RealEstate.currentDate) <=0) {
-		//auction will be opened when auction date comes
 			
+		//auction will be opened 			
 			this.openAuction();
 			System.out.println("Auction "+ this.ID+ " has been opened");
 		}
-	} else if(status==AuctionStatus.OPENING && lastUpdate!= null) {
-		//if no new bid after 30 seconds, auction will be closed
 		
+		//if auction is opening and there's at least 1 bid
+	} else if(status==AuctionStatus.OPENING && lastUpdate!= null) {
+		
+		//if no new bid after 30 seconds, auction will be closed
 		if(DateTime.diffSecond(RealEstate.currentDate, lastUpdate) >30) {
 			this.closeAuction();
-			System.out.println("Auction "+ this.ID+ " has been closed");
+			System.out.println("Auction "+ this.ID+ " has been closed as there is no new bid after 30 seconds");
+			checkHighestBidStatus();
 		}
-	}
+		
+	} 
 }
 
 public void checkHighestBidStatus() {
-	int i = allBids.size()-1;
-	highestBid=allBids.get(i);
 	
-	if(highestBid.getStatus()==BidStatus.PENDING) {
-		highestBid.acceptBid();
+	int i; //index of highest bid
+	
+	if (this.auctionSuccess==false) {//if there are any pending or accepted bids in array
 		
-	} else if(highestBid.getStatus()==BidStatus.ACCEPTED) {
-		if(DateTime.diffHours(RealEstate.currentDate, highestBid.getAcceptedDate()) >23) {
-			//continue writing.........
+		// set highest bid
+		if(allBids.size()>0) {
 			
+			//highest bid is the last bid in array
+			i=allBids.size()-1;
+			highestBid=allBids.get(i);
+		
+		
+			if(highestBid.getStatus()==BidStatus.PENDING) {
+			highestBid.acceptBid(RealEstate.currentDate);
+			System.out.println("Bid no "+  highestBid.getBidID()+ "has been accepted."
+					+ "Buyer now needs to pay deposit within 24 hours.");
 			
+			} else if(highestBid.getStatus()==BidStatus.ACCEPTED) {
+			
+				//if deposit has not been paid
+				if(highestBid.getDepositedPaymentStatus()==false) {
+					
+					//if more than 24 hours have passed since accepted date, reject and remove bid
+					if(DateTime.diffHours(RealEstate.currentDate, highestBid.getAcceptedDate()) >23) {
+						System.out.println("Bid "+ highestBid.getBidID()+" "+ "has been rejected"
+								+ " as buyer failed to pay deposit within 24 hours");
+						allBids.remove(highestBid);//remove current bid from all bid array
+						
+						//if no more bid left, then auction has failed.
+						if (allBids.size()==0) {
+						System.out.println("Auction "+ this.ID+ " has failed as no buyer was able to pay deposit on time");	
+						} 
+						else {
+							//set the next bid as highest bid
+							i=allBids.size()-1;
+							highestBid=allBids.get(i);
+							highestBid.acceptBid(RealEstate.currentDate);
+							System.out.println("Bid no "+  highestBid.getBidID()+ "has been accepted."
+									+ "Buyer now needs to pay deposit within 24 hours.");
+						}
+					}
+					
+				//if deposit has been paid, then set auction to success			
+			} else {
+				setAuctionResultToSuccess();
+				System.out.println("Auction "+ this.ID+ " has succeeded.");	
+			}
+		}
 		}
 	}
+	
 }
 
 //accessors/mutators

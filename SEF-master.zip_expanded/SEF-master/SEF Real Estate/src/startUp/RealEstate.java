@@ -1115,6 +1115,7 @@ public class RealEstate {
 				for (Auction auction : allAucs) {
 					if(auction.getAuctionID().compareTo(iD)==0) {
 						System.out.println(auction.getAuctionID()+" found!");
+						
 						currentAuc=auction;
 						return true;
 					}
@@ -1152,14 +1153,26 @@ public class RealEstate {
 			System.out.println(DateTime.diffSecond(currentDate, previousDate) + " seconds " + "has passed");
 
 			checkApplicationStatus();
-
+			checkAuctionStatus();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Error with input. Try again");
+			e.printStackTrace();
 		}
 
 	}
 
+	public void checkAuctionStatus() {
+		for(Property prop: allProperties) {
+			if (prop instanceof SaleProperty) {
+				for(Auction auc: ((SaleProperty) prop).getAllAuctions()) {
+					auc.checkAuctionStatus();
+				}
+			}
+		}
+	}
+	
+	
 	public void checkApplicationStatus() {
 		for (Property prop : allProperties) {
 			if (prop instanceof RentalProperty) {

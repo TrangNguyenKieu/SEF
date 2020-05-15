@@ -39,12 +39,21 @@ public BidStatus getStatus() {
 	return status;
 }
 
-public void acceptBid() {
+public void acceptBid(DateTime date) {
 	this.status=BidStatus.ACCEPTED;
+	this.acceptedDate=date;
 }
 
 public void rejectBid() {
 	this.status=BidStatus.REJECTED;
 }
 
+public String getBidID() {
+	return this.iD;
+}
+
+public void receivedDeposit() {
+	this.depositedPayment=true;
+	System.out.println("Deposit has been received.");
+}
 }
