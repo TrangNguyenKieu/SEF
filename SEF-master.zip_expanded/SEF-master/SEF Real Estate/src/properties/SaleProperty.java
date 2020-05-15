@@ -1,11 +1,13 @@
 package properties;
 import java.util.ArrayList;
 
+import SystemExceptions.AmountException;
 import Utilities.AuctionStatus;
 import Utilities.DateTime;
 import Utilities.PropertyStatus;
 import Utilities.SaleType;
 import Utilities.ValidateFunction;
+import users.Buyer;
 import users.Employee;
 import users.SaleConsultant;
 
@@ -13,15 +15,32 @@ public class SaleProperty extends Property {
 
 	private double propertyValue;
 	private double commissionRate;
+	private double minimumPrice;
+	
 	private ArrayList<Auction> allAuctions;
+	private ArrayList<Offer> allOffers;
 	private static int count;
 	private SaleType saleType;
 	
+	//constructor for sale by auction
 	public SaleProperty(String creatorID, String address, String des, String surbub, int bed, int bath, int cars, String type) {
 		super(creatorID, address, des, surbub,bed,bath,cars,type);
 		allAuctions= new ArrayList<Auction>();
+
 		count++;
 		this.setPropertyID("SAL"+String.format("%0" + 3 + "d", count));
+		saleType=SaleType.AUCTION;
+	}
+	
+	//constructor for sale by negotiation
+	public SaleProperty(String creatorID, String address, String des, String surbub, int bed, int bath, int cars, String type, double min) {
+		super(creatorID, address, des, surbub,bed,bath,cars,type);
+
+		allOffers=new ArrayList<Offer>();
+		count++;
+		this.setPropertyID("SAL"+String.format("%0" + 3 + "d", count));
+		this.minimumPrice=min;
+		saleType=SaleType.NEGOTIATION;
 	}
 	
 	public SaleType getSaleType() {
@@ -62,8 +81,25 @@ public class SaleProperty extends Property {
 	
 	//override
 	public String getPropertyDetails() {
-		return super.getPropertyDetails()+ "\n" + "Sale Type:" +"\t"+ this.saleType;
+		return super.getPropertyDetails()+ "\n" + "Sale Type:" +"\t"+ this.saleType+"\n" + "Minimum Price:" +"\t"+ this.minimumPrice;
 	}
+	
+	
+	//sale by nego function
+	public boolean createOffer(String prop, Buyer buyer, double offer) throws AmountException {
+		if(offer<this.minimumPrice) throw new AmountException("Offer must be higher than minimum price of:" + this.minimumPrice);
+		
+		else {
+			Offer newOffer = new Offer(prop, buyer, offer);
+			allOffers.add(newOffer);
+			System.out.println("Successfully added new offer:" + newOffer.getOfferID()+ " to property:"+ prop);
+			return true;
+			
+		}
+
+	}
+	
+	
 	
 	
 	//sale by auction function 

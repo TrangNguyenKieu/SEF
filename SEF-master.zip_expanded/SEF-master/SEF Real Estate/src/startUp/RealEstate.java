@@ -456,7 +456,7 @@ public class RealEstate {
 				System.out.println("<<tobe updated>>");
 				break;
 			case 4:
-				System.out.println("<<tobe updated>>");
+				makeOffer();
 				break;
 			case 5:
 				makeBid();
@@ -502,6 +502,44 @@ public class RealEstate {
 	}
 
 	//buyer methods
+	public void makeOffer() {
+		try {
+			quitToMainMenu = false;
+			while (!quitToMainMenu) {
+				String title = "Add Property ID:";
+				String propID = addPropertyID(title);
+				if (quitToMainMenu)
+					break;
+				Property currentProp = allProperties.get(currentPropertyIndex);
+				if (currentProp instanceof SaleProperty &&((SaleProperty) currentProp).getSaleType()==SaleType.NEGOTIATION) {
+
+					if (currentProp.getStatus() != PropertyStatus.Available) {
+						throw new StatusException("This property is not available");
+					} else {
+						title = "Offer amount:";
+						double offer = ValidateFunction.addMonetaryInfo(title);
+
+						if(((SaleProperty)currentProp).createOffer(propID,(Buyer) currentUser, offer)) {
+							quitToMainMenu=true;
+						}
+
+					}
+				} else {
+					throw new TypeException("Cannot make offer.This is property is not a sale by negotiation property.");
+				}
+
+			}
+		} catch (TypeException e) {
+			System.out.println(e.getReason());
+		} catch (StatusException stt) {
+			System.out.println(stt.getReason());
+		}catch(AmountException e) {
+			System.out.println(e.getReason());
+		} catch (Exception e) {
+			System.out.println("Cannot apply for this property");
+			e.printStackTrace();
+		}
+	}
 	
 	public void makeBid() {
 		String userId= currentUser.getUserID();
@@ -639,6 +677,49 @@ public class RealEstate {
 
 	public void addSalebyNego() {
 		System.out.println("adding property for sale by negotiation");
+		boolean validProperty=false;
+		while(!validProperty) {
+			try {
+				System.out.println("Enter details of your property below:");
+
+				String title = "Address:";
+				String address = ValidateFunction.addTextInfo(title);
+
+				title = "Description:";
+				String description = ValidateFunction.addTextInfo(title);
+
+				title = "Surbub:";
+				String surbub = ValidateFunction.addTextInfo(title);
+
+				title = "Number of Bedrooms: ";
+				int bed = ValidateFunction.addCapacity(title);
+
+				title = "Number of Bathrooms: ";
+				int bath = ValidateFunction.addCapacity(title);
+
+				title = "Number of car Spaces: ";
+				int cars = ValidateFunction.addCapacity(title);
+
+				title = "Property type (house/ unit/flat/townhouse/studio):";
+				String type = ValidateFunction.addTextInfo(title);
+
+				title="Minimum price:";
+				double min=ValidateFunction.addMonetaryInfo(title);
+				
+				String currentSessionID = currentUser.getUserID();
+
+				SaleProperty negoProp = new SaleProperty(currentSessionID, address, description, surbub, bed, bath,
+						cars, type,min);
+				
+				allProperties.add(negoProp);
+
+				System.out.println("Successfully add new Property for sale by negotiation");
+
+				validProperty = true;
+			}catch(Exception e) {
+				System.out.println("Cannot add new property");
+			}
+		}
 	}
 
 	public void addSalebyAuct() {
