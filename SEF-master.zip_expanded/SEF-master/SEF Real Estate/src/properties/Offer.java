@@ -23,8 +23,28 @@ public class Offer {
 		
 	}
 	
+	public String getOfferDetails() {
+		return "Offer Id:" + "\t"+ this.offerID+"\n"+
+				"Buyer Id:"+"\t"+this.buyer.getUserID()+"\n"+
+				"Offer Price:"+ "\t"+this.offerPrice+ "\n"+
+				"Status:" +"\t"+this.status+"\n"+
+				"Accepted Date:" +"\t"+this.acceptedDate+"\n"+
+				"Deposit Paid? "+ "\t"+this.depositPaid;
+	}
 	//accessor/mutators
 	public String getOfferID() {
 		return this.offerID;
+	}
+	
+	public ApplicationStatus getOfferStatus() {
+		return status;
+	}
+	
+	public void rejectOffer() {
+		this.status=ApplicationStatus.Rejected;
+	}
+	
+	public void acceptOffer() {
+		this.status=ApplicationStatus.Accepted;
 	}
 }

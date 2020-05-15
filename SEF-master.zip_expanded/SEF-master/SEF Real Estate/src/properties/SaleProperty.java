@@ -99,7 +99,9 @@ public class SaleProperty extends Property {
 
 	}
 	
-	
+	public ArrayList<Offer> getAllOffers(){
+		return allOffers;
+	}
 	
 	
 	//sale by auction function 

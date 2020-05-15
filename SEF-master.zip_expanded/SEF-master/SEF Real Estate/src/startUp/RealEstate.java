@@ -15,6 +15,7 @@ import Utilities.ValidateFunction;
 import properties.Application;
 import properties.Auction;
 import properties.Bid;
+import properties.Offer;
 import properties.Property;
 import properties.RentalProperty;
 import properties.SaleProperty;
@@ -36,6 +37,7 @@ public class RealEstate {
 
 	private static User currentUser;
 	private static Application currentApp;
+	private static Offer currentOffer;
 	private static RentalProperty currentRentProp;
 	private static SaleProperty currentSaleProp;
 	private static Auction currentAuc;
@@ -53,6 +55,7 @@ public class RealEstate {
 	public static long time;
 	public static DateTime currentDate;
 	private String appID;
+	private String offerID;
 
 	public RealEstate() {
 		time = System.currentTimeMillis();
@@ -398,10 +401,10 @@ public class RealEstate {
 				createAuction();
 				break;
 			case 5:
-				System.out.println("<<tobe updated>>");
+				viewAllOffer();
 				break;
 			case 6:
-				System.out.println("<<tobe updated>>");
+				reviewOffer();
 				break;
 			case 7:
 				viewAllAuctions();
@@ -563,9 +566,7 @@ public class RealEstate {
 		}
 	}
 	
-	
-	
-	// vendor methods
+
 	
 	public void makeSaleDeposit() {
 		String userId= currentUser.getUserID();
@@ -598,6 +599,133 @@ public class RealEstate {
 			
 								
 		}
+	}
+	
+	// vendor methods
+	
+	public void viewAllOffer() {
+		for(Property prop:allProperties) {
+			if(prop instanceof SaleProperty &&((SaleProperty) prop).getSaleType()==SaleType.NEGOTIATION) {
+				ArrayList<Offer> allOffers= ((SaleProperty)prop).getAllOffers();
+				
+				for(Offer offer:allOffers) {
+					System.out.println(offer.getOfferDetails());
+				}
+			}
+		}
+	}
+	
+	public void reviewOffer() {
+		try {
+			System.out.println("Accept or reject Offer or  press Q to quit");
+			quitToMainMenu = false;
+			while (!quitToMainMenu) {
+				String title = "Add Offer ID:";
+				offerID = addOfferID(title);
+				if (offerID.compareTo("q") == 0 || offerID.compareTo("q") == 0) {
+					quitToMainMenu = true;
+					break;
+				}
+				if (quitToMainMenu)
+				{	break;}
+				if (currentOffer.getOfferStatus() == ApplicationStatus.Rejected) {
+					throw new StatusException("This offer has been previously rejected. This cannot be undone");
+
+				} else if (currentOffer.getOfferStatus() == ApplicationStatus.Accepted) {
+					throw new StatusException("This offer has been previously accepted. This cannot be undone");
+				}
+				 else {
+					acceptOrRejectOffer();
+					quitToMainMenu = true;
+				}
+			}
+		} catch (StatusException e) {
+			System.out.println(e.getReason());
+		} catch (Exception e) {
+			System.out.println("Cannot respond to offer. Try again.");
+		}
+	}
+	
+	public void acceptOrRejectOffer() {
+		quitToMainMenu = false;
+		while (!quitToMainMenu) {
+
+			System.out.println("Select 1 option [1-3]");
+			System.out.printf("1. Accept Offer");
+			System.out.println();
+			System.out.printf("2.Reject Offer");
+			System.out.println();
+			System.out.printf("3. Back to Main Menu");
+			System.out.println();
+
+			enterChoice();
+
+			try {
+				switch (choice) {
+				case 1:
+					// accept application
+					
+					acceptOffer();
+
+					quitToMainMenu = true;
+					break;
+				case 2:
+					rejectOffer();
+					quitToMainMenu = true;
+					break;
+
+				case 3:
+					quitToMainMenu = true;
+					break;
+
+				default:
+					System.out.println("No such operation");
+					break;
+				}
+			} catch (StatusException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getReason());
+			}
+		}
+	}
+	
+	public void acceptOffer() throws StatusException{
+		// accept offer
+				if (currentOffer.getOfferStatus() == ApplicationStatus.Rejected) {
+					throw new StatusException("This offer status is currently Rejected. This cannot be undone.");
+
+				} else if (currentOffer.getOfferStatus() == ApplicationStatus.Accepted) {
+					throw new StatusException("This offer status is currently Accepted. No further work needed.");
+				} else {
+				currentOffer.acceptOffer();
+
+				System.out.println("Current Offer status is:" + currentOffer.getOfferStatus());
+
+
+				// set property status to in process
+				currentSaleProp.setStatusToInprocess();
+
+				// reject all other applications of the same property
+				ArrayList<Offer> allOffers=currentSaleProp.getAllOffers();
+				for(Offer offer:allOffers) {
+					if(offer.getOfferID().compareTo(currentOffer.getOfferID())!=0) {
+						offer.rejectOffer();
+					}
+				}
+		}
+	}
+	
+	public void rejectOffer() throws StatusException {
+		if (currentOffer.getOfferStatus() == ApplicationStatus.Rejected) {
+			throw new StatusException("This offer has been previously rejected. No further work needed");
+
+		} else if (currentOffer.getOfferStatus()== ApplicationStatus.Accepted) {
+			throw new StatusException("This offer has been previously accepted. This cannot be undone");
+		}else {
+		currentOffer.rejectOffer();
+		
+		System.out.println("Current Offer status is:" + currentOffer.getOfferStatus());
+	}
 	}
 	
 	public void viewAllAuctions() {
@@ -1179,20 +1307,72 @@ public class RealEstate {
 	public boolean ApplicationIdExits(String ID) {
 
 		for (int i = 0; i < allProperties.size(); i++) {
-			ArrayList<Application> allApps = ((RentalProperty) allProperties.get(i)).getAllApplications();
-			currentRentProp = ((RentalProperty) allProperties.get(i));
+			if(allProperties.get(i) instanceof RentalProperty) {
+				ArrayList<Application> allApps = ((RentalProperty) allProperties.get(i)).getAllApplications();
+				currentRentProp = ((RentalProperty) allProperties.get(i));
 
-			for (int j = 0; j < allApps.size(); j++) {
-				if (allApps.get(j).getApplicationID().compareTo(ID) == 0) {
-					System.out.println(allApps.get(j).getApplicationID() + "found!");
+				for (int j = 0; j < allApps.size(); j++) {
+					if (allApps.get(j).getApplicationID().compareTo(ID) == 0) {
+						System.out.println(allApps.get(j).getApplicationID() + "found!");
 
-					currentApp = allApps.get(j);
+						currentApp = allApps.get(j);
 
-					currentPropertyIndex = i;
-					return true;
+						currentPropertyIndex = i;
+						return true;
+					}
 				}
 			}
+			
 
+		}
+		return false;
+	}
+	
+	public String addOfferID(String title) {
+		boolean infoOk = false;
+		String iD = null;
+		while (!infoOk) {
+			try {
+				System.out.println(title);
+				iD = scan.nextLine();
+				if (iD.charAt(0) == 'Q' || iD.charAt(0) == 'q') {
+					infoOk = true;
+					quitToMainMenu = true;
+					break;
+
+				}
+				if (!offerIdExists(iD)) {
+					throw new IdNotFound("Offer not found");
+				}
+				infoOk = true;
+				return iD;
+			} catch (IdNotFound ex) {
+				System.out.println(ex.getReason());
+
+			} catch (Exception e) {
+				System.out.println("Invalid. Re-enter ID");
+				e.printStackTrace();
+				
+
+			}
+		}
+		return iD;
+	}
+	
+	public boolean offerIdExists(String ID) {
+		for(Property prop:allProperties) {
+			if(prop instanceof SaleProperty &&((SaleProperty) prop).getSaleType()==SaleType.NEGOTIATION) {
+				ArrayList<Offer> allOffers=((SaleProperty)prop).getAllOffers();
+				for(Offer offer:allOffers) {
+					if (offer.getOfferID().compareTo(ID)==0) {
+						System.out.println(offer.getOfferID()+ " found!");
+						currentSaleProp=(SaleProperty) prop;
+						currentOffer=offer;
+						return true;
+					}
+				}
+			}
+			
 		}
 		return false;
 	}
