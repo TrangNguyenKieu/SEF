@@ -7,12 +7,14 @@ import java.util.Scanner;
 import SystemExceptions.*;
 import Utilities.ApplicationStatus;
 import Utilities.AuctionStatus;
+import Utilities.BidStatus;
 import Utilities.DateTime;
 import Utilities.PropertyStatus;
 import Utilities.SaleType;
 import Utilities.ValidateFunction;
 import properties.Application;
 import properties.Auction;
+import properties.Bid;
 import properties.Property;
 import properties.RentalProperty;
 import properties.SaleProperty;
@@ -35,6 +37,7 @@ public class RealEstate {
 	private static User currentUser;
 	private static Application currentApp;
 	private static RentalProperty currentRentProp;
+	private static SaleProperty currentSaleProp;
 	private static Auction currentAuc;
 	private static ArrayList<User> allUsers;
 	private static ArrayList<Property> allProperties;
@@ -459,7 +462,7 @@ public class RealEstate {
 				makeBid();
 				break;
 			case 6:
-				System.out.println("<<tobe updated>>");
+				makeSaleDeposit();
 				break;
 			case 7:
 				System.out.println("<<tobe updated>>");
@@ -505,7 +508,7 @@ public class RealEstate {
 		quitToMainMenu = false;
 		while (!quitToMainMenu) {
 			String title = "Add Auction ID or Q to quit:";
-			addAuctionID(title);
+			addAuctionID(title); //validate input
 			if (quitToMainMenu)
 				break;
 			
@@ -525,6 +528,39 @@ public class RealEstate {
 	
 	
 	// vendor methods
+	
+	public void makeSaleDeposit() {
+		String userId= currentUser.getUserID();
+		quitToMainMenu = false;
+		while (!quitToMainMenu) {
+			String title = "Add Auction ID or Q to quit:";
+			addAuctionID(title); //validate input
+			if (quitToMainMenu)
+				break;
+			
+			if(currentAuc.getAuctionStatus()==AuctionStatus.CLOSED) {
+				ArrayList<Bid> allBids= currentAuc.getAllBids();
+				
+				for(Bid bid:allBids) {
+					if(userId==bid.getCreatorID() && bid.getStatus()==BidStatus.ACCEPTED) {
+						bid.receivedDeposit(); //set bid deposit status to true
+						currentAuc.checkHighestBidStatus();//update auction status after payment
+						currentSaleProp.setStatusToUnderContract(); //update property status
+						
+						//perform banking transactions here....
+						
+					}
+				}
+			}
+			else {
+					System.out.println("Cannot make deposit for this auction. It is either "
+							+ "not yet Closed or your bid is not yet Accepted by the vendor.");
+
+			}
+			
+								
+		}
+	}
 	
 	public void viewAllAuctions() {
 		String userID= currentUser.getUserID();
@@ -555,12 +591,15 @@ public class RealEstate {
 				break;
 			Property currentProp = allProperties.get(currentPropertyIndex);
 			if (currentProp instanceof SaleProperty&&((SaleProperty) currentProp).getSaleType()==SaleType.AUCTION) {
-
-				if (((SaleProperty) currentProp).createAuction()) {
-					quitToMainMenu = true;
-					break;
+				if(currentProp.getStatus()==PropertyStatus.Available) {
+					if (((SaleProperty) currentProp).createAuction()) {
+						quitToMainMenu = true;
+						break;
+					} else
+						System.out.println("Cannot add new auction to property");
 				} else
-					System.out.println("Cannot add new auction to property");
+					System.out.println("This property is not available. Cannot add new auction.");
+				
 
 			} else
 				System.out.println("This is not a sale by auction property");
@@ -1109,7 +1148,7 @@ public class RealEstate {
 		
 		for (Property property : allProperties) {
 			if (property instanceof SaleProperty &&((SaleProperty) property).getSaleType()==SaleType.AUCTION) {
-				
+				currentSaleProp=(SaleProperty)property;
 				ArrayList<Auction> allAucs= ((SaleProperty) property).getAllAuctions();
 				
 				for (Auction auction : allAucs) {

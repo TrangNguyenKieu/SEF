@@ -76,6 +76,10 @@ public abstract class Property {
  public void setStatusToInprocess() {
 	 this.status=PropertyStatus.InProcess;
  }
+ 
+ public void setStatusToUnderContract() {
+	 this.status=PropertyStatus.UnderContract;
+ }
  public void setEmployee(Employee emp) {
         this.employee=emp;
  }

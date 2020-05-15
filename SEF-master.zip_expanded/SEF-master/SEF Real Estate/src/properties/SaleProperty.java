@@ -75,8 +75,14 @@ public class SaleProperty extends Property {
 	public boolean auctionHistoryValid() {
 		if(allAuctions.size()>0) {
 			for(Auction auc: allAuctions) {
+				//if there is any opening or waiting auction, cannot create new auction
 				if (auc.getAuctionStatus()==AuctionStatus.OPENING
-						|| auc.getAuctionStatus()==AuctionStatus.WAITING) return false;
+						|| auc.getAuctionStatus()==AuctionStatus.WAITING) {
+					return false;
+				}
+//				 else if(auc.getAuctionStatus()==AuctionStatus.CLOSED && auc.getAuctionResult()==true) {
+//					return false;
+//				}
 			}
 			return true;
 		} else return true;
