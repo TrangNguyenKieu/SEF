@@ -204,11 +204,8 @@ public class RealEstate {
 		System.out.println("Are you are:- " + "\n");
 		System.out.println("0:- Landlord");
 		System.out.println("1:- Tenant");
-		System.out.println("2:- Branch manager");
-		System.out.println("3:- Property manager");
-		System.out.println("4:- Vendor");
-		System.out.println("5:- Buyer");
-		System.out.println("6:- Branch admin");
+		System.out.println("2:- Vendor");
+		System.out.println("3:- Buyer");
 
 		int demoIndex = Integer.parseInt(scan.nextLine());
 
@@ -221,19 +218,10 @@ public class RealEstate {
 			user = new Tenant();
 			break;
 			case 2: 
-			user = new BranchManager("", false);
-			break;
-			case 3: 
-			user = new PropertyManager("", false);
-			break;
-			case 4: 
 			user = new Vendor();
 			break;
-			case 5: 
+			case 3: 
 			user = new Buyer();
-			break;
-			case 6: 
-			user = new BranchAdmin("", false);
 			break;
 		}
 
