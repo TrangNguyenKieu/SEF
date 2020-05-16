@@ -697,14 +697,15 @@ public class RealEstate {
 				} else if (currentOffer.getOfferStatus() == ApplicationStatus.Accepted) {
 					throw new StatusException("This offer status is currently Accepted. No further work needed.");
 				} else {
-				currentOffer.acceptOffer();
+				currentOffer.acceptOffer(currentDate);
 
 				System.out.println("Current Offer status is:" + currentOffer.getOfferStatus());
 
 
 				// set property status to in process
 				currentSaleProp.setStatusToInprocess();
-
+				System.out.println("Property:"+ currentSaleProp.getPropertyID()+ " status is now InProcess");
+				
 				// reject all other applications of the same property
 				ArrayList<Offer> allOffers=currentSaleProp.getAllOffers();
 				for(Offer offer:allOffers) {
@@ -1160,6 +1161,7 @@ public class RealEstate {
 			if (prop instanceof RentalProperty) {
 				if (((RentalProperty) prop).getAllApplications().contains(currentApp)) {
 					prop.setStatusToInprocess();
+					System.out.println("Property:"+ prop.getPropertyID()+ " status is now InProcess");
 				}
 			}
 		
@@ -1454,6 +1456,8 @@ public class RealEstate {
 
 			checkApplicationStatus();
 			checkAuctionStatus();
+			checkOfferStatus();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Error with input. Try again");
@@ -1464,12 +1468,22 @@ public class RealEstate {
 
 	public void checkAuctionStatus() {
 		for(Property prop: allProperties) {
-			if (prop instanceof SaleProperty) {
+			if (prop instanceof SaleProperty && ((SaleProperty)prop).getSaleType()==SaleType.AUCTION) {
 				for(Auction auc: ((SaleProperty) prop).getAllAuctions()) {
 					auc.checkAuctionStatus();
 				}
 			}
 		}
+	}
+	
+	public void checkOfferStatus() {
+	for (Property prop:allProperties) {
+		if(prop instanceof SaleProperty && ((SaleProperty)prop).getSaleType()==SaleType.NEGOTIATION ) {
+			for(Offer offer:((SaleProperty)prop).getAllOffers()) {
+				offer.checkOfferStatus(prop);
+			}
+		}
+	}
 	}
 	
 	
