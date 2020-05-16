@@ -39,6 +39,15 @@ public class StartUp {
 		prop02.setStatusToAvailable();
 		prop02.setSaleByAuction();
 		
+
+		// re.getAllUsers().add(landlord);
+		// re.getAllUsers().add(tenant);
+		// re.getAllUsers().add(branman);
+		// re.getAllUsers().add(proman);
+		// re.getAllUsers().add(vendor);
+		// re.getAllUsers().add(buyer);
+		// re.getAllUsers().add(bradmin);
+
 		
 		//hard code new sale for auction 2 
 		SaleProperty prop04= new SaleProperty("1234", "130 Rennie", "House for sale", "Melbourne", 3, 2, 1, "house");
@@ -53,15 +62,7 @@ public class StartUp {
 		//hardcode new sale by negotiation 2
 		SaleProperty prop05= new SaleProperty("abcd","140 Danny", "House for nego", "Sydney", 3, 2, 1, "flat", 10000);
 		prop05.setStatusToAvailable();
-		
-		
-		re.getAllUsers().add(landlord);
-		re.getAllUsers().add(tenant);
-		re.getAllUsers().add(branman);
-		re.getAllUsers().add(proman);
-		re.getAllUsers().add(vendor);
-		re.getAllUsers().add(buyer);
-		re.getAllUsers().add(bradmin);
+
 		
 		re.getAllProperty().add(prop01);
 		re.getAllProperty().add(prop02);

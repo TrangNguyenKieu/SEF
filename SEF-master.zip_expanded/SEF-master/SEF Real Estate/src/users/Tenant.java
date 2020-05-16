@@ -1,4 +1,7 @@
 package users;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Tenant extends Customer {
 	private static int tenantCount;
 	private String bankName;
@@ -7,7 +10,7 @@ public class Tenant extends Customer {
 
 	public Tenant() {
 		tenantCount++;
-		super.setUserID("TEN" + String.format("%0" + 3 + "d", tenantCount));
+		//super.setUserID("TEN" + String.format("%0" + 3 + "d", tenantCount));
 	}
 	
 	

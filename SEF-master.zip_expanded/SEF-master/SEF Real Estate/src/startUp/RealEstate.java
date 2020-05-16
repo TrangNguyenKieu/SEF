@@ -55,7 +55,10 @@ public class RealEstate {
 	public static long time;
 	public static DateTime currentDate;
 	private String appID;
+
+
 	private String offerID;
+
 
 	public RealEstate() {
 		time = System.currentTimeMillis();
@@ -66,6 +69,7 @@ public class RealEstate {
 	}
 
 	public void landingPageMenu() {
+		
 		quit = false;
 		while (!quit) {
 
@@ -108,29 +112,50 @@ public class RealEstate {
 		boolean infoOk = false;
 		
 		try {
-			while (!infoOk) {
+			outer : while (!infoOk) {
 				System.out.println("*******Login Process*******");
 
 				// require user to enter username and password
+				System.out.println("Enter username :");
+				String username = scan.nextLine();
+				
+				System.out.println("Enter password :");
+				String password = scan.nextLine();
+
+
 				// make sure username exists and username matches password
+				for(User user : allUsers) {
+					if(user.getUsername().equals(username) ) {
+						if(user.getPassword().equals(password)) {
+							System.out.println("Login Successful \n");
+							currentUserIndex=allUsers.indexOf(user);
+							currentUser = user;
+							break;
+						}else {
+							System.out.println("Username/Password not found \n");
+							continue outer;
+						}
+					}
+				}
+			
 				// get the user ID
 				// then search for user ID in allCustomers array and return the current index
 
 				// demo login
-				System.out.println("Enter a number from 0-6");
-				System.out.println("0: login as landlord");
-				System.out.println("1: login as tenant");
-				System.out.println("2: login as branch manager");
-				System.out.println("3: login as property manager");
-				System.out.println("4: login as vendor");
-				System.out.println("5: login as buyer");
-				System.out.println("6: login as branch admin");
+				// System.out.println("Enter a number from 0-6");
+				// System.out.println("0: login as landlord");
+				// System.out.println("1: login as tenant");
+				// System.out.println("2: login as branch manager");
+				// System.out.println("3: login as property manager");
+				// System.out.println("4: login as vendor");
+				// System.out.println("5: login as buyer");
+				// System.out.println("6: login as branch admin");
 
-				int demoIndex = Integer.parseInt(scan.nextLine());
+				// int demoIndex = Integer.parseInt(scan.nextLine());
 
-				currentUserIndex = demoIndex; // after searching in allCustomer array this variable will store the index of
-												// current user in the array
-				currentUser = allUsers.get(currentUserIndex); // currently hard-coded in StartUp.java
+				// currentUserIndex = demoIndex; // after searching in allCustomer array this variable will store the index of
+				// 								// current user in the array
+				// currentUser = allUsers.get(currentUserIndex); // currently hard-coded in StartUp.java
 
 				if (currentUser instanceof Landlord) {
 					landLordMenu(); // run menu for landlord
@@ -146,11 +171,14 @@ public class RealEstate {
 					buyerMenu();
 				} else if (currentUser instanceof BranchAdmin) {
 					System.out.println("Run menu for Branch Admin");
-				} else
-					System.out.println("No such user");
+				} 
+				// else
+				// 	System.out.println("No such user");
 				infoOk = true;
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 			// TODO Auto-generated catch block
 			System.out.println("Please log in again");
 			e.printStackTrace();
@@ -159,10 +187,63 @@ public class RealEstate {
 	}
 
 	public void register() {
+		String username = null;
+		boolean isUsernameExists = false;
 		System.out.println("Registration process..." + "\n");
 		// require user to specify username and password and customer type
-		// assign an unique ID to each user
+		do {
+			isUsernameExists = false;
+			System.out.println("Enter username :");
+			username = scan.nextLine();
+
+			for(User user : allUsers) {
+				if(user.getUsername().equals(username) ) {
+					System.out.println("Same username already exists. Please enter a diffrent username.");
+					isUsernameExists= true;
+					break;
+				}
+			}
+		}while(isUsernameExists);
+	
+
+
+		System.out.println("Enter password :");
+		String password = scan.nextLine();
+
+		System.out.println("Are you are:- " + "\n");
+		System.out.println("0:- Landlord");
+		System.out.println("1:- Tenant");
+		System.out.println("2:- Vendor");
+		System.out.println("3:- Buyer");
+
+		int demoIndex = Integer.parseInt(scan.nextLine());
+
+		User user = null;
+		switch(demoIndex) {
+			case 0: 
+			user = new Landlord();
+			break;
+			case 1: 
+			user = new Tenant();
+			break;
+			case 2: 
+			user = new Vendor();
+			break;
+			case 3: 
+			user = new Buyer();
+			break;
+		}
+
+		user.setUsername(username);
+		user.setPassword(password);
+
+		
+
 		// add user to allUsers array
+		if(user!=null){
+			allUsers.add(user);
+		}
+		
 	}
 
 	public void landLordMenu() {

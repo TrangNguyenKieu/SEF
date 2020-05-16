@@ -8,7 +8,7 @@ private static int landlordCount;
 
 public Landlord() {
 	landlordCount++;
-	super.setUserID("LAD" + String.format("%0" + 3 + "d", landlordCount));
+	// super.setUserID("LAD" + String.format("%0" + 3 + "d", landlordCount));
 }
 
 
