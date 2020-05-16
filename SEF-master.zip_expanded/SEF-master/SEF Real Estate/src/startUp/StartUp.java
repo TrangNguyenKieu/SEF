@@ -23,13 +23,32 @@ public class StartUp {
 		
 		//hard-coded data
 		Landlord landlord= new Landlord();
+		landlord.setUsername("LD");
+		landlord.setPassword("cus");
+		
 		Tenant tenant=new Tenant(); 
-
+		tenant.setUsername("TN");
+		tenant.setPassword("cus");
+		
 		BranchManager branman= new BranchManager("Kriti",true);
+		branman.setUsername("BM");
+		branman.setPassword("emp");
+		
 		PropertyManager proman= new PropertyManager("PropertyMan",true);
+		proman.setUsername("PM");
+		proman.setPassword("emp");
+		
 		Buyer buyer= new Buyer();
+		buyer.setUsername("BUY");
+		buyer.setPassword("cus");
+		
 		Vendor vendor= new Vendor();
+		vendor.setUsername("VD");
+		vendor.setPassword("cus");
+		
 		BranchAdmin bradmin= new BranchAdmin("Branch Admin",true);
+		bradmin.setUsername("BD");
+		bradmin.setPassword("emp");
 		
 		RentalProperty prop01= new RentalProperty(landlord.getUserID(), "120 Abbey road", "This house is not for sale", "Corney Island", 4, 2, 2, "house", 180, "12 months or more");
 //		prop01.setStatusToAvailable();//for testing
@@ -40,13 +59,13 @@ public class StartUp {
 		prop02.setSaleByAuction();
 		
 
-		// re.getAllUsers().add(landlord);
-		// re.getAllUsers().add(tenant);
-		// re.getAllUsers().add(branman);
-		// re.getAllUsers().add(proman);
-		// re.getAllUsers().add(vendor);
-		// re.getAllUsers().add(buyer);
-		// re.getAllUsers().add(bradmin);
+		re.getAllUsers().add(landlord); 
+		 re.getAllUsers().add(tenant);
+		 re.getAllUsers().add(branman);
+		 re.getAllUsers().add(proman);
+		 re.getAllUsers().add(vendor); 
+		 re.getAllUsers().add(buyer);
+		 re.getAllUsers().add(bradmin);
 
 		
 		//hard code new sale for auction 2 

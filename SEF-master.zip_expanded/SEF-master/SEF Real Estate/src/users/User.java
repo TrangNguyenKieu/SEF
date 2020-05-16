@@ -6,7 +6,7 @@ public abstract class User {
 public User() {
 	// assign an unique ID to each user
 	this.userID = UUID.randomUUID().toString().substring(0,8);
-
+	
 }
 
 private String userID;
