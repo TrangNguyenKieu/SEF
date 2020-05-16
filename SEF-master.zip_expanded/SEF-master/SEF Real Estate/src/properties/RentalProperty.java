@@ -74,4 +74,8 @@ public boolean assignEmployee(Employee emp) {
 public ArrayList<Application> getAllApplications(){
 	return allApplications;
 }
+
+public void setTenantID(String id) {
+	this.tenantID=id;
+}
 }

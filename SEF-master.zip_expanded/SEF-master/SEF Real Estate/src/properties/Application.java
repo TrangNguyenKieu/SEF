@@ -82,7 +82,7 @@ public class Application {
 
 				// set property status back to available
 				prop.setStatusToAvailable();
-
+				System.out.println("Property:"+ prop.getPropertyID()+ " status is back to available");
 			}
 		}
 		
