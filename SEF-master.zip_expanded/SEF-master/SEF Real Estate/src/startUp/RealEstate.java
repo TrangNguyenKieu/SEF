@@ -253,7 +253,8 @@ public class RealEstate {
 				displayMyApplications();
 				break;
 			case 4:
-				makeBondPayment();
+//				makeBondPayment();
+				makeDeposit();
 				break;
 			case 5:
 				makeRentalPayment();
@@ -465,7 +466,8 @@ public class RealEstate {
 				makeBid();
 				break;
 			case 6:
-				makeSaleDeposit();
+//				makeSaleDeposit();
+				makeDeposit();
 				break;
 			case 7:
 				System.out.println("<<tobe updated>>");
@@ -505,6 +507,9 @@ public class RealEstate {
 	}
 
 	//buyer methods
+	
+	
+	
 	public void makeOffer() {
 		try {
 			quitToMainMenu = false;
@@ -568,38 +573,38 @@ public class RealEstate {
 	
 
 	
-	public void makeSaleDeposit() {
-		String userId= currentUser.getUserID();
-		quitToMainMenu = false;
-		while (!quitToMainMenu) {
-			String title = "Add Auction ID or Q to quit:";
-			addAuctionID(title); //validate input
-			if (quitToMainMenu)
-				break;
-			
-			if(currentAuc.getAuctionStatus()==AuctionStatus.CLOSED) {
-				ArrayList<Bid> allBids= currentAuc.getAllBids();
-				
-				for(Bid bid:allBids) {
-					if(userId==bid.getCreatorID() && bid.getStatus()==BidStatus.ACCEPTED) {
-						bid.receivedDeposit(); //set bid deposit status to true
-						currentAuc.checkHighestBidStatus();//update auction status after payment
-						currentSaleProp.setStatusToUnderContract(); //update property status
-						
-						//perform banking transactions here....
-						
-					}
-				}
-			}
-			else {
-					System.out.println("Cannot make deposit for this auction. It is either "
-							+ "not yet Closed or your bid is not yet Accepted by the vendor.");
-
-			}
-			
-								
-		}
-	}
+//	public void makeSaleDeposit() {
+//		String userId= currentUser.getUserID();
+//		quitToMainMenu = false;
+//		while (!quitToMainMenu) {
+//			String title = "Add Auction ID or Q to quit:";
+//			addAuctionID(title); //validate input
+//			if (quitToMainMenu)
+//				break;
+//			
+//			if(currentAuc.getAuctionStatus()==AuctionStatus.CLOSED) {
+//				ArrayList<Bid> allBids= currentAuc.getAllBids();
+//				
+//				for(Bid bid:allBids) {
+//					if(userId.compareTo(bid.getCreatorID())==0 && bid.getStatus()==BidStatus.ACCEPTED) {
+//						bid.receivedDeposit(); //set bid deposit status to true
+//						currentAuc.checkHighestBidStatus();//update auction status after payment
+//						currentSaleProp.setStatusToUnderContract(); //update property status
+//						
+//						//perform banking transactions here....
+//						
+//					}
+//				}
+//			}
+//			else {
+//					System.out.println("Cannot make deposit for this auction. It is either "
+//							+ "not yet Closed or your bid is not yet Accepted by the vendor.");
+//
+//			}
+//			
+//								
+//		}
+//	}
 	
 	// vendor methods
 	
@@ -628,6 +633,12 @@ public class RealEstate {
 				}
 				if (quitToMainMenu)
 				{	break;}
+				
+				if (currentSaleProp.getCreatorID().compareTo(currentUser.getUserID())!=0) {
+					System.out.println("This is not an offer made to your property");
+					break;
+				}
+				
 				if (currentOffer.getOfferStatus() == ApplicationStatus.Rejected) {
 					throw new StatusException("This offer has been previously rejected. This cannot be undone");
 
@@ -757,6 +768,11 @@ public class RealEstate {
 			if (quitToMainMenu)
 				break;
 			Property currentProp = allProperties.get(currentPropertyIndex);
+			
+			if(currentProp.getCreatorID().compareTo(currentUser.getUserID())!=0) {
+				System.out.println("Cannot create auction as this is not your property");
+				break;
+			}
 			if (currentProp instanceof SaleProperty&&((SaleProperty) currentProp).getSaleType()==SaleType.AUCTION) {
 				if(currentProp.getStatus()==PropertyStatus.Available) {
 					if (((SaleProperty) currentProp).createAuction()) {
@@ -1068,6 +1084,12 @@ public class RealEstate {
 				}
 				if (quitToMainMenu)
 				{	break;}
+				
+				if(currentRentProp.getCreatorID().compareTo(currentUser.getUserID())!=0) {
+					System.out.println("This is not an application made to your property");
+					break;
+				}
+				
 				if (currentApp.getAppStatus() == ApplicationStatus.Rejected) {
 					throw new StatusException("This application has been previously rejected. This cannot be undone");
 
@@ -1454,9 +1476,9 @@ public class RealEstate {
 //			System.out.println(diff + " minutes " + "has passed since the previous date.");
 			System.out.println(DateTime.diffSecond(currentDate, previousDate) + " seconds " + "has passed");
 
-			checkApplicationStatus();
-			checkAuctionStatus();
-			checkOfferStatus();
+			checkApplicationStatus(); //update application status after time passes
+			checkAuctionStatus(); //update auction status after time passes
+			checkOfferStatus(); //update offer status after time passes
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -1497,8 +1519,149 @@ public class RealEstate {
 			}
 		}
 	}
+public void makeFinalPayment() {
+		
+		try {
+			quitToMainMenu = false;
+			while (!quitToMainMenu) {
+				String title = "Add Property ID or Q to quit:";
+				addPropertyID(title);
+				if (quitToMainMenu)
+					break;
+				Property currentProp = allProperties.get(currentPropertyIndex);
+				
+				if(currentProp instanceof SaleProperty) {
+					
+					//if current user is also the one who paid deposit
+					if(currentProp.getStatus()==PropertyStatus.UnderContract && ((SaleProperty)currentProp).getDepositor().compareTo(currentUser.getUserID())==0) {
+						
+						currentProp.setStatusToSold();
+						((SaleProperty)currentProp).setBuyer((Buyer)currentUser); //set buyer
+						System.out.println("Sale Property: "+ currentProp.getPropertyID()+ " has been sold.");
+						
+						//setup property value 
+					    //using variables: acceptedBidAmount and acceptedOfferamount
+						
+					}
+					
+				} else throw new Exception("This is not a sale property.");
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+	}
 	
-	
+	public void makeDeposit() {
+		try {
+			quitToMainMenu = false;
+			while (!quitToMainMenu) {
+				String title = "Add Property ID or Q to quit:";
+				addPropertyID(title);
+				if (quitToMainMenu)
+					break;
+				Property currentProp = allProperties.get(currentPropertyIndex);
+				
+				//deposit for rental property
+				if(currentProp instanceof RentalProperty) {
+					
+					ArrayList<Application> allApps= ((RentalProperty)currentProp).getAllApplications();
+					
+					if (allApps.size()>0) {
+						for(Application app: allApps) {
+							
+							//if user has accepted application
+							if(app.getAppStatus()==ApplicationStatus.Accepted 
+								&& app.getTenant().getUserID().compareTo(currentUser.getUserID())==0) {
+								
+								currentProp.setStatusToLet(); //set property status to Let
+								((RentalProperty) currentProp).setTenantID(currentUser.getUserID()); //set tenant ID to rent property
+								
+								System.out.println("Deposit has been received for rental property:" + currentProp.getPropertyID());
+								System.out.println("Status of rental property:" + currentProp.getPropertyID()+ " is now:" + currentProp.getStatus());
+								
+								//perform any banking transactions here....
+								
+							} else {
+								throw new Exception("Cannot make deposit to this property."
+										+ "You don't have any accepted Application for it.");
+							}
+						}
+					} else throw new Exception("There's not yet any application for this property");
+					
+					
+					//deposit for sale by negotiation property
+				} else if(currentProp instanceof SaleProperty && ((SaleProperty)currentProp).getSaleType()==SaleType.NEGOTIATION) {
+					
+					ArrayList<Offer> allOffers= ((SaleProperty)currentProp).getAllOffers();
+					
+					if(allOffers.size()>0) {
+						
+						for(Offer offer: allOffers) {
+							
+							//if user has accepted offer
+							if(offer.getOfferStatus()==ApplicationStatus.Accepted 
+								&& offer.getBuyerID().compareTo(currentUser.getUserID())==0) {
+								
+								currentProp.setStatusToInprocess(); //set sale prop status to in process
+								((SaleProperty)currentProp).setDepositor(currentUser.getUserID()); //set user id for depositor
+								System.out.println("Deposit has been received for sale property by negotiation:" + currentProp.getPropertyID());
+								System.out.println("Status of sale property by nego:" + currentProp.getPropertyID()+ " is now:" + currentProp.getStatus());
+								
+								//perform any banking transactions here....
+								
+							} else {
+								throw new Exception("Cannot make deposit to this property."
+										+ "You don't have any accepted offer for it.");
+							}
+						}
+					} else throw new Exception("There's not yet any offer for this property");
+					
+					
+					
+					
+					//deposit for sale by auction
+				}else if(currentProp instanceof SaleProperty && ((SaleProperty)currentProp).getSaleType()==SaleType.AUCTION) {
+					
+					ArrayList<Auction> allAucs= ((SaleProperty)currentProp).getAllAuctions();
+					
+					if(allAucs.size()>0) {
+						
+						for(Auction auc:((SaleProperty)currentProp).getAllAuctions()) {
+							ArrayList<Bid> allBids= auc.getAllBids();
+							
+							if(allBids.size()>0) {
+								
+								for(Bid bid:allBids) {
+									if(currentUser.getUserID().compareTo(bid.getCreatorID())==0 && bid.getStatus()==BidStatus.ACCEPTED) {
+										bid.receivedDeposit(); //set bid deposit status to true
+										auc.checkHighestBidStatus();//update auction status after payment
+										currentProp.setStatusToUnderContract(); //update property status
+										((SaleProperty)currentProp).setDepositor(currentUser.getUserID()); //set user id for depositor
+										
+										//perform any banking transactions here....
+																			
+									} else {
+										throw new Exception("Cannot make deposit to this property."
+												+ "You don't have any accepted bid for it.");
+									}
+								}
+								
+							} else throw new Exception("There's not yet any bid for this property");
+							
+						}
+						
+					} else throw new Exception("There's not yet any auction for this property");
+					
+					
+					
+				}
+				
+			}
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 	
 	
 }

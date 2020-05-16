@@ -13,14 +13,18 @@ import users.SaleConsultant;
 
 public class SaleProperty extends Property {
 
-	private double propertyValue;
-	private double commissionRate;
+	private double propertyValue; //will be set after property is sold
+	private double commissionRate; //will be set after branch manager assign employee to property
 	private double minimumPrice;
-	
+	private Buyer buyer; //will be set after property is sold
 	private ArrayList<Auction> allAuctions;
 	private ArrayList<Offer> allOffers;
 	private static int count;
 	private SaleType saleType;
+	private String depositorId; //user id who has paid deposits
+	
+	private double acceptedBid; //record the amount of accepted bid
+	private double acceptedOffer; //record amount of accepted offer
 	
 	//constructor for sale by auction
 	public SaleProperty(String creatorID, String address, String des, String surbub, int bed, int bath, int cars, String type) {
@@ -43,13 +47,39 @@ public class SaleProperty extends Property {
 		saleType=SaleType.NEGOTIATION;
 	}
 	
+	public void setDepositor(String id) {
+		this.depositorId=id;
+	}
+	
+	public String getDepositor() {
+		return this.depositorId;
+	}
+	
+	public void setAcceptedBid(double amount) {
+		this.acceptedBid=amount;
+	}
+	
+	public double getAcceptedOffer() {
+		return this.acceptedOffer;
+	}
+	
+	public void setAcceptedOffer(double amount) {
+		this.acceptedOffer=amount;
+	}
+	
+	public double getAcceptedBid() {
+		return this.acceptedBid;
+	}
+	
 	public SaleType getSaleType() {
 		return saleType;
 	}
 	public void setSaleByAuction() {
 		this.saleType=SaleType.AUCTION;
 	}
-	
+	public void setBuyer(Buyer buyer) {
+		this.buyer=buyer;
+	}
 	public void setSaleByNego() {
 		this.saleType=SaleType.NEGOTIATION;
 	}
@@ -81,7 +111,9 @@ public class SaleProperty extends Property {
 	
 	//override
 	public String getPropertyDetails() {
-		return super.getPropertyDetails()+ "\n" + "Sale Type:" +"\t"+ this.saleType+"\n" + "Minimum Price:" +"\t"+ this.minimumPrice;
+		return super.getPropertyDetails()+ "\n" + "Sale Type:" +"\t"+ this.saleType+"\n" + "Minimum Price:" +"\t"+
+				this.minimumPrice+ "\n" + "Deposited by:" +"\t"+ this.depositorId +
+				"\n" + "Buyer:" +"\t"+ this.buyer.getUserID()+"\n" ;
 	}
 	
 	

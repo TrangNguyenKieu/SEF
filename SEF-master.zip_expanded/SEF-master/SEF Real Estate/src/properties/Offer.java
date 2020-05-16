@@ -63,7 +63,9 @@ public class Offer {
 		return this.offerID;
 	}
 	
-
+	public String getBuyerID() {
+		return this.buyer.getUserID();
+	}
 	
 	public ApplicationStatus getOfferStatus() {
 		return status;
