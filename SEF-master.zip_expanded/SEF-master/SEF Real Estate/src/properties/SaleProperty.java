@@ -112,8 +112,8 @@ public class SaleProperty extends Property {
 	//override
 	public String getPropertyDetails() {
 		return super.getPropertyDetails()+ "\n" + "Sale Type:" +"\t"+ this.saleType+"\n" + "Minimum Price:" +"\t"+
-				this.minimumPrice+ "\n" + "Deposited by:" +"\t"+ this.depositorId +
-				"\n" + "Buyer:" +"\t"+ this.buyer.getUserID()+"\n" ;
+				this.minimumPrice+ "\n" + "Deposited by:" +"\t"+ this.depositorId ;
+//				+"\n" + "Buyer:" +"\t"+ this.buyer.getUserID()+"\n" ;
 	}
 	
 	

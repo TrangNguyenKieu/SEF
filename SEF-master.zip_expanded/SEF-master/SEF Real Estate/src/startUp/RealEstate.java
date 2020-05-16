@@ -153,6 +153,7 @@ public class RealEstate {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Please log in again");
+			e.printStackTrace();
 		}
 
 	}
@@ -1582,7 +1583,7 @@ public void makeFinalPayment() {
 								
 								//perform any banking transactions here....
 								
-							} else {
+							} else if(allApps.indexOf(app)==allApps.size()-1) {
 								throw new Exception("Cannot make deposit to this property."
 										+ "You don't have any accepted Application for it.");
 							}
@@ -1610,7 +1611,7 @@ public void makeFinalPayment() {
 								
 								//perform any banking transactions here....
 								
-							} else {
+							} else if(allOffers.indexOf(offer)==allOffers.size()-1) {
 								throw new Exception("Cannot make deposit to this property."
 										+ "You don't have any accepted offer for it.");
 							}
