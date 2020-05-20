@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
 import SystemExceptions.*;
 import Utilities.ApplicationStatus;
 import Utilities.DateTime;
@@ -33,7 +35,7 @@ public class RealEstate {
 	public void login() {
 		boolean infoOk = false;
 		while (!infoOk) {
-			System.out.println("*******Login Process*******");
+			System.out.println("**** Login Process ****");
 
 			// require user to enter username and password
 			// make sure username exists and username matches password
@@ -190,7 +192,12 @@ public class RealEstate {
 					displayMyApplications();
 					break;
 				case 4 :
-					makeFirstPayment();
+					try {
+						makeFirstPayment();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				case 5 :
 					makeRentalPayment();
@@ -366,7 +373,7 @@ public class RealEstate {
 	}
 
 	public void displayMyApplications() {
-		System.out.println("*** My Application ***");
+		System.out.println("*** My Applications ***");
 
 		String currentUserID = currentUser.getUserID();
 		for (int i = 0; i < allProperties.size(); i++) {
@@ -383,10 +390,40 @@ public class RealEstate {
 
 	}
 
-	public void makeFirstPayment() {
-		boolean flag = true;
-
-		while (flag) {
+	// == MAKE FIRST PAYMENT START ==
+	public Application findApplicationProperty(String applicationID) {
+		String currentUserID = currentUser.getUserID();
+		for (Property property : allProperties) {
+			ArrayList<Application> allApps = ((RentalProperty) property).getAllApplications();
+			
+			for (Application application : allApps) {
+				String tenantID = application.getTenant().getUserID();
+				if (currentUserID.compareTo(tenantID) == 0) {
+					if (application.getApplicationID() == applicationID) {
+						return application;
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public void makeFirstPayment() throws InterruptedException {
+		displayMyApplications();
+		
+		System.out.println("Enter property Application ID: ");
+		String applicationID = StartUp.scan.nextLine();
+		
+		if(findApplicationProperty(applicationID) == null) {
+			System.out.println("Applcation ID does not exist");
+			return;
+		}
+		
+		Application paymentApplication = findApplicationProperty(applicationID);
+		
+		boolean quit = true;
+		while (quit) {
 			System.out.println("Enter Bank name: ");
 			String bankName = StartUp.scan.nextLine();
 			System.out.println("Enter account number: ");
@@ -394,29 +431,70 @@ public class RealEstate {
 			System.out.println("Enter BSB number: ");
 			int BSB = StartUp.scan.nextInt();
 
-			boolean innerFlag = true;
+			boolean flag = true;
 
-			while (innerFlag) {
+			while (flag) {
 				System.out.printf("\nBank name: %s" + "\nAccount Number: %d"
 						+ "\nBSB: %d", bankName, accountNumber, BSB);
 				System.out.println("Are the following details correct? [y/n]");
-				String input = scan.next();
+				String input = StartUp.scan.next();
 
 				switch (input) {
 					case "y" :
+						quit = false;
 						flag = false;
-						innerFlag = false;
 						break;
 					case "n" :
-						innerFlag = false;
+						flag = false;
 						break;
 					default :
 						System.out.println("Please provide a valid input");
 				}
 			}
+			
+			double weeklyAmt = paymentApplication.getWeeklyRent();
+			double bondAmt = weeklyAmt * 4;
+			double totalAmt = weeklyAmt + bondAmt;
+			
+			System.out.println("Weekly rent amount: " + weeklyAmt);
+			System.out.println("Bond amount: " + bondAmt);
+			
+			System.out.println("Your first payment amount is " + totalAmt);
+			System.out.println("Would you like to contine with the payment? [y/n]");
+			String input = StartUp.scan.next();
+			
+			while(flag) {
+				switch(input) {
+					case "y" :
+						flag = false;
+						break;
+					case "n" :
+						quit = false;
+						flag = false;
+						break;
+					default :
+						System.out.println("Please provide a valid input");
+				}
+			}
+			
+			System.out.println("Deducting amount...");
+			TimeUnit.SECONDS.sleep(5);
+			
+			System.out.print("Payment was successful");
+			
+			String applicationPropertyID = paymentApplication.getPropertyID();
+			
+			for (Property property : allProperties) {
+				if (property.getPropertyID().compareTo(applicationPropertyID) == 0) {
+					property.setStatusToLet();
+				}
+			}
+			
 		}
 
 	}
+	
+	// == MAKE FIRST PAYMENT END ==
 
 	public void makeRentalPayment() {
 		System.out.println("Paying rental fee each month");

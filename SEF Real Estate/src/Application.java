@@ -92,4 +92,8 @@ public class Application {
 	public String getPropertyID() {
 		return this.propertyID;
 	}
+	
+	public double getWeeklyRent() {
+		return this.weeklyRent;
+	}
 }
