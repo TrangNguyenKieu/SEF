@@ -1712,24 +1712,29 @@ public void makeFinalPayment() {
 						for(Auction auc:((SaleProperty)currentProp).getAllAuctions()) {
 							ArrayList<Bid> allBids= auc.getAllBids();
 							
-							if(allBids.size()>0) {
-								
-								for(Bid bid:allBids) {
-									if(currentUser.getUserID().compareTo(bid.getCreatorID())==0 && bid.getStatus()==BidStatus.ACCEPTED) {
-										bid.receivedDeposit(); //set bid deposit status to true
-										auc.checkHighestBidStatus();//update auction status after payment
-										currentProp.setStatusToUnderContract(); //update property status
-										((SaleProperty)currentProp).setDepositor(currentUser.getUserID()); //set user id for depositor
-										
-										//perform any banking transactions here....
-																			
-									} else {
-										throw new Exception("Cannot make deposit to this property."
-												+ "You don't have any accepted bid for it.");
+							//only search the latest auction
+							if(((SaleProperty)currentProp).getAllAuctions().indexOf(auc)==((SaleProperty)currentProp).getAllAuctions().size()-1 ) {
+								//if there is at least 1 bid:
+								if(allBids.size()>0 ) {
+									
+									for(Bid bid:allBids) {
+										if(currentUser.getUserID().compareTo(bid.getCreatorID())==0 && bid.getStatus()==BidStatus.ACCEPTED) {
+											bid.receivedDeposit(); //set bid deposit status to true
+											auc.checkHighestBidStatus();//update auction status after payment
+											currentProp.setStatusToUnderContract(); //update property status
+											((SaleProperty)currentProp).setDepositor(currentUser.getUserID()); //set user id for depositor
+											
+											//perform any banking transactions here....
+																				
+										} else {
+											throw new Exception("Cannot make deposit to this property."
+													+ "You don't have any accepted bid for it.");
+										}
 									}
-								}
-								
-							} else throw new Exception("There's not yet any bid for this property");
+									
+								} else throw new Exception("There's not yet any bid for this property");
+							}
+							
 							
 						}
 						
