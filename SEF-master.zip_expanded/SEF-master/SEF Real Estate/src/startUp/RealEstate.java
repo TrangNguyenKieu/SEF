@@ -915,7 +915,7 @@ public class RealEstate {
 				title = "Description:";
 				String description = ValidateFunction.addTextInfo(title);
 
-				title = "Surbub:";
+				title = "Suburb:";
 				String surbub = ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
@@ -961,7 +961,7 @@ public class RealEstate {
 				title = "Description:";
 				String description = ValidateFunction.addTextInfo(title);
 
-				title = "Surbub:";
+				title = "Suburb:";
 				String surbub = ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
@@ -1097,7 +1097,7 @@ public class RealEstate {
 				title = "Description:";
 				String description = ValidateFunction.addTextInfo(title);
 
-				title = "Surbub:";
+				title = "Suburb:";
 				String surbub = ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
