@@ -566,7 +566,7 @@ public class RealEstate {
 				makeDeposit();
 				break;
 			case 7:
-				System.out.println("<<tobe updated>>");
+				makeFinalPayment();
 				break;
 			case 8:
 				logOut();
@@ -804,7 +804,8 @@ public class RealEstate {
 
 			System.out.println("Current Offer status is:" + currentOffer.getOfferStatus());
 
-			// set property status to in process
+			// set property status to in process and set accepted offer
+			currentSaleProp.setAcceptedOffer(currentOffer.getOfferAmount());
 			currentSaleProp.setStatusToInprocess();
 			System.out.println("Property:" + currentSaleProp.getPropertyID() + " status is now InProcess");
 
@@ -1268,7 +1269,7 @@ public class RealEstate {
 			System.out.println("Current Application status is:" + currentappStatus);
 			ArrayList<Application> allApps = currentRentProp.getAllApplications();
 
-			// set property status to in process
+			// set property status to in process 
 			for (Property prop : allProperties) {
 				if (prop instanceof RentalProperty) {
 					if (((RentalProperty) prop).getAllApplications().contains(currentApp)) {
@@ -1577,7 +1578,7 @@ public class RealEstate {
 		for (Property prop : allProperties) {
 			if (prop instanceof SaleProperty && ((SaleProperty) prop).getSaleType() == SaleType.AUCTION) {
 				for (Auction auc : ((SaleProperty) prop).getAllAuctions()) {
-					auc.checkAuctionStatus();
+					auc.checkAuctionStatus((SaleProperty)prop);
 				}
 			}
 		}
@@ -1615,23 +1616,40 @@ public class RealEstate {
 					break;
 				Property currentProp = allProperties.get(currentPropertyIndex);
 
+//				System.out.println("I'm here");
 				if (currentProp instanceof SaleProperty) {
 
 					// if current user is also the one who paid deposit
-					if (currentProp.getStatus() == PropertyStatus.UnderContract
-							&& ((SaleProperty) currentProp).getDepositor().compareTo(currentUser.getUserID()) == 0) {
+					if (((SaleProperty) currentProp).getDepositor().compareTo(currentUser.getUserID()) == 0) {
 
 						currentProp.setStatusToSold();
 						((SaleProperty) currentProp).setBuyer((Buyer) currentUser); // set buyer
+						
+						// setup property value
+						if(((SaleProperty) currentProp).getSaleType()==SaleType.AUCTION) {
+							
+							double value=((SaleProperty) currentProp).getAcceptedBid();
+							((SaleProperty) currentProp).setPropertyValue(value);
+							
+						} else if (((SaleProperty) currentProp).getSaleType()==SaleType.NEGOTIATION) {
+							
+							double value=((SaleProperty) currentProp).getAcceptedOffer();
+							((SaleProperty) currentProp).setPropertyValue(value);
+						}
+						
+						
 						System.out.println("Sale Property: " + currentProp.getPropertyID() + " has been sold.");
 
-						// setup property value
-						// using variables: acceptedBidAmount and acceptedOfferamount
+						
 
+					} else {
+						System.out.println("You have not paid deposit for this property");
 					}
 
 				} else
 					throw new Exception("This is not a sale property.");
+
+				break;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -1693,10 +1711,12 @@ public class RealEstate {
 							// if user has accepted offer
 							if (offer.getOfferStatus() == ApplicationStatus.Accepted
 									&& offer.getBuyerID().compareTo(currentUser.getUserID()) == 0) {
-
-								currentProp.setStatusToInprocess(); // set sale prop status to in process
+								
+								offer.receivedDeposit(); //set deposit status to true
+								currentProp.setStatusToUnderContract();//set property status
 								((SaleProperty) currentProp).setDepositor(currentUser.getUserID()); // set user id for
 																									// depositor
+								
 								System.out.println("Deposit has been received for sale property by negotiation:"
 										+ currentProp.getPropertyID());
 								System.out.println("Status of sale property by nego:" + currentProp.getPropertyID()
@@ -1733,7 +1753,7 @@ public class RealEstate {
 										if (currentUser.getUserID().compareTo(bid.getCreatorID()) == 0
 												&& bid.getStatus() == BidStatus.ACCEPTED) {
 											bid.receivedDeposit(); // set bid deposit status to true
-											auc.checkHighestBidStatus();// update auction status after payment
+											auc.checkHighestBidStatus((SaleProperty)currentProp);// update auction status after payment
 											currentProp.setStatusToUnderContract(); // update property status
 											((SaleProperty) currentProp).setDepositor(currentUser.getUserID()); // set
 																												// user

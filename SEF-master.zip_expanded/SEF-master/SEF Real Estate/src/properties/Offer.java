@@ -79,4 +79,16 @@ public class Offer {
 		this.status=ApplicationStatus.Accepted;
 		this.acceptedDate=date;
 	}
+	
+	public double getOfferAmount() {
+		return this.offerPrice;
+	}
+	
+	public void setOfferAmount(double amnt) {
+		offerPrice=amnt;
+	}
+	
+	public void receivedDeposit() {
+		this.depositPaid=true;
+	}
 }
