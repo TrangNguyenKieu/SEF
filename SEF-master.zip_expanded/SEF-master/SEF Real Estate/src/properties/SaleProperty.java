@@ -16,6 +16,8 @@ public class SaleProperty extends Property {
 
 	private double propertyValue; // will be set after property is sold
 	private double commissionRate; // will be set after branch manager assign employee to property
+	
+	
 	private double minimumPrice;
 	private Buyer buyer; // will be set after property is sold
 	private ArrayList<Auction> allAuctions;

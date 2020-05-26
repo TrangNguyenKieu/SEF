@@ -61,4 +61,12 @@ public void receivedDeposit() {
 public String getCreatorID() {
 	return this.creatorID;
 }
+
+public String getBidDetails() {
+	return "Bid ID:" + "\t"+ this.iD+ "\n"+
+			"Creator ID:"+ "\t"+ this.creatorID+ "\n"+
+			"Bid amount:"+ "\t"+ this.bidAmount+ "\n"+
+			"Accepted date:"+"\t"+ this.acceptedDate+ "\n"+
+			"Deposit Status"+"\t"+ this.depositedPayment+ "\n";
+}
 }

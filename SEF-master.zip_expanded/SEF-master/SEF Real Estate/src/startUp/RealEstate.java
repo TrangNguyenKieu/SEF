@@ -503,7 +503,8 @@ public class RealEstate {
 				viewAllAuctions();
 				break;
 			case 8:
-				System.out.println("<<tobe updated>>");
+//				System.out.println("<<tobe updated>>");
+				viewAllBid();
 				break;
 			case 9:
 				logOut();
@@ -528,17 +529,19 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("2. Display my offers");
 			System.out.println();
-			System.out.printf("3. Display my bids");
+			System.out.printf("3. Display all auctions");
 			System.out.println();
-			System.out.printf("4. Make new offer");
+			System.out.printf("4. Display all bids");
 			System.out.println();
-			System.out.printf("5. Make new bid");
+			System.out.printf("5. Make new offer");
 			System.out.println();
-			System.out.printf("6. Make deposit");
+			System.out.printf("6. Make new bid");
 			System.out.println();
-			System.out.printf("7. Make final payment");
+			System.out.printf("7. Make deposit");
 			System.out.println();
-			System.out.printf("8. Log Out");
+			System.out.printf("8. Make final payment");
+			System.out.println();
+			System.out.printf("9. Log Out");
 			System.out.println();
 
 			enterChoice();
@@ -554,22 +557,25 @@ public class RealEstate {
 				viewMyOffers();
 				break;
 			case 3:
-				System.out.println("<<tobe updated>>");
+				viewAllAuctions();
 				break;
 			case 4:
-				makeOffer();
+				viewAllBid();
 				break;
 			case 5:
-				makeBid();
+				makeOffer();
 				break;
 			case 6:
+				makeBid();
+				break;
+			case 7:
 //				makeSaleDeposit();
 				makeDeposit();
 				break;
-			case 7:
+			case 8:
 				makeFinalPayment();
 				break;
-			case 8:
+			case 9:
 				logOut();
 				break;
 
@@ -609,7 +615,7 @@ public class RealEstate {
 		try {
 			quitToMainMenu = false;
 			while (!quitToMainMenu) {
-				String title = "Add Property ID:";
+				String title = "Add Property ID or press Q to quit:";
 				String propID = addPropertyID(title);
 				if (quitToMainMenu)
 					break;
@@ -666,6 +672,20 @@ public class RealEstate {
 		}
 	}
 
+	public void viewAllBid() {
+		quitToMainMenu = false;
+		while (!quitToMainMenu) {
+			String title = "Add Auction ID or Q to quit:";
+			addAuctionID(title); // validate input
+			if (quitToMainMenu)
+				break;
+			
+			ArrayList<Bid> allBids=currentAuc.getAllBids();
+			for(Bid bid:allBids) {
+				System.out.println(bid.getBidDetails());
+			}
+		}
+	}
 
 
 	// vendor methods
@@ -842,7 +862,7 @@ public class RealEstate {
 		for (Property prop : allProperties) {
 			if (prop instanceof SaleProperty && ((SaleProperty) prop).getSaleType() == SaleType.AUCTION) {
 
-				if (prop.getCreatorID().compareTo(userID) == 0) {
+//				if (prop.getCreatorID().compareTo(userID) == 0) {
 
 					ArrayList<Auction> allAucs = ((SaleProperty) prop).getAllAuctions();
 
@@ -850,7 +870,7 @@ public class RealEstate {
 						System.out.println(auc.getAuctionDetails());
 
 					}
-				}
+//				}
 
 			}
 		}
@@ -1012,7 +1032,7 @@ public class RealEstate {
 		try {
 			quitToMainMenu = false;
 			while (!quitToMainMenu) {
-				String title = "Add Property ID:";
+				String title = "Add Property ID or press Q to quit:";
 				String propID = addPropertyID(title);
 				if (quitToMainMenu)
 					break;
@@ -1574,7 +1594,7 @@ public class RealEstate {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Error with input. Try again");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 
 	}
@@ -1615,7 +1635,7 @@ public class RealEstate {
 		try {
 			quitToMainMenu = false;
 			while (!quitToMainMenu) {
-				String title = "Add Property ID or Q to quit:";
+				String title = "Add Property ID or press Q to quit:";
 				addPropertyID(title);
 				if (quitToMainMenu)
 					break;
@@ -1626,7 +1646,7 @@ public class RealEstate {
 
 					// if current user is also the one who paid deposit
 					if (((SaleProperty) currentProp).getDepositor().compareTo(currentUser.getUserID()) == 0) {
-
+							
 						currentProp.setStatusToSold();
 						((SaleProperty) currentProp).setBuyer((Buyer) currentUser); // set buyer
 						
@@ -1648,7 +1668,7 @@ public class RealEstate {
 						
 
 					} else {
-						System.out.println("You have not paid deposit for this property");
+						throw new Exception("You have not paid deposit for this property");
 					}
 
 				} else
@@ -1658,6 +1678,7 @@ public class RealEstate {
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			System.out.println("Cannot make final payment for this property.");
 		}
 
 	}
@@ -1666,7 +1687,7 @@ public class RealEstate {
 		try {
 			quitToMainMenu = false;
 			while (!quitToMainMenu) {
-				String title = "Add Property ID or Q to quit:";
+				String title = "Add Property ID or press Q to quit:";
 				addPropertyID(title);
 				if (quitToMainMenu)
 					break;
@@ -1748,9 +1769,7 @@ public class RealEstate {
 						for (Auction auc : ((SaleProperty) currentProp).getAllAuctions()) {
 							ArrayList<Bid> allBids = auc.getAllBids();
 
-							// only search the latest auction
-							if (((SaleProperty) currentProp).getAllAuctions()
-									.indexOf(auc) == ((SaleProperty) currentProp).getAllAuctions().size() - 1) {
+
 								// if there is at least 1 bid:
 								if (allBids.size() > 0) {
 
@@ -1768,7 +1787,7 @@ public class RealEstate {
 
 											// perform any banking transactions here....
 
-										} else {
+										} else if (allBids.indexOf(bid)==allBids.size()-1) {
 											throw new Exception("Cannot make deposit to this property."
 													+ "You don't have any accepted bid for it.");
 										}
@@ -1776,7 +1795,7 @@ public class RealEstate {
 
 								} else
 									throw new Exception("There's not yet any bid for this property");
-							}
+//							}
 
 						}
 
