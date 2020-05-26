@@ -253,7 +253,7 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("3. Add Rental property");
 			System.out.println();
-			System.out.printf("4. Display applications");
+			System.out.printf("4. Display applications to my properties");
 			System.out.println();
 			System.out.printf("5. Respond to application");
 			System.out.println();
@@ -463,7 +463,7 @@ public class RealEstate {
 			System.out.printf("4. Create auction");
 			System.out.println();
 
-			System.out.printf("5. Display all offers");
+			System.out.printf("5. Display offers to my properties");
 			System.out.println();
 			System.out.printf("6. Respond to offer");
 			System.out.println();
@@ -493,7 +493,8 @@ public class RealEstate {
 				createAuction();
 				break;
 			case 5:
-				viewAllOffer();
+				viewOffersToMyProps();
+//				viewAllOffer();
 				break;
 			case 6:
 				reviewOffer();
@@ -550,7 +551,7 @@ public class RealEstate {
 				displayAllProperties();
 				break;
 			case 2:
-				System.out.println("<<tobe updated>>");
+				viewMyOffers();
 				break;
 			case 3:
 				System.out.println("<<tobe updated>>");
@@ -692,6 +693,24 @@ public class RealEstate {
 						System.out.println(offer.getOfferDetails());
 					}
 				}
+				
+			}
+		}
+	}
+	
+	public void viewMyOffers() {
+		for (Property prop : allProperties) {
+			if (prop instanceof SaleProperty && ((SaleProperty) prop).getSaleType() == SaleType.NEGOTIATION) {
+			
+					
+					ArrayList<Offer> allOffers = ((SaleProperty) prop).getAllOffers();
+
+					for (Offer offer : allOffers) {
+						if(offer.getBuyerID().compareTo(currentUser.getUserID())==0) {
+						System.out.println(offer.getOfferDetails());
+						}
+					}
+				
 				
 			}
 		}
@@ -1137,6 +1156,7 @@ public class RealEstate {
 		String currentSessionID = currentUser.getUserID();
 
 		for (int i = 0; i < allProperties.size(); i++) {
+			//only display application created by current landlord
 			if (allProperties.get(i).getCreatorID().compareTo(currentSessionID) == 0) {
 
 				ArrayList<Application> allApps = ((RentalProperty) allProperties.get(i)).getAllApplications();
