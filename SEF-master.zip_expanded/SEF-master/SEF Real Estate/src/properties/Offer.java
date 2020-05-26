@@ -51,6 +51,7 @@ public class Offer {
 	
 	public String getOfferDetails() {
 		return "Offer Id:" + "\t"+ this.offerID+"\n"+
+				"PropertyID" + "\t"+ this.propertyID+ "\n"+
 				"Buyer Id:"+"\t"+this.buyer.getUserID()+"\n"+
 				"Offer Price:"+ "\t"+this.offerPrice+ "\n"+
 				"Status:" +"\t"+this.status+"\n"+

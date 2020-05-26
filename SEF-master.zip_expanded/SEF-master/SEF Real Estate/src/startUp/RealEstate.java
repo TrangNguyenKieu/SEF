@@ -665,38 +665,7 @@ public class RealEstate {
 		}
 	}
 
-//	public void makeSaleDeposit() {
-//		String userId= currentUser.getUserID();
-//		quitToMainMenu = false;
-//		while (!quitToMainMenu) {
-//			String title = "Add Auction ID or Q to quit:";
-//			addAuctionID(title); //validate input
-//			if (quitToMainMenu)
-//				break;
-//			
-//			if(currentAuc.getAuctionStatus()==AuctionStatus.CLOSED) {
-//				ArrayList<Bid> allBids= currentAuc.getAllBids();
-//				
-//				for(Bid bid:allBids) {
-//					if(userId.compareTo(bid.getCreatorID())==0 && bid.getStatus()==BidStatus.ACCEPTED) {
-//						bid.receivedDeposit(); //set bid deposit status to true
-//						currentAuc.checkHighestBidStatus();//update auction status after payment
-//						currentSaleProp.setStatusToUnderContract(); //update property status
-//						
-//						//perform banking transactions here....
-//						
-//					}
-//				}
-//			}
-//			else {
-//					System.out.println("Cannot make deposit for this auction. It is either "
-//							+ "not yet Closed or your bid is not yet Accepted by the vendor.");
-//
-//			}
-//			
-//								
-//		}
-//	}
+
 
 	// vendor methods
 
@@ -712,6 +681,22 @@ public class RealEstate {
 		}
 	}
 
+	public void viewOffersToMyProps() {
+		for (Property prop : allProperties) {
+			if (prop instanceof SaleProperty && ((SaleProperty) prop).getSaleType() == SaleType.NEGOTIATION) {
+				if(prop.getCreatorID().compareTo(currentUser.getUserID())==0) {
+					
+					ArrayList<Offer> allOffers = ((SaleProperty) prop).getAllOffers();
+
+					for (Offer offer : allOffers) {
+						System.out.println(offer.getOfferDetails());
+					}
+				}
+				
+			}
+		}
+	}
+	
 	public void reviewOffer() {
 		try {
 			System.out.println("Accept or reject Offer or  press Q to quit");
