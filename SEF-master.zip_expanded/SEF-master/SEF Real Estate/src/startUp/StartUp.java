@@ -1,4 +1,7 @@
 package startUp;
+
+import java.io.*;
+
 import java.util.Scanner;
 
 import Utilities.EmployeeType;
@@ -19,7 +22,9 @@ public class StartUp {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		RealEstate re= new RealEstate();
+		RealEstate re = new RealEstate();
+		
+		
 		
 		//hard-coded data
 		Landlord landlord= new Landlord();
@@ -92,6 +97,31 @@ public class StartUp {
 		
 //		System.out.println(re.getAllCustomers().size());
 //		System.out.println(re.getAllCustomers().get(0));
+		
+		try {
+			FileOutputStream propertyFile = new FileOutputStream("property.ser");
+			ObjectOutputStream propertyStream = new ObjectOutputStream(propertyFile);
+			
+			
+			writeStream.writeObject(re.getAllProperties());
+			writeStream.flush();
+			writeStream.close();
+			
+		} catch (IOException e) {
+			System.out.println("Could not write to proeprty file")
+		}
+		
+		try {
+			FileOutputStream userFile = new FileOutputStream("user.ser");
+			FileOutputStream userStream = new FileOutputStream(userFile);
+			
+			writeStream.writeObject(re.getAllUsers());
+			writeStream.flush();
+			writeStream.close();
+			
+		} catch (IOException e) {
+			System.out.println("Could not write to user file");
+		}
 	}
 
 }
