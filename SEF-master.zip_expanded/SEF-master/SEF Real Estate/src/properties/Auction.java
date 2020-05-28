@@ -78,7 +78,7 @@ public class Auction {
 
 	}
 
-	public void checkAuctionStatus() {
+	public void checkAuctionStatus(SaleProperty prop) {
 		if (status == AuctionStatus.WAITING) {
 
 			// if auction date has passed
@@ -97,17 +97,17 @@ public class Auction {
 				this.closeAuction();
 				System.out.println(
 						"No more bid. Auction " + this.ID + " has been closed as there is no new bid after 30 seconds");
-				checkHighestBidStatus(); // check bid and payment status
+				checkHighestBidStatus(prop); // check bid and payment status
 			}
 
 		}
 		// if auction is closed, check bid and payment status
 		else if (status == AuctionStatus.CLOSED) {
-			checkHighestBidStatus();
+			checkHighestBidStatus(prop);
 		}
 	}
 
-	public void checkHighestBidStatus() {
+	public void checkHighestBidStatus(SaleProperty prop) {
 
 		int i; // index of highest bid
 
@@ -122,6 +122,7 @@ public class Auction {
 
 				if (highestBid.getStatus() == BidStatus.PENDING) {
 					highestBid.acceptBid(RealEstate.currentDate);
+					prop.setAcceptedBid(highestBid.getAmount()); //set accepted bid amount in sale property
 					System.out.println("Bid no " + highestBid.getBidID() + "has been accepted."
 							+ "Buyer now needs to pay deposit within 24 hours.");
 
@@ -146,6 +147,7 @@ public class Auction {
 								i = allBids.size() - 1;
 								highestBid = allBids.get(i);
 								highestBid.acceptBid(RealEstate.currentDate);
+								prop.setAcceptedBid(highestBid.getAmount());//set accepted bid amount in sale property
 								System.out.println("Bid no " + highestBid.getBidID() + "has been accepted."
 										+ "Buyer now needs to pay deposit within 24 hours.");
 							}

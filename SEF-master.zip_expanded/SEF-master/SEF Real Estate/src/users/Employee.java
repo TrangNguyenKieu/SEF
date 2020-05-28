@@ -1,5 +1,8 @@
 package users;
-public class Employee extends User{
+
+import java.io.Serializable;
+
+public class Employee extends User implements Serializable{
 	private static int employeeCount;
 	private boolean isFulltime;
 	private String name;

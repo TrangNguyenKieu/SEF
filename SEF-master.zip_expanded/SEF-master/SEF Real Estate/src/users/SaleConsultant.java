@@ -1,6 +1,7 @@
 package users;
+import java.io.Serializable;
 
-public class SaleConsultant extends Employee {
+public class SaleConsultant extends Employee implements Serializable{
 private static int count;
 public SaleConsultant(String name, boolean fulltime) {
 	super(name,fulltime);

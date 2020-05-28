@@ -1,8 +1,9 @@
 package users;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Landlord extends Customer {
+public class Landlord extends Customer implements Serializable{
 private static int landlordCount;
 
 

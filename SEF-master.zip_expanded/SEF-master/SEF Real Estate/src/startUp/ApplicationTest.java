@@ -33,11 +33,22 @@ class ApplicationTest {
 	
 	//positive 
 
+	@Test
+	//check pre-condition: application status should be pending before landlord review the applications
+	void testCurrentApplicationStatus() {
+		
+		rp.getAllApplications().add(app);
+		rp.getAllApplications().add(app2);
+		assertEquals(ApplicationStatus.Pending, app.getAppStatus());
+		assertEquals(ApplicationStatus.Pending, app2.getAppStatus());
+	}
 	
 	@Test 
+	
+	//If Landlord accept application, application status will be Accepted
 	void testAcceptedApplicationStatus() throws StatusException {
 		
-		//after accepted method application status will be Accepted
+		
 		rp.getAllApplications().add(app);
 		rp.getAllApplications().add(app2);
 		re.setCurrenProp(rp); //selected property rp
@@ -50,8 +61,9 @@ class ApplicationTest {
 	}
 	
 	@Test 
+	//after landlord has accepted 1 app, the other applications will be Rejected
 	void testOtherApplicationStatus() throws StatusException{
-		//after accepted 1 app, the other apps status will be Rejected
+		
 		rp.getAllApplications().add(app);
 		rp.getAllApplications().add(app2);
 		re.setCurrenProp(rp); //selected property rp
@@ -65,7 +77,6 @@ class ApplicationTest {
 	
 	
 	//negative
-	
 	
 	
 	

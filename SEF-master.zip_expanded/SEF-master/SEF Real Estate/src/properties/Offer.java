@@ -51,6 +51,7 @@ public class Offer {
 	
 	public String getOfferDetails() {
 		return "Offer Id:" + "\t"+ this.offerID+"\n"+
+				"PropertyID" + "\t"+ this.propertyID+ "\n"+
 				"Buyer Id:"+"\t"+this.buyer.getUserID()+"\n"+
 				"Offer Price:"+ "\t"+this.offerPrice+ "\n"+
 				"Status:" +"\t"+this.status+"\n"+
@@ -78,5 +79,17 @@ public class Offer {
 	public void acceptOffer(DateTime date) {
 		this.status=ApplicationStatus.Accepted;
 		this.acceptedDate=date;
+	}
+	
+	public double getOfferAmount() {
+		return this.offerPrice;
+	}
+	
+	public void setOfferAmount(double amnt) {
+		offerPrice=amnt;
+	}
+	
+	public void receivedDeposit() {
+		this.depositPaid=true;
 	}
 }

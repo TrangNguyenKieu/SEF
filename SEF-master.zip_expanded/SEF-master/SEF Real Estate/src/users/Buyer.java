@@ -1,6 +1,8 @@
 package users;
 
-public class Buyer extends Customer {
+import java.io.Serializable;
+
+public class Buyer extends Customer implements Serializable{
 private static int count;
 
 public Buyer() {

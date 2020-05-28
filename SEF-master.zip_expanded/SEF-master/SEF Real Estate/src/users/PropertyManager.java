@@ -1,7 +1,9 @@
 package users;
+import java.io.Serializable;
+
 import Utilities.EmployeeType;
 
-public class PropertyManager extends Employee{
+public class PropertyManager extends Employee implements Serializable{
 private static int count;
 
 
