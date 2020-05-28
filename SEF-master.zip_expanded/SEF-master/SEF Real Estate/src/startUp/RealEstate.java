@@ -461,7 +461,9 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("2.Submit Timesheet");
 			System.out.println();
-			System.out.printf("3. Log Out");
+			System.out.printf("3.Commission rate negotiated with vendor from 2%-5%: ");
+			System.out.println();
+			System.out.printf("4.Log Out");
 			System.out.println();
 
 			enterChoice();
@@ -498,6 +500,26 @@ public class RealEstate {
 				}
 				break;
 			case 3:
+				while (true) {
+					System.out.println("List of properties which have been assigned to you");
+					Set<String> props = new HashSet<String>();
+					for (Property property : allProperties) {
+						if (property.getEmployee() != null && property.getEmployee().getId().equals(caller.getId())) {
+							System.out.println(property.getPropertyID());
+							props.add(property.getPropertyID());
+						}
+					}
+					if (props.size() == 0)
+						break;
+					else if (caller.setComissionRate(allProperties, props).equals("success")) {
+						System.out.println("Commission Rate added ");
+						break;
+					}
+
+				}
+				break;
+
+			case 4:
 				logOut();
 				break;
 
