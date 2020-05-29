@@ -1,5 +1,7 @@
 package startUp;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Scanner;
 
 import Utilities.EmployeeType;
@@ -13,14 +15,18 @@ import users.Landlord;
 import users.PropertyManager;
 import users.Tenant;
 import users.Vendor;
+import Utilities.FileReadWrite;
 
-public class StartUp {
+public class StartUp implements Serializable{
 
 	public static Scanner scan = new Scanner(System.in);
+	public static String userFileName = "Users.txt";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 		RealEstate re = new RealEstate();
+
+		RealEstate.allUsers = FileReadWrite.readUserDetails(userFileName);//Updating User Array List
 
 		// hard-coded data
 		Landlord landlord = new Landlord();

@@ -3,6 +3,7 @@ package startUp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.io.IOException;
 
 import SystemExceptions.*;
 import Utilities.ApplicationStatus;
@@ -29,6 +30,7 @@ import users.PropertyManager;
 import users.Tenant;
 import users.User;
 import users.Vendor;
+import Utilities.FileReadWrite;
 
 import java.util.*;
 
@@ -42,7 +44,7 @@ public class RealEstate {
 	private static RentalProperty currentRentProp;
 	private static SaleProperty currentSaleProp;
 	private static Auction currentAuc;
-	private static ArrayList<User> allUsers;
+	public static ArrayList<User> allUsers;
 	private static ArrayList<Property> allProperties;
 
 	private int choice;
@@ -67,7 +69,7 @@ public class RealEstate {
 
 	}
 
-	public void landingPageMenu() {
+	public void landingPageMenu() throws IOException {
 
 		quit = false;
 		while (!quit) {
@@ -97,7 +99,8 @@ public class RealEstate {
 				break;
 
 			case 4:
-				
+			FileReadWrite.saveUserDetails(StartUp.userFileName, allUsers);
+			System.out.println("System exited! Thanks for using S&E Real Estate System");
 				quit();
 				break;
 
