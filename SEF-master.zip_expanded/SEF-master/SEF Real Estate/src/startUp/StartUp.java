@@ -16,10 +16,11 @@ import users.Vendor;
 public class StartUp {
 
 	public static Scanner scan = new Scanner(System.in);
+	public static RealEstate re= new RealEstate();
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		RealEstate re= new RealEstate();
+		
 		
 		//hard-coded data
 		Landlord landlord= new Landlord();

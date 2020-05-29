@@ -1,8 +1,12 @@
 package properties;
 
+import java.util.ArrayList;
+
 import Utilities.BidStatus;
 import Utilities.DateTime;
 import startUp.RealEstate;
+import startUp.StartUp;
+import users.User;
 
 public class Bid {
 private String iD;
@@ -64,9 +68,21 @@ public String getCreatorID() {
 
 public String getBidDetails() {
 	return "Bid ID:" + "\t"+ this.iD+ "\n"+
-			"Creator ID:"+ "\t"+ this.creatorID+ "\n"+
+			"Bidder name:"+ "\t"+ getCreatorName()+ "\n"+
 			"Bid amount:"+ "\t"+ this.bidAmount+ "\n"+
 			"Accepted date:"+"\t"+ this.acceptedDate+ "\n"+
 			"Deposit Status"+"\t"+ this.depositedPayment+ "\n";
+}
+
+public String getCreatorName() {
+	String creatorName=null;
+	ArrayList<User> allUsers= StartUp.re.getAllUsers();
+	
+	for(User user: allUsers) {
+		if(user.getUserID().compareTo(creatorID)==0) {
+			creatorName=user.getUsername();
+		}
+	}
+	return creatorName;
 }
 }

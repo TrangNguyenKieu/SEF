@@ -38,7 +38,7 @@ public class Application {
 		String details = null;
 		details = "\n" + "Application ID: " + "\t" + this.applicationID + "\n"
 				+ "Property ID: " + "\t" + "\t" + this.propertyID + "\n"
-				+ "Tenant ID: " + "\t" + "\t" + this.tenant.getUserID() + "\n"
+				+ "Tenant Name: " + "\t" + "\t" + this.tenant.getUsername() + "\n"
 				+ "Monthly Income: " + "\t" + this.income + "\n"
 				+ "Occupation: " + "\t" + "\t" + this.occupation + "\n"
 				+ "Weekly Rent: " + "\t" + "\t" + this.weeklyRent + "\n"
@@ -50,7 +50,7 @@ public class Application {
 			details = "\n" + "Application ID: " + "\t" + this.applicationID
 					+ "\n" + "Property ID: " + "\t" + "\t" + this.propertyID
 					+ "\n" + "Tenant ID: " + "\t" + "\t"
-					+ this.tenant.getUserID() + "\n" + "Monthly Income: " + "\t"
+					+ this.tenant.getUsername() + "\n" + "Monthly Income: " + "\t"
 					+ this.income + "\n" + "Occupation: " + "\t" + "\t"
 					+ this.occupation + "\n" + "Weekly Rent: " + "\t" + "\t"
 					+ this.weeklyRent + "\n" + "Contract Duration: " + "\t"

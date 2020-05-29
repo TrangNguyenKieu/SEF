@@ -316,9 +316,7 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("4. Make bond payment");
 			System.out.println();
-			System.out.printf("5. Make rental payment");
-			System.out.println();
-			System.out.printf("6. Log Out");
+			System.out.printf("5. Log Out");
 			System.out.println();
 
 			enterChoice();
@@ -341,9 +339,6 @@ public class RealEstate {
 				makeDeposit();
 				break;
 			case 5:
-				makeRentalPayment();
-				break;
-			case 6:
 				logOut();
 				break;
 			default:
@@ -792,7 +787,7 @@ public class RealEstate {
 		try {
 			quitToMainMenu = false;
 			while (!quitToMainMenu) {
-				String title = "Add Property ID:";
+				String title = "Add Property ID or press Q to quit:";
 				String propID = addPropertyID(title);
 				if (quitToMainMenu)
 					break;
@@ -1206,7 +1201,7 @@ public class RealEstate {
 		try {
 			quitToMainMenu = false;
 			while (!quitToMainMenu) {
-				String title = "Add Property ID:";
+				String title = "Add Property ID or press Q to quit:";
 				String propID = addPropertyID(title);
 				if (quitToMainMenu)
 					break;
@@ -1348,10 +1343,11 @@ public class RealEstate {
 		// then print each application details
 
 		String currentSessionID = currentUser.getUserID();
-
+		
 		for (int i = 0; i < allProperties.size(); i++) {
+			//only display application created by current landlord
 			if (allProperties.get(i).getCreatorID().compareTo(currentSessionID) == 0) {
-
+				
 				ArrayList<Application> allApps = ((RentalProperty) allProperties.get(i)).getAllApplications();
 				for (int j = 0; j < allApps.size(); j++) {
 					System.out.println(allApps.get(j).getApplicationdetails());
@@ -1405,7 +1401,7 @@ public class RealEstate {
 			System.out.println("Select 1 option [1-3]");
 			System.out.printf("1. Accept Application");
 			System.out.println();
-			System.out.printf("2.Reject Application");
+			System.out.printf("2. Reject Application");
 			System.out.println();
 			System.out.printf("3. Back to Main Menu");
 			System.out.println();
@@ -1541,7 +1537,7 @@ public class RealEstate {
 
 	public static void searchProperty() {
 		System.out.println("\n*******Search Properties******");
-		String title = "Enter a suburb";
+		String title = "Enter a suburb:";
 		String surb = ValidateFunction.addTextInfo(title);
 		if (!searchSurbub(surb)) {
 			System.out.println("No property found");

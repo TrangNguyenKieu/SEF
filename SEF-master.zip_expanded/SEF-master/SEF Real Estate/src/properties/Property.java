@@ -1,7 +1,11 @@
 package properties;
 
+import java.util.ArrayList;
+
 import Utilities.PropertyStatus;
+import startUp.StartUp;
 import users.Employee;
+import users.User;
 
 public abstract class Property {
 	private String propertyID;
@@ -32,7 +36,7 @@ public abstract class Property {
 
 	// override methods:
 	public String getPropertyDetails() {
-		String details = "\n" + "Property ID:" + "\t" + this.propertyID + "\n" + "Creator ID:" + "\t" + this.creatorID
+		String details = "\n" + "Property ID:" + "\t" + this.propertyID + "\n" + "Creator Name:" + "\t" + getCreatorName()
 				+ "\n" + "Address:" + "\t" + this.address + "\n" + "Suburb:" + "\t" + this.surbub + "\n"
 				+ "Description:" + "\t" + this.description + "\n" + "Number of Bedrooms:" + "\t" + this.bedrooms + "\n"
 				+ "Number of Bathrooms:" + "\t" + this.bathrooms + "\n" + "Number of car spaces:" + "\t"
@@ -94,4 +98,15 @@ public abstract class Property {
 		return employee;
 	}
 
+	public String getCreatorName() {
+		String creatorName=null;
+		ArrayList<User> allUsers= StartUp.re.getAllUsers();
+		
+		for(User user: allUsers) {
+			if(user.getUserID().compareTo(creatorID)==0) {
+				creatorName=user.getUsername();
+			}
+		}
+		return creatorName;
+	}
 }
