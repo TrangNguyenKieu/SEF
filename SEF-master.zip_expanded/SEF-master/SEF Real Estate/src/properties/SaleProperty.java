@@ -202,4 +202,14 @@ public class SaleProperty extends Property {
 
 	}
 
+	public double getCommisionRate() {
+		// TODO Auto-generated method stub
+		return this.commissionRate;
+	}
+
+	public double getPropertyValue() {
+		// TODO Auto-generated method stub
+		return this.propertyValue;
+	}
+
 }
