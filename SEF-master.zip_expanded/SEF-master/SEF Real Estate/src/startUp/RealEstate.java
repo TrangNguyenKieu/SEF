@@ -261,7 +261,7 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("3. Add Rental property");
 			System.out.println();
-			System.out.printf("4. Display applications");
+			System.out.printf("4. Display applications to my properties");
 			System.out.println();
 			System.out.printf("5. Respond to application");
 			System.out.println();
@@ -603,22 +603,24 @@ public class RealEstate {
 		while (!logOut) {
 
 			System.out.println("\n*******Vendor Menu******");
+			System.out.printf("0. Search properties");
+			System.out.println();
 			System.out.printf("1. Display all properties");
 			System.out.println();
-			System.out.printf("2.Display my properties");
+			System.out.printf("2. Display my properties");
 			System.out.println();
-			System.out.printf("3.Add sale property");
+			System.out.printf("3. Add sale property");
 			System.out.println();
-			System.out.printf("4.Create auction");
+			System.out.printf("4. Create auction");
 			System.out.println();
 
-			System.out.printf("5.Display all offers");
+			System.out.printf("5. Display offers to my properties");
 			System.out.println();
-			System.out.printf("6.Respond to offer");
+			System.out.printf("6. Respond to offer");
 			System.out.println();
-			System.out.printf("7.Display all auctions");
+			System.out.printf("7. Display all auctions");
 			System.out.println();
-			System.out.printf("8.Display all bids");
+			System.out.printf("8. Display all bids");
 			System.out.println();
 			System.out.printf("9. Log Out");
 			System.out.println();
@@ -626,6 +628,9 @@ public class RealEstate {
 			enterChoice();
 
 			switch (choice) {
+			case 0:
+				searchProperty();
+				break;
 			case 1:
 				displayAllProperties();
 				break;
@@ -639,7 +644,8 @@ public class RealEstate {
 				createAuction();
 				break;
 			case 5:
-				viewAllOffer();
+				viewOffersToMyProps();
+//				viewAllOffer();
 				break;
 			case 6:
 				reviewOffer();
@@ -648,7 +654,8 @@ public class RealEstate {
 				viewAllAuctions();
 				break;
 			case 8:
-				System.out.println("<<tobe updated>>");
+//				System.out.println("<<tobe updated>>");
+				viewAllBid();
 				break;
 			case 9:
 				logOut();
@@ -667,49 +674,59 @@ public class RealEstate {
 		while (!logOut) {
 
 			System.out.println("\n*******Buyer Menu******");
-			System.out.printf("1.Display all properties");
+			System.out.printf("0. Search properties");
 			System.out.println();
-			System.out.printf("2.Display my offers");
+			System.out.printf("1. Display all properties");
 			System.out.println();
-			System.out.printf("3.Display my bids");
+			System.out.printf("2. Display my offers");
 			System.out.println();
-			System.out.printf("4.Make new offer");
+			System.out.printf("3. Display all auctions");
 			System.out.println();
-			System.out.printf("5.Make new bid");
+			System.out.printf("4. Display all bids");
 			System.out.println();
-			System.out.printf("6.Make deposit");
+			System.out.printf("5. Make new offer");
 			System.out.println();
-			System.out.printf("7.Make final payment");
+			System.out.printf("6. Make new bid");
 			System.out.println();
-			System.out.printf("8.Log Out");
+			System.out.printf("7. Make deposit");
+			System.out.println();
+			System.out.printf("8. Make final payment");
+			System.out.println();
+			System.out.printf("9. Log Out");
 			System.out.println();
 
 			enterChoice();
 
 			switch (choice) {
+			case 0:
+				searchProperty();
+				break;
 			case 1:
 				displayAllProperties();
 				break;
 			case 2:
-				System.out.println("<<tobe updated>>");
+				viewMyOffers();
 				break;
 			case 3:
-				System.out.println("<<tobe updated>>");
+				viewAllAuctions();
 				break;
 			case 4:
-				makeOffer();
+				viewAllBid();
 				break;
 			case 5:
-				makeBid();
+				makeOffer();
 				break;
 			case 6:
+				makeBid();
+				break;
+			case 7:
 //				makeSaleDeposit();
 				makeDeposit();
 				break;
-			case 7:
-				System.out.println("<<tobe updated>>");
-				break;
 			case 8:
+				makeFinalPayment();
+				break;
+			case 9:
 				logOut();
 				break;
 
@@ -831,39 +848,20 @@ public class RealEstate {
 
 		}
 	}
-
-//	public void makeSaleDeposit() {
-//		String userId= currentUser.getUserID();
-//		quitToMainMenu = false;
-//		while (!quitToMainMenu) {
-//			String title = "Add Auction ID or Q to quit:";
-//			addAuctionID(title); //validate input
-//			if (quitToMainMenu)
-//				break;
-//			
-//			if(currentAuc.getAuctionStatus()==AuctionStatus.CLOSED) {
-//				ArrayList<Bid> allBids= currentAuc.getAllBids();
-//				
-//				for(Bid bid:allBids) {
-//					if(userId.compareTo(bid.getCreatorID())==0 && bid.getStatus()==BidStatus.ACCEPTED) {
-//						bid.receivedDeposit(); //set bid deposit status to true
-//						currentAuc.checkHighestBidStatus();//update auction status after payment
-//						currentSaleProp.setStatusToUnderContract(); //update property status
-//						
-//						//perform banking transactions here....
-//						
-//					}
-//				}
-//			}
-//			else {
-//					System.out.println("Cannot make deposit for this auction. It is either "
-//							+ "not yet Closed or your bid is not yet Accepted by the vendor.");
-//
-//			}
-//			
-//								
-//		}
-//	}
+	public void viewAllBid() {
+		quitToMainMenu = false;
+		while (!quitToMainMenu) {
+			String title = "Add Auction ID or Q to quit:";
+			addAuctionID(title); // validate input
+			if (quitToMainMenu)
+				break;
+			
+			ArrayList<Bid> allBids=currentAuc.getAllBids();
+			for(Bid bid:allBids) {
+				System.out.println(bid.getBidDetails());
+			}
+		}
+	}
 
 	// vendor methods
 
@@ -879,6 +877,39 @@ public class RealEstate {
 		}
 	}
 
+	public void viewOffersToMyProps() {
+		for (Property prop : allProperties) {
+			if (prop instanceof SaleProperty && ((SaleProperty) prop).getSaleType() == SaleType.NEGOTIATION) {
+				if(prop.getCreatorID().compareTo(currentUser.getUserID())==0) {
+					
+					ArrayList<Offer> allOffers = ((SaleProperty) prop).getAllOffers();
+
+					for (Offer offer : allOffers) {
+						System.out.println(offer.getOfferDetails());
+					}
+				}
+				
+			}
+		}
+	}
+	public void viewMyOffers() {
+		for (Property prop : allProperties) {
+			if (prop instanceof SaleProperty && ((SaleProperty) prop).getSaleType() == SaleType.NEGOTIATION) {
+			
+					
+					ArrayList<Offer> allOffers = ((SaleProperty) prop).getAllOffers();
+
+					for (Offer offer : allOffers) {
+						if(offer.getBuyerID().compareTo(currentUser.getUserID())==0) {
+						System.out.println(offer.getOfferDetails());
+						}
+					}
+				
+				
+			}
+		}
+	}
+	
 	public void reviewOffer() {
 		try {
 			System.out.println("Accept or reject Offer or  press Q to quit");
@@ -1004,7 +1035,7 @@ public class RealEstate {
 		for (Property prop : allProperties) {
 			if (prop instanceof SaleProperty && ((SaleProperty) prop).getSaleType() == SaleType.AUCTION) {
 
-				if (prop.getCreatorID().compareTo(userID) == 0) {
+//				if (prop.getCreatorID().compareTo(userID) == 0) {
 
 					ArrayList<Auction> allAucs = ((SaleProperty) prop).getAllAuctions();
 
@@ -1012,7 +1043,7 @@ public class RealEstate {
 						System.out.println(auc.getAuctionDetails());
 
 					}
-				}
+//				}
 
 			}
 		}
@@ -1090,7 +1121,7 @@ public class RealEstate {
 				title = "Description:";
 				String description = ValidateFunction.addTextInfo(title);
 
-				title = "Surbub:";
+				title = "Suburb:";
 				String surbub = ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
@@ -1136,7 +1167,7 @@ public class RealEstate {
 				title = "Description:";
 				String description = ValidateFunction.addTextInfo(title);
 
-				title = "Surbub:";
+				title = "Suburb:";
 				String surbub = ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
@@ -1272,7 +1303,7 @@ public class RealEstate {
 				title = "Description:";
 				String description = ValidateFunction.addTextInfo(title);
 
-				title = "Surbub:";
+				title = "Suburb:";
 				String surbub = ValidateFunction.addTextInfo(title);
 
 				title = "Number of Bedrooms: ";
@@ -1509,7 +1540,7 @@ public class RealEstate {
 
 	public static void searchProperty() {
 		System.out.println("\n*******Search Properties******");
-		String title = "Enter a surbub";
+		String title = "Enter a suburb";
 		String surb = ValidateFunction.addTextInfo(title);
 		if (!searchSurbub(surb)) {
 			System.out.println("No property found");
@@ -1761,7 +1792,7 @@ public class RealEstate {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Error with input. Try again");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 
 	}
@@ -1771,6 +1802,7 @@ public class RealEstate {
 			if (prop instanceof SaleProperty && ((SaleProperty) prop).getSaleType() == SaleType.AUCTION) {
 				for (Auction auc : ((SaleProperty) prop).getAllAuctions()) {
 					//auc.checkAuctionStatus();
+					auc.checkAuctionStatus((SaleProperty)prop);
 				}
 			}
 		}
@@ -1798,36 +1830,53 @@ public class RealEstate {
 	}
 
 	public void makeFinalPayment() {
-
 		try {
 			quitToMainMenu = false;
 			while (!quitToMainMenu) {
-				String title = "Add Property ID or Q to quit:";
+				String title = "Add Property ID or press Q to quit:";
 				addPropertyID(title);
 				if (quitToMainMenu)
 					break;
 				Property currentProp = allProperties.get(currentPropertyIndex);
 
+//				System.out.println("I'm here");
 				if (currentProp instanceof SaleProperty) {
 
 					// if current user is also the one who paid deposit
-					if (currentProp.getStatus() == PropertyStatus.UnderContract
-							&& ((SaleProperty) currentProp).getDepositor().compareTo(currentUser.getUserID()) == 0) {
-
+					if (((SaleProperty) currentProp).getDepositor().compareTo(currentUser.getUserID()) == 0) {
+							
 						currentProp.setStatusToSold();
 						((SaleProperty) currentProp).setBuyer((Buyer) currentUser); // set buyer
+						
+						// setup property value
+						if(((SaleProperty) currentProp).getSaleType()==SaleType.AUCTION) {
+							
+							double value=((SaleProperty) currentProp).getAcceptedBid();
+							((SaleProperty) currentProp).setPropertyValue(value);
+							
+						} else if (((SaleProperty) currentProp).getSaleType()==SaleType.NEGOTIATION) {
+							
+							double value=((SaleProperty) currentProp).getAcceptedOffer();
+							((SaleProperty) currentProp).setPropertyValue(value);
+						}
+						
+						
 						System.out.println("Sale Property: " + currentProp.getPropertyID() + " has been sold.");
 
-						// setup property value
-						// using variables: acceptedBidAmount and acceptedOfferamount
+						
 
+					} else {
+						throw new Exception("You have not paid deposit for this property");
 					}
 
 				} else
 					throw new Exception("This is not a sale property.");
+
+				break;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			System.out.println("Cannot make final payment for this property.");
 		}
 
 	}
@@ -1836,7 +1885,7 @@ public class RealEstate {
 		try {
 			quitToMainMenu = false;
 			while (!quitToMainMenu) {
-				String title = "Add Property ID or Q to quit:";
+				String title = "Add Property ID or press Q to quit:";
 				addPropertyID(title);
 				if (quitToMainMenu)
 					break;
@@ -1886,10 +1935,12 @@ public class RealEstate {
 							// if user has accepted offer
 							if (offer.getOfferStatus() == ApplicationStatus.Accepted
 									&& offer.getBuyerID().compareTo(currentUser.getUserID()) == 0) {
-
-								currentProp.setStatusToInprocess(); // set sale prop status to in process
+								
+								offer.receivedDeposit(); //set deposit status to true
+								currentProp.setStatusToUnderContract();//set property status
 								((SaleProperty) currentProp).setDepositor(currentUser.getUserID()); // set user id for
 																									// depositor
+								
 								System.out.println("Deposit has been received for sale property by negotiation:"
 										+ currentProp.getPropertyID());
 								System.out.println("Status of sale property by nego:" + currentProp.getPropertyID()
@@ -1916,28 +1967,33 @@ public class RealEstate {
 						for (Auction auc : ((SaleProperty) currentProp).getAllAuctions()) {
 							ArrayList<Bid> allBids = auc.getAllBids();
 
-							if (allBids.size() > 0) {
 
-								for (Bid bid : allBids) {
-									if (currentUser.getUserID().compareTo(bid.getCreatorID()) == 0
-											&& bid.getStatus() == BidStatus.ACCEPTED) {
-										bid.receivedDeposit(); // set bid deposit status to true
-										//auc.checkHighestBidStatus();// update auction status after payment
-										currentProp.setStatusToUnderContract(); // update property status
-										((SaleProperty) currentProp).setDepositor(currentUser.getUserID()); // set user
-																											// id for
-																											// depositor
+								// if there is at least 1 bid:
+								if (allBids.size() > 0) {
 
-										// perform any banking transactions here....
+									for (Bid bid : allBids) {
+										if (currentUser.getUserID().compareTo(bid.getCreatorID()) == 0
+												&& bid.getStatus() == BidStatus.ACCEPTED) {
+											bid.receivedDeposit(); // set bid deposit status to true
+											auc.checkHighestBidStatus((SaleProperty)currentProp);// update auction status after payment
+											currentProp.setStatusToUnderContract(); // update property status
+											((SaleProperty) currentProp).setDepositor(currentUser.getUserID()); // set
+																												// user
+																												// id
+																												// for
+																												// depositor
 
-									} else {
-										throw new Exception("Cannot make deposit to this property."
-												+ "You don't have any accepted bid for it.");
+											// perform any banking transactions here....
+
+										} else if (allBids.indexOf(bid)==allBids.size()-1) {
+											throw new Exception("Cannot make deposit to this property."
+													+ "You don't have any accepted bid for it.");
+										}
 									}
-								}
 
-							} else
-								throw new Exception("There's not yet any bid for this property");
+								} else
+									throw new Exception("There's not yet any bid for this property");
+//							}
 
 						}
 
