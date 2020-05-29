@@ -81,9 +81,9 @@ public class StartUp {
 		//hardcode new sale by negotiation
 		SaleProperty prop03= new SaleProperty(vendor.getUserID(),"140 Danny", "House for nego", "Sydney", 3, 2, 1, "flat", 10000);
 		//prop03.setStatusToAvailable();
-		prop03.setStatusToSold();
-		prop03.setPropertyValue(10000);
-		prop03.setCommisionRate(4);
+//		prop03.setStatusToSold();
+//		prop03.setPropertyValue(10000);
+//		prop03.setCommisionRate(4);
 		prop03.setEmployee(saleConsultant);
 		
 		

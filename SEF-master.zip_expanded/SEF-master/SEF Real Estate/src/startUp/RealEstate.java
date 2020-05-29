@@ -992,28 +992,29 @@ public class RealEstate {
 
 	public void acceptOffer() throws StatusException {
 		// accept offer
-		if (currentOffer.getOfferStatus() == ApplicationStatus.Rejected) {
-			throw new StatusException("This offer status is currently Rejected. This cannot be undone.");
+				if (currentOffer.getOfferStatus() == ApplicationStatus.Rejected) {
+					throw new StatusException("This offer status is currently Rejected. This cannot be undone.");
 
-		} else if (currentOffer.getOfferStatus() == ApplicationStatus.Accepted) {
-			throw new StatusException("This offer status is currently Accepted. No further work needed.");
-		} else {
-			currentOffer.acceptOffer(currentDate);
+				} else if (currentOffer.getOfferStatus() == ApplicationStatus.Accepted) {
+					throw new StatusException("This offer status is currently Accepted. No further work needed.");
+				} else {
+					currentOffer.acceptOffer(currentDate);
 
-			System.out.println("Current Offer status is:" + currentOffer.getOfferStatus());
+					System.out.println("Current Offer status is:" + currentOffer.getOfferStatus());
 
-			// set property status to in process
-			currentSaleProp.setStatusToInprocess();
-			System.out.println("Property:" + currentSaleProp.getPropertyID() + " status is now InProcess");
+					// set property status to in process and set accepted offer
+					currentSaleProp.setAcceptedOffer(currentOffer.getOfferAmount());
+					currentSaleProp.setStatusToInprocess();
+					System.out.println("Property:" + currentSaleProp.getPropertyID() + " status is now InProcess");
 
-			// reject all other applications of the same property
-			ArrayList<Offer> allOffers = currentSaleProp.getAllOffers();
-			for (Offer offer : allOffers) {
-				if (offer.getOfferID().compareTo(currentOffer.getOfferID()) != 0) {
-					offer.rejectOffer();
+					// reject all other applications of the same property
+					ArrayList<Offer> allOffers = currentSaleProp.getAllOffers();
+					for (Offer offer : allOffers) {
+						if (offer.getOfferID().compareTo(currentOffer.getOfferID()) != 0) {
+							offer.rejectOffer();
+						}
+					}
 				}
-			}
-		}
 	}
 
 	public void rejectOffer() throws StatusException {
