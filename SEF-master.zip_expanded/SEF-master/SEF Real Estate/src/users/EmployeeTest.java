@@ -1,21 +1,14 @@
 package users;
-
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
-
 import properties.Property;
 import properties.RentalProperty;
 
-class EmployeeTest {
-	
-	
-
+class EmployeeTest implements Serializable {
 	@Test
 	void assignEmployeeToProperty() throws Exception {
 		ArrayList<User> users=new ArrayList<User>();

@@ -1,5 +1,7 @@
 package startUp;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,7 +29,6 @@ import properties.Offer;
 import properties.Property;
 import properties.RentalProperty;
 import properties.SaleProperty;
-//import properties.SalebyAuction;
 import users.BranchAdmin;
 import users.BranchManager;
 import users.Buyer;
@@ -37,8 +38,9 @@ import users.SaleConsultant;
 import users.Tenant;
 import users.User;
 import users.Vendor;
+import Utilities.FileReadWrite;
 
-public class RealEstate {
+public class RealEstate implements Serializable{
 
 	private static User currentUser;
 	private static Application currentApp;
@@ -46,8 +48,8 @@ public class RealEstate {
 	private static RentalProperty currentRentProp;
 	private static SaleProperty currentSaleProp;
 	private static Auction currentAuc;
-	private static ArrayList<User> allUsers;
-	private static ArrayList<Property> allProperties;
+	public static ArrayList<User> allUsers;
+	public static ArrayList<Property> allProperties;
 	private static Map<String, TimeSheet> timeSheets;
 
 	private int choice;
@@ -72,7 +74,7 @@ public class RealEstate {
 		timeSheets = new HashMap<String, TimeSheet>();
 	}
 
-	public void landingPageMenu() {
+	public void landingPageMenu() throws IOException {
 
 		quit = false;
 		while (!quit) {
@@ -102,6 +104,8 @@ public class RealEstate {
 				break;
 
 			case 4:
+			FileReadWrite.saveUserDetails(StartUp.userFileName, allUsers);
+			FileReadWrite.savePropertyDetails(StartUp.propertyFileName, allProperties);
 				quit();
 				break;
 
@@ -122,45 +126,31 @@ public class RealEstate {
 				// require user to enter username and password
 				System.out.println("Enter username :");
 				String username = scan.nextLine();
-
+				
 				System.out.println("Enter password :");
 				String password = scan.nextLine();
 
+
 				// make sure username exists and username matches password
-				for (User user : allUsers) {
-					if (user.getUsername().equals(username)) {
-						if (user.getPassword().equals(password)) {
+				boolean userFound = false;
+				for(User user : allUsers) {
+					if(user.getUsername().equals(username) ) {
+						if(user.getPassword().equals(password)) {
 							System.out.println("Login Successful \n");
-							currentUserIndex = allUsers.indexOf(user);
+							currentUserIndex=allUsers.indexOf(user);
+							System.out.println("The current user index is " + currentUserIndex);
+							
 							currentUser = user;
+							userFound = true;
 							break;
-						} else {
-							System.out.println("Username/Password not found \n");
-							continue outer;
 						}
 					}
 				}
 
-				// get the user ID
-				// then search for user ID in allCustomers array and return the current index
-
-				// demo login
-				// System.out.println("Enter a number from 0-6");
-				// System.out.println("0: login as landlord");
-				// System.out.println("1: login as tenant");
-				// System.out.println("2: login as branch manager");
-				// System.out.println("3: login as property manager");
-				// System.out.println("4: login as vendor");
-				// System.out.println("5: login as buyer");
-				// System.out.println("6: login as branch admin");
-
-				// int demoIndex = Integer.parseInt(scan.nextLine());
-
-				// currentUserIndex = demoIndex; // after searching in allCustomer array this
-				// variable will store the index of
-				// // current user in the array
-				// currentUser = allUsers.get(currentUserIndex); // currently hard-coded in
-				// StartUp.java
+				if (!userFound) {
+					System.out.println("Username/Password not found \n");
+					continue outer;
+				}
 
 				if (currentUser instanceof Landlord) {
 					landLordMenu(); // run menu for landlord

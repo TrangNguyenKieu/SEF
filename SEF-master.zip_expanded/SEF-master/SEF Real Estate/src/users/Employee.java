@@ -1,13 +1,13 @@
 package users;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
-
 import Utilities.TimeSheet;
 import properties.Property;
 
-public class Employee extends User{
+public class Employee extends User implements Serializable{
 	protected static final double BASE_SALARY=1000;
 	private static int employeeCount;
 	private boolean isFulltime;

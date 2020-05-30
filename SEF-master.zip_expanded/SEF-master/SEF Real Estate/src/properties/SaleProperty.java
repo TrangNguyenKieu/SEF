@@ -1,5 +1,6 @@
 package properties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import SystemExceptions.AmountException;
@@ -12,8 +13,7 @@ import users.Buyer;
 import users.Employee;
 import users.SaleConsultant;
 
-public class SaleProperty extends Property {
-
+public class SaleProperty extends Property implements Serializable{
 	private double propertyValue; // will be set after property is sold
 	private double commissionRate; // will be set after branch manager assign employee to property
 	
