@@ -138,8 +138,6 @@ public class RealEstate implements Serializable{
 						if(user.getPassword().equals(password)) {
 							System.out.println("Login Successful \n");
 							currentUserIndex=allUsers.indexOf(user);
-							System.out.println("The current user index is " + currentUserIndex);
-							
 							currentUser = user;
 							userFound = true;
 							break;
@@ -169,13 +167,10 @@ public class RealEstate implements Serializable{
 				}else if (currentUser instanceof SaleConsultant) {
 					saleConsultantMenu();
 				}
-				// else
-				// System.out.println("No such user");
 				infoOk = true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO Auto-generated catch block
 			System.out.println("Please log in again");
 			e.printStackTrace();
 		}
