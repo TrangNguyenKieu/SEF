@@ -1,6 +1,5 @@
 package users;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Vendor extends Customer implements Serializable{
 private static int count;

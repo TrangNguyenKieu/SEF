@@ -1,9 +1,11 @@
 package properties;
 
+import java.io.Serializable;
+
 import Utilities.PropertyStatus;
 import users.Employee;
 
-public abstract class Property {
+public abstract class Property implements Serializable{
 	private String propertyID;
 	private String creatorID;
 	private String address;

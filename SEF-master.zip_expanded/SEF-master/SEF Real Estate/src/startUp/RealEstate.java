@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.io.IOException;
+import java.io.Serializable;
 
 import SystemExceptions.*;
 import Utilities.ApplicationStatus;
@@ -36,7 +37,7 @@ import java.util.*;
 
 import java.text.SimpleDateFormat;
 
-public class RealEstate {
+public class RealEstate implements Serializable{
 
 	private static User currentUser;
 	private static Application currentApp;
@@ -45,7 +46,7 @@ public class RealEstate {
 	private static SaleProperty currentSaleProp;
 	private static Auction currentAuc;
 	public static ArrayList<User> allUsers;
-	private static ArrayList<Property> allProperties;
+	public static ArrayList<Property> allProperties;
 
 	private int choice;
 	public static Scanner scan = new Scanner(System.in);
@@ -100,6 +101,7 @@ public class RealEstate {
 
 			case 4:
 			FileReadWrite.saveUserDetails(StartUp.userFileName, allUsers);
+			FileReadWrite.savePropertyDetails(StartUp.propertyFileName, allProperties);
 			System.out.println("System exited! Thanks for using S&E Real Estate System");
 				quit();
 				break;
@@ -139,8 +141,6 @@ public class RealEstate {
 						}
 					}
 				}
-
-
 				if (currentUser instanceof Landlord) {
 					landLordMenu(); // run menu for landlord
 				} else if (currentUser instanceof Tenant) {

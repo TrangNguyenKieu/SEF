@@ -1,4 +1,5 @@
 package properties;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Utilities.PropertyStatus;
@@ -6,7 +7,7 @@ import users.Employee;
 import users.PropertyManager;
 
 
-public class RentalProperty extends Property{
+public class RentalProperty extends Property implements Serializable{
 private static int rentalPropertyCount;
 private double weeklyRent;
 private String contractDuration;
