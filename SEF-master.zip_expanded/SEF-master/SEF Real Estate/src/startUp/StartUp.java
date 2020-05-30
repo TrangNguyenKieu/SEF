@@ -15,7 +15,7 @@ public class StartUp implements Serializable{
 		RealEstate.allUsers = FileReadWrite.readUserDetails(userFileName);	//Updating User Array List
 		RealEstate.allProperties = FileReadWrite.readPropertyDetails(propertyFileName);	//Updating Property Array List
 
-			re.landingPageMenu();
+		re.landingPageMenu();
 
 	}
 
