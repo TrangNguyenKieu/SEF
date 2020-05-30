@@ -1,8 +1,9 @@
 package users;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public abstract class User {
+public abstract class User implements Serializable{
 public User() {
 	// assign an unique ID to each user
 	this.userID = UUID.randomUUID().toString().substring(0,8);
@@ -13,9 +14,7 @@ private String userID;
 private String username;
 private String password;
 
-// public void setUserID(String ID) {
-// 	this.userID=ID;
-// }
+
 
 public String getUserID() {
 	return userID;

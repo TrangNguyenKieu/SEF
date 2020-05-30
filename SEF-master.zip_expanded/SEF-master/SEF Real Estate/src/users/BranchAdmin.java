@@ -1,7 +1,7 @@
 package users;
 
+import java.io.Serializable;
 import java.util.Map;
-
 import Utilities.PropertyStatus;
 import Utilities.TimeSheet;
 import Utilities.TimeSheetStatus;
@@ -9,7 +9,7 @@ import properties.Property;
 import properties.SaleProperty;
 import startUp.RealEstate;
 
-public class BranchAdmin extends Employee {
+public class BranchAdmin extends Employee implements Serializable{
 
 	private RealEstate re;
 	private final static int hourlySalary = 25;

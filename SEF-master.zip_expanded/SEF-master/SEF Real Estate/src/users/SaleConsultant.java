@@ -1,5 +1,6 @@
 package users;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
@@ -7,7 +8,7 @@ import java.util.Set;
 import properties.Property;
 import properties.SaleProperty;
 
-public class SaleConsultant extends Employee {
+public class SaleConsultant extends Employee implements Serializable{
 	private static int count;
 
 	public SaleConsultant(String name, boolean fulltime) {

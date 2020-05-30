@@ -1,13 +1,13 @@
 package properties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-
 import Utilities.PropertyStatus;
 import startUp.StartUp;
 import users.Employee;
 import users.User;
 
-public abstract class Property {
+public abstract class Property implements Serializable{
 	private String propertyID;
 	private String creatorID;
 	private String address;
