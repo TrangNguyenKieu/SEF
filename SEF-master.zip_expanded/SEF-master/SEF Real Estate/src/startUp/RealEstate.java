@@ -398,9 +398,12 @@ public class RealEstate {
 				try {
 					if (timeSheets.size() > 0) {
 						for (TimeSheet timeSheet : timeSheets.values()) {
-							System.out.printf("TimeSheet Id  : " + timeSheet.getId());
-							System.out.printf(" Employee Id   : " + timeSheet.getEmployeeId());
-							System.out.println("");
+							if(timeSheet.getStatus().equals(TimeSheetStatus.NEW)) {
+								System.out.printf("TimeSheet Id  : " + timeSheet.getId());
+								System.out.printf(" Employee Id   : " + timeSheet.getEmployeeId());
+								System.out.println("");	
+							}
+							
 						}
 						while (true) {
 							String id = (String) customChoice("String",
@@ -536,11 +539,9 @@ public class RealEstate {
 			System.out.println();
 			System.out.printf("2.Schedule inspection");
 			System.out.println();
-			System.out.printf("3.Paying bills and fee");
+			System.out.printf("3.Submit Timesheet");
 			System.out.println();
-			System.out.printf("4.Submit Timesheet");
-			System.out.println();
-			System.out.printf("5. Log Out");
+			System.out.printf("4. Log Out");
 			System.out.println();
 
 			enterChoice();
@@ -568,11 +569,9 @@ public class RealEstate {
 
 				}
 				break;
-			case 3:
-				System.out.println("<<tobe updated>>");
-				break;
+			
 
-			case 4:
+			case 3:
 				TimeSheet timeSheet = caller.submitTimeSheet();
 				if (timeSheet == null) {
 					System.out.println("Full time employees can't submit time sheets");
@@ -582,7 +581,7 @@ public class RealEstate {
 				}
 				break;
 
-			case 5:
+			case 4:
 				logOut();
 				break;
 
@@ -754,6 +753,14 @@ public class RealEstate {
 			case 2:
 				caller.submitTimeSheet();
 				break;
+			case 3:
+				logOut();
+				break;
+
+			default:
+				System.out.println("No such operation");
+				break;
+				
 			}
 		}
 	}
