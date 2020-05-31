@@ -1,5 +1,6 @@
 package users;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -9,7 +10,7 @@ import properties.SaleProperty;
 
 
 
-public class BranchManager extends Employee {
+public class BranchManager extends Employee implements Serializable{
     public BranchManager(String name, boolean isFulltime) {
         super(name, isFulltime);
     }
