@@ -15,8 +15,31 @@ public class StartUp implements Serializable{
 		RealEstate.allUsers = FileReadWrite.readUserDetails(userFileName);	//Updating User Array List
 		RealEstate.allProperties = FileReadWrite.readPropertyDetails(propertyFileName);	//Updating Property Array List
 
-			re.landingPageMenu();
+		re.landingPageMenu();
+		
+		// landlord.setUsername("LD");
+		// landlord.setPassword("cus");
 
+		// tenant.setUsername("TN");
+		// tenant.setPassword("cus");
+
+		// branman.setUsername("BM");
+		// branman.setPassword("emp");
+
+		// proman.setUsername("PM");
+		// proman.setPassword("emp");
+
+		// buyer.setUsername("BUY");
+		// buyer.setPassword("cus");
+
+		// vendor.setUsername("VD");
+		// vendor.setPassword("cus");
+
+		// bradmin.setUsername("BD");
+		// bradmin.setPassword("emp");
+
+		// saleConsultant.setUsername("SL");
+		// saleConsultant.setPassword("emp");
 	}
 
 }
