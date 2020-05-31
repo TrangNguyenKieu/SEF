@@ -16,7 +16,5 @@ public class StartUp implements Serializable{
 		RealEstate.allProperties = FileReadWrite.readPropertyDetails(propertyFileName);	//Updating Property Array List
 
 		re.landingPageMenu();
-
-	}
-
+}
 }

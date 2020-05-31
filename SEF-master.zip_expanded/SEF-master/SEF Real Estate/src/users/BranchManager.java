@@ -3,6 +3,7 @@ package users;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import properties.Property;
 import properties.RentalProperty;
 import properties.SaleProperty;
