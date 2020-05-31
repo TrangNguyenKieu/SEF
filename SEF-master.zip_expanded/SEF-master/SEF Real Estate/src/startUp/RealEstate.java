@@ -198,14 +198,21 @@ public class RealEstate implements Serializable{
 
 		System.out.println("Enter password :");
 		String password = scan.nextLine();
+		int demoIndex;
+		do{
+			System.out.println("Are you are:- " + "\n");
+			System.out.println("0:- Landlord");
+			System.out.println("1:- Tenant");
+			System.out.println("2:- Vendor");
+			System.out.println("3:- Buyer");
+	
+			 demoIndex = Integer.parseInt(scan.nextLine());
 
-		System.out.println("Are you are:- " + "\n");
-		System.out.println("0:- Landlord");
-		System.out.println("1:- Tenant");
-		System.out.println("2:- Vendor");
-		System.out.println("3:- Buyer");
+			 if(demoIndex < -1 || demoIndex > 4) {
+				 System.err.println("Please enter input between 0 and 3");
+			 }
 
-		int demoIndex = Integer.parseInt(scan.nextLine());
+		}while((demoIndex < -1 || demoIndex > 4));
 
 		User user = null;
 		switch (demoIndex) {
