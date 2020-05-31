@@ -725,6 +725,8 @@ public class RealEstate implements Serializable{
 			System.out.println();
 			System.out.printf("2.Submit timeSheet");
 			System.out.println();
+			System.out.printf("3.Logout");
+			System.out.println();
 			enterChoice();
 			switch (choice) {
 			case 1:
