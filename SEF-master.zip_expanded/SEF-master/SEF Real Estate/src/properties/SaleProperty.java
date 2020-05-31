@@ -206,6 +206,7 @@ public class SaleProperty extends Property implements Serializable{
 		// TODO Auto-generated method stub
 		return this.commissionRate;
 	}
+	
 
 	public double getPropertyValue() {
 		// TODO Auto-generated method stub
